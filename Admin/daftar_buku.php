@@ -173,7 +173,7 @@ require "../func.php";
                         </div>
                         <div class="mb-3">
                             <label for="tahun_terbit" class="form-label">Tahun Terbit</label>
-                            <input type="Date" class="form-control" id="tahun_terbit" name="tahun_terbit" required>
+                            <input type="number" class="form-control" id="tahun_terbit" name="tahun_terbit" required >
                         </div>
                         <div class="mb-3">
                             <label for="jumlah_halaman" class="form-label">Jumlah Halaman</label>
