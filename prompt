@@ -1,0 +1,15 @@
+ // Generate id_user
+    $initials = strtoupper(substr($username, 0, 2)); // Get first two characters of username
+    $query = "SELECT COUNT(*) as count FROM user";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    $count = $row['count'] + 1; // Get the next user number
+    $id_user = $initials . str_pad($count, 4, '0', STR_PAD_LEFT); // Combine initials and padded number
+
+    aku ingin agar id user ini dapat mengenerate otomatis dengan mengambil Inisial dari Username yang ada dan urutan dari data keberapa user yang register ini 
+//
+
+
+<img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Card image cap" style="max-height: 200px; object-fit: cover;"> 
+
+<img class="card-img-top" src="../assets/img/Buku/<?= $bk['cover']; ?> "alt="Card image cap" style="max-height: 200px; object-fit: cover;">
