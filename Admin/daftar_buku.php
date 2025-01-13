@@ -103,44 +103,61 @@ require "../func.php";
                                 <i class="fas fa-table me-1"></i>
                                 Buku
                             </div>
-                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
                                 data-bs-target="#tambahBuku">Tambah Buku</button>
                         </div>
-                    </div>
-
-                    <!-- Data Buku -->
-                    <div class="row row-cols-1 row-cols-md-4 g-4 d-flex flex-wrap">
-                        <?php
-                        $buku = query("SELECT * FROM buku");
-                        foreach ($buku as $bk):
-                            ?>
-                            <div class="col mb-2">
-                                <div class="card h-100" style="width: 18rem;">
-                                    <img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Book Cover" style="max-height: 200px; object-fit: cover;">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><?= $bk['judul']; ?></h5>
-                                        <p class="card-text"><?= $bk['pengarang']; ?></p>
-                                        <p class="card-text"><span class="badge bg-secondary">Penerbit:</span>
-                                            <?= $bk['penerbit']; ?></p>
-                                        <p class="card-text"><span class="badge bg-secondary">Tahun Terbit:</span>
-                                            <?= $bk['tahun_terbit']; ?></p>
-                                        <p class="card-text"><span class="badge bg-secondary">Jumlah Halaman:</span>
-                                            <?= $bk['halaman']; ?></p>
-                                        <p class="card-text"><span class="badge bg-secondary">Kategori:</span>
-                                            <?= $bk['kategori']; ?></p>
-
-                                        <a href="#" class="btn btn-primary">Lihat Detail</a>
-                                    </div>
+                        <div class="card-body">
+                            <!-- Search -->
+                            <form method="get" class="mb-4 d-flex justify-content-start">
+                                <div class="input-group shadow-md" style="width: 400px;">
+                                    <input class="form-control" type="text" name="search" id="searchInput"
+                                        value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
+                                        placeholder="Search for..." aria-label="Search for..."
+                                        aria-describedby="btnNavbarSearch" onkeyup="filterData()" />
                                 </div>
+                            </form>
+
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
+                                <?php
+                                $search = isset($_GET['search']) ? $_GET['search'] : '';
+
+                                $buku = query("SELECT * FROM buku WHERE judul LIKE '%$search%' OR pengarang LIKE '%$search%' OR penerbit LIKE '%$search%' OR kategori LIKE '%$search%'");
+                                foreach ($buku as $bk):
+                                    ?>
+                                    <div class="col mb-2">
+                                        <div class="card h-100 shadow-lg">
+                                            <div class="card h-100">
+                                                <img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Book Cover"
+                                                    style="object-fit: cover; width: 100%; height: 500px;">
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-title"><?= $bk['judul']; ?></h5>
+                                                <p class="card-text"><?= $bk['pengarang']; ?></p>
+                                                <p class="card-text"><span class="badge bg-secondary">Penerbit:</span>
+                                                    <?= $bk['penerbit']; ?></p>
+                                                <p class="card-text"><span class="badge bg-secondary">Tahun Terbit:</span>
+                                                    <?= $bk['tahun_terbit']; ?></p>
+                                                <p class="card-text"><span class="badge bg-secondary">Jumlah Halaman:</span>
+                                                    <?= $bk['halaman']; ?></p>
+                                                <p class="card-text"><span class="badge bg-secondary">Kategori:</span>
+                                                    <?= $bk['kategori']; ?></p>
+                                                <div class="d-flex justify-content-end">
+                                                    <a href="detail_buku.php?id_buku=<?= $bk['id_buku']; ?>"
+                                                        class="btn btn-outline-primary">Lihat Detail</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
-                            <?php
-                        endforeach;
-                        ?>
+                        </div>
                     </div>
                 </div>
             </main>
         </div>
     </div>
+
 
     <!-- Modal Tambah Buku -->
     <div class="modal fade" id="tambahBuku" tabindex="-1" aria-labelledby="tambahBukuLabel" aria-hidden="true">
@@ -156,30 +173,39 @@ require "../func.php";
 
                         <div class="mb-3">
                             <label for="cover" class="form-label">Cover Buku</label>
-                            <input type="file" class="form-control" id="cover" name="cover" accept=".jpg, .jpeg, .png" required>
+                            <input type="file" class="form-control" id="cover" name="cover" accept=".jpg, .jpeg, .png"
+                                required onchange="previewImage()">
                         </div>
-                        
+                        <img src="" id="preview" style="max-width:200px;max-height:200px; display:block; margin: 0 auto; margin-bottom: 1rem;">
+
                         <div class="mb-3">
                             <label for="judul" class="form-label">Judul</label>
                             <input type="text" class="form-control" id="judul" name="judul" required maxlength="50">
                         </div>
+
                         <div class="mb-3">
                             <label for="pengarang" class="form-label">Pengarang</label>
-                            <input type="text" class="form-control" id="pengarang" name="pengarang" required maxlength="50">
+                            <input type="text" class="form-control" id="pengarang" name="pengarang" required
+                                maxlength="50">
                         </div>
+
                         <div class="mb-3">
                             <label for="penerbit" class="form-label">Penerbit</label>
-                            <input type="text" class="form-control" id="penerbit" name="penerbit" required maxlength="50">
+                            <input type="text" class="form-control" id="penerbit" name="penerbit" required
+                                maxlength="50">
                         </div>
+
                         <div class="mb-3">
                             <label for="tahun_terbit" class="form-label">Tahun Terbit</label>
-                            <input type="number" class="form-control" id="tahun_terbit" name="tahun_terbit" required >
+                            <input type="number" class="form-control" id="tahun_terbit" name="tahun_terbit" required>
                         </div>
+
                         <div class="mb-3">
                             <label for="jumlah_halaman" class="form-label">Jumlah Halaman</label>
-                            <input type="number" class="form-control" id="halaman" name="halaman"
-                                required maxlength="30">
+                            <input type="number" class="form-control" id="halaman" name="halaman" required
+                                maxlength="30">
                         </div>
+
                         <div class="mb-3">
                             <label for="kategori" class="form-label">Kategori</label>
                             <select class="form-select" id="kategori" name="kategori" required>
@@ -188,7 +214,7 @@ require "../func.php";
                                 <option value="non-fiksi">Non-Fiksi</option>
                             </select>
                         </div>
-
+                        <br>
                         <button type="submit" class="btn btn-primary" name="tambahBuku">Tambah Buku</button>
                     </form>
                 </div>
@@ -201,6 +227,42 @@ require "../func.php";
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>
     <script src="../js/datatables-simple-demo.js"></script>
+
+    <!--  search Buku -->
+    <script>
+        function filterData() {
+            const searchQuery = document.getElementById('searchInput').value;
+            fetch(`?search=${encodeURIComponent(searchQuery)}`)
+                .then(response => response.text())
+                .then(data => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, 'text/html');
+                    const newContent = doc.querySelector('.row');
+                    document.querySelector('.row').innerHTML = newContent.innerHTML;
+                });
+        }
+    </script>
+
+    <!-- preview -->
+    <script>
+        function previewImage() {
+            const image = document.querySelector('#cover');
+            const preview = document.querySelector('#preview');
+
+            const file = image.files[0];
+            const reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+            }
+        }
+    </script>
 </body>
 
 </html>

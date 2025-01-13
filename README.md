@@ -13,7 +13,7 @@ LibraryTech adalah sebuah website yang dibuat untuk memudahkan pengguna dalam me
 ## Instalasi
 
 1. Clone repository ini ke komputer Anda
-2. Buat database baru di phpMyAdmin dan import file `librarytech.sql` yang ada di folder `db`
+2. Buat database baru di phpMyAdmin dan import file `Perpustakaan.sql` yang ada di folder `db`
 3. Konfigurasi file `config.php` yang ada di folder `config` untuk menghubungkan ke database
 4. Jalankan website dengan mengakses `index.php` di browser
 

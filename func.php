@@ -130,7 +130,8 @@ if (isset($_POST['deleteAnggota'])) {
 
 // Daftar Buku
 // Fungsi query digunakan untuk mengirimkan query ke database dan mengembalikan hasilnya dalam bentuk array associative
-function query($query) {
+function query($query)
+{
     global $conn;
     // jalankan query
     $result = mysqli_query($conn, $query);
@@ -154,7 +155,7 @@ if (isset($_POST['tambahBuku'])) {
 
     // Mendapatkan nama file yang di upload
     $cover = $_FILES['cover']['name'];
-    
+
     // Mendapatkan lokasi file sementara setelah di upload
     $cover_tmp = $_FILES['cover']['tmp_name'];
 
@@ -166,7 +167,7 @@ if (isset($_POST['tambahBuku'])) {
     $penerbit = $_POST['penerbit'];
     $tahun_terbit = $_POST['tahun_terbit'];
     $halaman = $_POST['halaman'];
-    $kategori = $_POST ['kategori'];
+    $kategori = $_POST['kategori'];
 
     // Generate id_buku
     $inisial_judul = strtoupper(substr($judul, 0, 2));
@@ -231,6 +232,111 @@ if (isset($_POST['tambahBuku'])) {
     }
 }
 
+// Edit Buku
+if (isset($_POST['editBuku'])) {
+    $id_buku = $_POST['id_buku'];
+    $judul = $_POST['judul'];
+    $pengarang = $_POST['pengarang'];
+    $penerbit = $_POST['penerbit'];
+    $tahun_terbit = $_POST['tahun_terbit'];
+    $halaman = $_POST['halaman'];
+
+    // Handle cover upload
+    if ($_FILES['cover']['name']) {
+        $cover = $_FILES['cover']['name'];
+        $cover_tmp = $_FILES['cover']['tmp_name'];
+        $cover_folder = "../assets/Buku/$cover";
+
+        if (move_uploaded_file($cover_tmp, $cover_folder)) {
+            $query = "UPDATE buku SET cover = '$cover_folder', judul = '$judul', pengarang = '$pengarang', penerbit = '$penerbit', tahun_terbit = '$tahun_terbit', halaman = '$halaman' WHERE id_buku = '$id_buku'";
+        } else {
+            echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+            echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+            echo "<script>
+                $(document).ready(function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal Upload Cover!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                });
+            </script>";
+            exit;
+        }
+    } else {
+        $query = "UPDATE buku SET judul = '$judul', pengarang = '$pengarang', penerbit = '$penerbit', tahun_terbit = '$tahun_terbit', halaman = '$halaman' WHERE id_buku = '$id_buku'";
+    }
+
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil Edit Buku!',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(function() {
+                    window.location = 'daftar_buku.php';
+                });
+            });
+        </script>";
+    } else {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Edit Buku!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+        </script>";
+    }
+}
+
+// Hapus Buku
+if (isset($_POST['deleteBuku'])) {
+    $id_buku = $_POST['id_buku'];
+    $delete = "DELETE FROM buku WHERE id_buku = '$id_buku'";
+    $result = mysqli_query($conn, $delete);
+
+    if ($result) {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil Hapus Buku!',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(function() {
+                    window.location = 'daftar_buku.php';
+                });
+            });
+        </script>";
+    } else {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Hapus Buku!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+        </script>";
+    }
+}
 
 ?>
 

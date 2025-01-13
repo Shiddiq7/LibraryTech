@@ -13,3 +13,34 @@
 <img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Card image cap" style="max-height: 200px; object-fit: cover;"> 
 
 <img class="card-img-top" src="../assets/img/Buku/<?= $bk['cover']; ?> "alt="Card image cap" style="max-height: 200px; object-fit: cover;">
+
+
+<!-- Data Buku -->
+<div class="row row-cols-1 row-cols-md-4 g-4 d-flex flex-wrap">
+    <?php
+    $buku = query("SELECT * FROM buku");
+    foreach ($buku as $bk):
+        ?>
+        <div class="col mb-2">
+            <div class="card h-100" style="width: 18rem;">
+                <img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Book Cover"
+                    style="max-height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title"><?= $bk['judul']; ?></h5>
+                    <p class="card-text"><?= $bk['pengarang']; ?></p>
+                    <p class="card-text"><span class="badge bg-secondary">Penerbit:</span>
+                        <?= $bk['penerbit']; ?></p>
+                    <p class="card-text"><span class="badge bg-secondary">Tahun Terbit:</span>
+                        <?= $bk['tahun_terbit']; ?></p>
+                    <p class="card-text"><span class="badge bg-secondary">Jumlah Halaman:</span>
+                        <?= $bk['halaman']; ?></p>
+                    <p class="card-text"><span class="badge bg-secondary">Kategori:</span>
+                        <?= $bk['kategori']; ?></p>
+                    <a href="#" class="btn btn-primary">Lihat Detail</a>
+                </div>
+            </div>
+        </div>
+        <?php
+    endforeach;
+    ?>
+</div>

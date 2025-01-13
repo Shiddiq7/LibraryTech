@@ -101,16 +101,22 @@ require "../Auth/cek_log.php";
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            <div style="font-size: 20px;"
+                                                class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Daftar Buku</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 mt-2">
+                                                <?php
+                                                $buku = query("SELECT COUNT(*) AS total FROM buku")[0]['total'];
+                                                echo "<small>Total Buku = " . $buku . "</small>";
+                                                ?>
+                                                <a href="daftar_buku.php" class="text-decoration-none text-primary">
+                                                </a>
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 mt-3 text-end">
                                                 <a href="daftar_buku.php" class="text-decoration-none text-primary">View
                                                     Details</a>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-angle-right fa-2x text-gray-300"></i>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -121,16 +127,22 @@ require "../Auth/cek_log.php";
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            <div style="font-size: 20px;"
+                                                class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Peminjaman Buku</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 mt-2">
+                                                <?php
+                                                $peminjaman = query("SELECT COUNT(*) AS total FROM pinjam")[0]['total'];
+                                                echo "<small>Total Peminjaman = " . $peminjaman . "</small>";
+                                                ?>
+                                                <a href="peminjaman.php" class="text-decoration-none text-primary">
+                                                </a>
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 mt-3 text-end">
                                                 <a href="peminjaman.php" class="text-decoration-none text-primary">View
                                                     Details</a>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-angle-right fa-2x text-gray-300"></i>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -141,17 +153,23 @@ require "../Auth/cek_log.php";
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            <div style="font-size: 20px;"
+                                                class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Pengembalian Buku</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 mt-2">
+                                                <?php
+                                                $pengembalian = query("SELECT COUNT(*) AS total FROM kembali")[0]['total'];
+                                                echo "<small>Total Pengembalian = " . $pengembalian . "</small>";
+                                                ?>
+                                                <a href="pengembalian.php" class="text-decoration-none text-primary">
+                                                </a>
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 mt-3 text-end">
                                                 <a href="pengembalian.php"
                                                     class="text-decoration-none text-primary">View
                                                     Details</a>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-angle-right fa-2x text-gray-300"></i>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -162,16 +180,22 @@ require "../Auth/cek_log.php";
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Daftar
-                                                Anggota</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <a href="daftar_anggota.php"
-                                                    class="text-decoration-none text-primary">View Details</a>
+                                            <div style="font-size: 20px;"
+                                                class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Daftar Anggota</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 mt-2">
+                                                <?php
+                                                $anggota = query("SELECT COUNT(*) AS total FROM user where role = 'Anggota'")[0]['total'];
+                                                echo "<small>Total Anggota = " . $anggota . "</small>";
+                                                ?>
+                                                <a href="daftar_anggota.php" class="text-decoration-none text-primary">
+                                                </a>
                                             </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-angle-right fa-2x text-gray-300"></i>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 mt-3 text-end">
+                                                <a href="daftar_anggota.php"
+                                                    class="text-decoration-none text-primary">View
+                                                    Details</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
