@@ -41,6 +41,12 @@ if (isset($_POST['register'])) {
     <title>Login LibraTech </title>
     <link href="../css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: url('../assets/img/Libr.jpeg') no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
 </head>
 
 <body class="bg-success">
@@ -50,7 +56,8 @@ if (isset($_POST['register'])) {
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-lg-5">
-                            <div class="card shadow-lg border-0 rounded-lg mt-5 bg-dark">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5"
+                                style="background-color:transparent ; backdrop-filter: blur(15px);">
                                 <div class="card-header text-center">
                                     <div class="text-center mb-2">
                                         <img src="../assets/img/logo1.png" width="200" alt="logo libra tech">
@@ -61,12 +68,13 @@ if (isset($_POST['register'])) {
                                     <form method="post">
                                         <div class="form-outline mb-4">
                                             <input type="hidden" id="inputId" name="id_user" value="" />
-                                            
+
                                             <div class="form-outline mb-4">
                                                 <label class="form-label text-white" for="inputEmail">Email</label>
-                                                <input type="email" id="inputEmail" name="email" class="form-control" required maxlength="100" />
+                                                <input type="email" id="inputEmail" name="email" class="form-control"
+                                                    required maxlength="100" />
                                             </div>
-                                            
+
 
                                             <div class="form-outline mb-4">
                                                 <label class="form-label text-white"

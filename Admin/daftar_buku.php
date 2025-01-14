@@ -12,7 +12,7 @@ require "../func.php";
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - LibraryTech</title>
+    <title>Daftar Buku - LibraryTech</title>
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
@@ -210,8 +210,8 @@ require "../func.php";
                             <label for="kategori" class="form-label">Kategori</label>
                             <select class="form-select" id="kategori" name="kategori" required>
                                 <option value="">Pilih Kategori</option>
-                                <option value="fiksi">Fiksi</option>
-                                <option value="non-fiksi">Non-Fiksi</option>
+                                <option value="Fiksi">Fiksi</option>
+                                <option value="Non-Fiksi">Non-Fiksi</option>
                             </select>
                         </div>
                         <br>

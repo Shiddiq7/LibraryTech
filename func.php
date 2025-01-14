@@ -240,6 +240,7 @@ if (isset($_POST['editBuku'])) {
     $penerbit = $_POST['penerbit'];
     $tahun_terbit = $_POST['tahun_terbit'];
     $halaman = $_POST['halaman'];
+    $kategori = $_POST['kategori'];
 
     // Handle cover upload
     if ($_FILES['cover']['name']) {
@@ -248,7 +249,7 @@ if (isset($_POST['editBuku'])) {
         $cover_folder = "../assets/Buku/$cover";
 
         if (move_uploaded_file($cover_tmp, $cover_folder)) {
-            $query = "UPDATE buku SET cover = '$cover_folder', judul = '$judul', pengarang = '$pengarang', penerbit = '$penerbit', tahun_terbit = '$tahun_terbit', halaman = '$halaman' WHERE id_buku = '$id_buku'";
+            $query = "UPDATE buku SET cover = '$cover_folder', judul = '$judul', pengarang = '$pengarang', penerbit = '$penerbit', tahun_terbit = '$tahun_terbit', halaman = '$halaman' , kategori = '$kategori' WHERE id_buku = '$id_buku'";
         } else {
             echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
             echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
@@ -265,7 +266,7 @@ if (isset($_POST['editBuku'])) {
             exit;
         }
     } else {
-        $query = "UPDATE buku SET judul = '$judul', pengarang = '$pengarang', penerbit = '$penerbit', tahun_terbit = '$tahun_terbit', halaman = '$halaman' WHERE id_buku = '$id_buku'";
+        $query = "UPDATE buku SET judul = '$judul', pengarang = '$pengarang', penerbit = '$penerbit', tahun_terbit = '$tahun_terbit', halaman = '$halaman' , kategori = '$kategori' WHERE id_buku = '$id_buku'";
     }
 
     $result = mysqli_query($conn, $query);
@@ -281,7 +282,7 @@ if (isset($_POST['editBuku'])) {
                     showConfirmButton: false,
                     timer: 1500
                 }).then(function() {
-                    window.location = 'daftar_buku.php';
+                    window.location = 'detail_buku.php';
                 });
             });
         </script>";
@@ -318,7 +319,7 @@ if (isset($_POST['deleteBuku'])) {
                     showConfirmButton: false,
                     timer: 1500
                 }).then(function() {
-                    window.location = 'daftar_buku.php';
+                    window.location = 'detail_buku.php';
                 });
             });
         </script>";

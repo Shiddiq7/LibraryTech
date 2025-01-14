@@ -121,6 +121,10 @@ if (isset($_GET['id_buku'])) {
                 <th style="font-weight: 400;">Jumlah Halaman</th>
                 <td><?= $data['halaman'] ?></td>
             </tr>
+            <tr>
+                <th style="font-weight: 400;">Kategori</th>
+                <td><?= $data['kategori'] ?></td>
+            </tr>
         </table>
         <div class="d-flex justify-content-center gap-2 mt-4">
 
@@ -145,8 +149,8 @@ if (isset($_GET['id_buku'])) {
 
                         <div class="mb-3">
                             <label for="cover" class="form-label">Cover Buku</label>
-                            <input type="file" class="form-control" id="cover" name="cover"  accept=".jpg, .jpeg, .png"
-                                 onchange="previewImage()">
+                            <input type="file" class="form-control" id="cover" name="cover" accept=".jpg, .jpeg, .png"
+                                onchange="previewImage()">
                         </div>
 
                         <img src="" id="preview"
@@ -177,7 +181,16 @@ if (isset($_GET['id_buku'])) {
                             <input type="number" class="form-control" id="halaman" name="halaman"
                                 value="<?= $data['halaman'] ?>" required>
                         </div>
-                    </div>
+                        <div class="mb-3">
+                            <label for="kategori" class="form-label">Kategori</label>
+                            <select class="form-select" id="kategori" name="kategori" required>
+                                <option value="">Pilih Kategori</option>
+                                <option value="Fiksi" <?= $data['kategori'] == 'Fiksi' ? 'selected' : '' ?>>Fiksi</option>
+                                <option value="Non-Fiksi" <?= $data['kategori'] == 'Non-Fiksi' ? 'selected' : '' ?>>Non-Fiksi</option>
+                            </select>
+                        </div>
+
+                    </div>  
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary" name="editBuku">Edit Buku</button>
@@ -202,7 +215,7 @@ if (isset($_GET['id_buku'])) {
                     <form method="POST">
                         <input type="hidden" name="id_buku" value="<?= $data['id_buku'] ?>">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-danger" name="deleteBuku" >Delete</button>
+                        <button type="submit" class="btn btn-danger" name="deleteBuku">Delete</button>
                     </form>
                 </div>
             </div>
