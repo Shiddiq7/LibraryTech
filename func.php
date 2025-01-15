@@ -8,6 +8,9 @@ $db = 'perpustakaan';
 
 $conn = mysqli_connect($host, $user, $pass, $db);
 
+
+
+
 // tambah Anggota
 if (isset($_POST['tambahAnggota'])) {
     $id_user = $_POST['id_user'];
@@ -103,7 +106,8 @@ if (isset($_POST['editAnggota'])) {
 if (isset($_POST['deleteAnggota'])) {
 
     $id_user = $_POST['id_user'];
-    $delete = "DELETE FROM user  WHERE id_user = '$id_user'";
+    $visible = $_POST['if_visible'];
+    $delete = "UPDATE user SET if_visible = FALSE WHERE id_user = '$id_user'";
     $result = mysqli_query($conn, $delete);
 
     if ($result) {
@@ -149,7 +153,6 @@ function query($query)
 
 
 // tambah buku
-
 if (isset($_POST['tambahBuku'])) {
     $id_buku = $_POST['id_buku'];
 
@@ -305,7 +308,8 @@ if (isset($_POST['editBuku'])) {
 // Hapus Buku
 if (isset($_POST['deleteBuku'])) {
     $id_buku = $_POST['id_buku'];
-    $delete = "DELETE FROM buku WHERE id_buku = '$id_buku'";
+    $if_visible = $_POST['if_visible'];
+    $delete = "UPDATE buku SET if_visible = FALSE WHERE id_buku = '$id_buku'";
     $result = mysqli_query($conn, $delete);
 
     if ($result) {
@@ -339,6 +343,118 @@ if (isset($_POST['deleteBuku'])) {
     }
 }
 
+// Tambah Kategori
+if (isset($_POST['tambahKategori'])) {
+    $nama_kategori = $_POST['nama_kategori'];
+    $deskripsi= $_POST['deskripsi'];
+    $query = "INSERT INTO kategori (nama_kategori, deskripsi) VALUES ('$nama_kategori', '$deskripsi')";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil Tambah Kategori!',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(function() {
+                    window.location = 'kategori_buku.php';
+                });
+            });
+        </script>";
+    } else {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Tambah Kategori!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+        </script>";
+    }
+}
+
+// Edit Kategori
+if (isset($_POST['editKategori'])) {
+    $id_kat = $_POST['id_kat'];
+    $nama_kategori = $_POST['nama_kategori'];
+    $deskripsi = $_POST['deskripsi'];
+    $query = "UPDATE kategori SET nama_kategori = '$nama_kategori' , deskripsi = '$deskripsi' WHERE id_kat = '$id_kat'";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil Edit Kategori!',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(function() {
+                    window.location = 'kategori_buku.php';
+                });
+            });
+        </script>";
+    } else {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Edit Kategori!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+        </script>";
+    }
+}
+
+// Hapus Kategori
+if (isset($_POST['deleteKategori'])) {
+    $id_kat = $_POST['id_kat'];
+    $query = "DELETE FROM kategori WHERE id_kat = '$id_kat'";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil Hapus Kategori!',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(function() {
+                    window.location = 'kategori_buku.php';
+                });
+            });
+        </script>";
+    } else {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Hapus Kategori!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+        </script>";
+    }
+}
+
 ?>
-
-

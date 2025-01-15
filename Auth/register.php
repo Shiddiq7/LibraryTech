@@ -1,6 +1,7 @@
 <?php
 require '../func.php';
 
+// Register
 if (isset($_POST['register'])) {
     $id_user = $_POST['id_user'];
     $email = $_POST['email'];
@@ -24,9 +25,13 @@ if (isset($_POST['register'])) {
         echo "<script>alert('Registrasi berhasil!')</script>";
         header("location: login.php");
     } else {
-        echo "<script>alert('Registrasi gagal!')</script>";
+         echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
+                Username atau Password Salah!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +43,7 @@ if (isset($_POST['register'])) {
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
-    <title>Login LibraTech </title>
+    <title>Register - LibraTech </title>
     <link href="../css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <style>

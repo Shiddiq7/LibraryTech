@@ -13,7 +13,7 @@ require "../Auth/cek_log.php";
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Daftar Anggota - LibraryTech</title>
+    <title>Daftar Kategori - LibraryTech</title>
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
@@ -98,69 +98,65 @@ require "../Auth/cek_log.php";
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Member Tables</h1>
+                    <h1 class="mt-4">Kategori Buku</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Anggota</li>
+                        <li class="breadcrumb-item active">Kategori </li>
                     </ol>
 
                     <div class="card mb-4">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <div>
                                 <i class="fas fa-table me-1"></i>
-                                Member
+                                Kategori Buku
                             </div>
                             <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#tambahAnggota">Tambah Anggota</button>
+                                data-bs-target="#tambahKategori">Tambah Kategori</button>
                         </div>
                         <div class="card-body">
                             <table id="datatablesSimple">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>ID User</th>
-                                        <th>Email</th>
-                                        <th>Username</th>
-                                        <th>Role</th>
+                                        <th>Kategori Buku</th>
+                                        <th>Deskripsi</th>
                                         <th>Actions</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = "SELECT * FROM user where if_visible = TRUE";
+                                    $query = "SELECT * FROM kategori";
                                     $no = 1;
                                     $result = mysqli_query($conn, $query);
                                     while ($data = mysqli_fetch_array($result)) {
-                                        $id_user = $data['id_user'];
-                                        $email = $data['Email'];
-                                        $username = $data['username'];
-                                        $role = $data['role'];
+                                        $id_kat = $data['id_kat'];
+                                        $nama_kategori = $data['nama_kategori'];
+                                        $deskripsi = $data['Deskripsi'];
+
 
                                         ?>
 
                                         <tr>
                                             <td><?= $no++ ?></td>
-                                            <td><?= $id_user ?></td>
-                                            <td><?= $email ?></td>
-                                            <td><?= $username ?></td>
-                                            <td><?= $role ?></td>
+                                            <td><?= $nama_kategori ?></td>
+                                            <td><?= $deskripsi ?></td>
                                             <td>
                                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#edit<?= $id_user ?>">Edit</button>
+                                                    data-bs-target="#edit<?= $id_kat ?>">Edit</button>
                                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#delete<?= $id_user ?>">Delete</button>
+                                                    data-bs-target="#delete<?= $id_kat ?>">Delete</button>
                                             </td>
 
 
 
                                             <!-- Modal edit-->
-                                            <div class="modal fade" id="edit<?= $id_user ?>" tabindex="-1"
-                                                aria-labelledby="edit<?= $id_user ?>Label" aria-hidden="true">
+                                            <div class="modal fade" id="edit<?= $id_kat ?>" tabindex="-1"
+                                                aria-labelledby="edit<?= $id_kat ?>Label" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="edit<?= $id_user ?>Label">Edit Data
+                                                            <h5 class="modal-title" id="edit<?= $id_kat ?>Label">Edit Data
                                                             </h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
@@ -168,23 +164,22 @@ require "../Auth/cek_log.php";
 
                                                         <div class="modal-body">
                                                             <form method="post">
-                                                                <input type="hidden" name="id_user" value="<?= $id_user ?>">
-
+                                                                <input type="hidden" name="id_kat" value="<?= $id_kat ?>">
                                                                 <div class="mb-3">
-                                                                    <label for="email" class="form-label">Email</label>
-                                                                    <input type="email" class="form-control" id="email"
-                                                                        name="email" value="<?= $email ?>" maxlength="100">
+                                                                    <label for="nama_kategori" class="form-label">Nama
+                                                                        Kategori</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="nama_kategori" name="nama_kategori"
+                                                                        value="<?= $nama_kategori ?>" maxlength="50">
                                                                 </div>
 
                                                                 <div class="mb-3">
-                                                                    <label for="username"
-                                                                        class="form-label">Username</label>
-                                                                    <input type="text" class="form-control" id="username"
-                                                                        name="username" value="<?= $username ?>"
-                                                                        maxlength="50">
+                                                                    <label for="deskripsi" class="form-label">Deskripsi</label>
+                                                                    <textarea class="form-control" id="deskripsi"
+                                                                        name="deskripsi" rows="3"><?= $deskripsi ?></textarea>
                                                                 </div>
 
-                                                                <button type="submit" name="editAnggota"
+                                                                <button type="submit" name="editKategori"
                                                                     class="btn btn-primary">Edit</button>
                                                             </form>
                                                         </div>
@@ -192,25 +187,26 @@ require "../Auth/cek_log.php";
                                                 </div>
                                             </div>
 
+
                                             <!-- Modal delete-->
-                                            <div class="modal fade" id="delete<?= $id_user ?>" tabindex="-1"
-                                                aria-labelledby="delete<?= $id_user ?>Label" aria-hidden="true">
+                                            <div class="modal fade" id="delete<?= $id_kat ?>" tabindex="-1"
+                                                aria-labelledby="delete<?= $id_kat ?>Label" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="delete<?= $id_user ?>Label">Delete
+                                                            <h5 class="modal-title" id="delete<?= $id_kat ?>Label">Delete
                                                                 Data</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p>Kamu yakin ingin menghapus data <?= $username ?>
-                                                                <?= "[", $id_user, "]" ?> ?
+                                                            <p>Kamu yakin ingin menghapus data <?= $nama_kategori ?>
+                                                                <?= "[", $id_kat, "]" ?> ?
                                                             </p>
                                                             <form method="post">
-                                                                <input type="hidden" name="id_user" value="<?= $id_user ?>">
+                                                                <input type="hidden" name="id_kat" value="<?= $id_kat ?>">
                                                                 <input type="hidden" name="if_visible">
-                                                                <button type="submit" name="deleteAnggota"
+                                                                <button type="submit" name="deleteKategori"
                                                                     class="btn btn-danger">Iya</button>
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-bs-dismiss="modal">Tidak</button>
@@ -234,42 +230,29 @@ require "../Auth/cek_log.php";
         </div>
     </div>
 
-    <!-- Modal Tambah Anggota -->
-    <div class="modal fade" id="tambahAnggota" tabindex="-1" aria-labelledby="tambahAnggotaLabel" aria-hidden="true">
+    <!-- Modal Tambah Kategori-->
+    <div class="modal fade" id="tambahKategori" tabindex="-1" aria-labelledby="tambahKategoriLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="tambahAnggotaLabel">Tambah Anggota</h5>
+                    <h5 class="modal-title" id="tambahKategoriLabel">Tambah Kategori</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form method="post">
-                        <input type="hidden" id="id_user" name="id_user" value="">
-
+                        <input type="hidden" name="id_kat">
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required maxlength="100">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" required
+                            <label for="nama_kategori" class="form-label">Nama Kategori</label>
+                            <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" required
                                 maxlength="50">
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label text-black" for="inputPassword">Password</label>
-                            <input type="password" id="inputPassword" name="password" class="form-control" required
-                                minlength="8" maxlength="8" />
-
-                            <div class="form-check form-switch mt-2">
-                                <input class="form-check-input" type="checkbox" id="viewPassword"
-                                    onclick="togglePassword()" />
-                                <label class="form-check-label text-black" for="viewPassword">Show Password</label>
-                            </div>
+                            <label for="deskripsi" class="form-label">Deskripsi</label>
+                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" required></textarea>
                         </div>
 
-                        <button type="submit" name="tambahAnggota" class="btn btn-primary">Submit</button>
+                        <button type="submit" name="tambahKategori" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
             </div>

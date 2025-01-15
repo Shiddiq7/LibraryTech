@@ -1,6 +1,8 @@
 <?php
 require '../func.php';
 
+
+// session
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -14,7 +16,7 @@ if (isset($_POST['login'])) {
         if (password_verify($password, $row['password'])) {
             $_SESSION['log'] = true;
             $_SESSION['username'] = $username;
-            $_SESSION['role'] = $row['role']; 
+            $_SESSION['role'] = $row['role'];
 
             if ($row['role'] == 'Admin') {
                 header("location:../Admin/dashboard.php");
@@ -22,10 +24,16 @@ if (isset($_POST['login'])) {
                 header("location:../User/dashboard.php");
             }
         } else {
-            echo "<script>alert('Username atau Password Salah!')</script>";
+            echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Username atau Password Salah!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
         }
     } else {
-        echo "<script>alert('Username atau Password Salah!')</script>";
+        echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
+                Username atau Password Salah!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
     }
 }
 
@@ -51,7 +59,7 @@ if (!isset($_SESSION['log'])) {
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
-    <title>Login LibraTech </title>
+    <title>Login - LibraTech </title>
     <link href="../css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <style>
@@ -66,13 +74,15 @@ if (!isset($_SESSION['log'])) {
     <div id="layoutAuthentication">
         <div id="layoutAuthentication_content">
             <main>
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row justify-content-center">
-                        <div class="col-lg-5">
-                            <div class="card shadow-lg border-0 rounded-lg mt-5" style="background-color:transparent ; backdrop-filter: blur(15px);">
+                        <div class=" col-lg-5    col-xl-4">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5"
+                                style="background-color:transparent ; backdrop-filter: blur(15px);">
                                 <div class="card-header text-center">
                                     <div class="text-center mb-2">
-                                        <img src="../assets/img/logo1.png" width="200" alt="logo libra tech">
+                                        <img src="../assets/img/logo1.png" width="200" alt="logo libra tech"
+                                            class="img-fluid">
                                     </div>
                                     <?php if (isset($_SESSION['id_user'])): ?>
                                         <p class="text-white">ID User Anda: <?php echo $_SESSION['id_user']; ?></p>

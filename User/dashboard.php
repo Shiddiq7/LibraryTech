@@ -12,263 +12,375 @@ require "../Auth/cek_log.php";
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard User - LibraryTech</title>
+    <title>Dashboard - LibraryTech</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e6e9f0 100%);
+        }
+
+        .navbar {
+            border-bottom: 1px solid #e5e5e5;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+
+        }
+
+        .navbar-brand img {
+            height: 30px;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #4a4a4a;
+        }
+
+        .hero-section h1 span {
+            color: #6f42c1;
+        }
+
+        .hero-section p {
+            font-size: 1rem;
+            color: #6c757d;
+            margin-bottom: 30px;
+        }
+
+        .hero-section .btn-primary {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+
+        .features {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .features .feature-item {
+            margin-bottom: 20px;
+        }
+
+        .features .feature-item img {
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        .features .feature-item h5 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #4a4a4a;
+        }
+
+        .features .feature-item p {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+
+        footer {
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 
-<body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3 d-flex align-items-center" href="index.php">
-            <img src="../assets/img/logo1.png" width="80" height="80" class="d-inline-block align-top" alt="">
-            <span class="ms-2">LibraryTech</span>
-        </a>
-        <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href=""><i
-                class="fas fa-bars"></i></button>
-        <!-- Navbar Search-->
-        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
-                    aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
-                        class="fas fa-search"></i></button>
-            </div>
-        </form>
-        <!-- Navbar-->
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Hallo , <?php echo $_SESSION['username'] ?></a></li>
-                    <li>
-                        <hr class="dropdown-divider" />
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg shadow-lg"
+        style="background: linear-gradient(139deg, #0f509e 0%, #ffffff 100%);">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img style="height: 50px;" alt="LibraryTech Logo" src="../assets/img/logo1.png" />
+                <b>LibraryTech</b>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>"
+                            href="dashboard.php"><b>Dashboard</b></a>
                     </li>
-                    <li><a class="dropdown-item" href="../Auth/logout.php">Logout</a></li>
+                    <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'peminjaman.php' ? 'active' : ''; ?>"
+                            href="peminjaman.php"><b>Peminjaman</b></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pengembalian.php' ? 'active' : ''; ?>"
+                            href="pengembalian.php"><b>Pengembalian</b></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false"><i class="fas fa-bars fa-fw"></i></a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href=""><?php echo $_SESSION['username'] ?></a></li>
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li><a class="dropdown-item" href="../Auth/logout.php"><b>Logout</b></a></li>
+                        </ul>
+                    </li>
                 </ul>
-            </li>
-        </ul>
+            </div>
+        </div>
     </nav>
-    <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Core</div>
-                        <a class="nav-link" href="index.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard User
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Interface</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                            data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Layouts
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                            </nav>
+    <br><br>
+    <section class="hero-section" style="max-height: 500px;">
+        <div class="container">
+            <div id="carouselExampleCaptions" class="carousel slide shadow-lg" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="../assets/img/Libr.jpeg" class="d-block w-100" alt="..."
+                            style="height: 550px; object-fit: cover; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+                        <div
+                            class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100">
+                            <img src="../assets/img/logo1.png" style="height: 160px; position: absolute; top: 60px;"
+                                alt="LibraryTech Logo">
+                            <h1 style="color: #fff; text-align: center;">Welcome to LibraryTech</h1>
+                            <p style="color: lightgray; position: absolute; bottom: 30px;"><b>LibraryTech</b> adalah
+                                perpustakaan digital modern yang menyediakan
+                                akses mudah ke berbagai koleksi buku, jurnal, dan sumber pembelajaran digital. Dengan
+                                sistem peminjaman dan pengembalian yang efisien, kami berkomitmen untuk memudahkan
+                                pengguna dalam mengakses sumber daya perpustakaan kapan saja dan di mana saja.</p>
                         </div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
-                            aria-expanded="false" aria-controls="collapsePages">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                            Pages
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                                    aria-controls="pagesCollapseAuth">
-                                    Authentication
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="login.html">Login</a>
-                                        <a class="nav-link" href="register.html">Register</a>
-                                        <a class="nav-link" href="password.html">Forgot Password</a>
-                                    </nav>
-                                </div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
-                                    aria-controls="pagesCollapseError">
-                                    Error
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                                    data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="401.html">401 Page</a>
-                                        <a class="nav-link" href="404.html">404 Page</a>
-                                        <a class="nav-link" href="500.html">500 Page</a>
-                                    </nav>
-                                </div>
-                            </nav>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="" class="d-block w-100" alt="..." style="height: 400px; object-fit: cover;">
+                        <div class="carousel-caption d-md-block">
+                            <h1>Thank you for choosing LibraryTech</h1>
+                            <p>We hope you enjoy using LibraryTech to create your online learning platform. If you need
+                                any
+                                help or have any question, please don't hesitate to contact us.</p>
                         </div>
-                        <div class="sb-sidenav-menu-heading">Addons</div>
-                        <a class="nav-link" href="charts.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                            Charts
-                        </a>
-                        <a class="nav-link" href="tables.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Tables
-                        </a>
                     </div>
                 </div>
-                <div class="sb-sidenav-footer">
-                    <div class="small">Logged in as:</div>
-                    Start Bootstrap
-                </div>
-            </nav>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
         </div>
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Dashboard</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
-                    <div class="row">
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-primary text-white mb-4">
-                                <div class="card-body">Primary Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-warning text-white mb-4">
-                                <div class="card-body">Warning Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-success text-white mb-4">
-                                <div class="card-body">Success Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-danger text-white mb-4">
-                                <div class="card-body">Danger Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
+
+
+        <br><br><br>
+        <section class="features">
+            <div class="container">
+                <h2 class="text-center mt-4"
+                    style="font-family: 'Lato', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #4a4a4a;">
+                    DAFTAR BUKU</h2>
+                <br><br>
+
+                <!-- Search and Filter -->
+                <form method="get" class="mb-4 d-flex justify-content-between">
+                    <div class="input-group shadow-md" style="width: 400px;">
+                        <input class="form-control" type="text" name="search" id="searchInput"
+                            value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
+                            placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch"
+                            onkeyup="filterData()" />
+                        <!-- Search input untuk mencari buku berdasarkan judul, pengarang, penerbit, atau kategori -->
                     </div>
-                    <div class="row">
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-area me-1"></i>
-                                    Area Chart Example
-                                </div>
-                                <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-bar me-1"></i>
-                                    Bar Chart Example
-                                </div>
-                                <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
-                            </div>
-                        </div>
+                    <div class="input-group shadow-md" style="width: 200px;">
+                        <span class="input-group-text" id="basic-addon2"><i class="fas fa-filter"></i></span>
+                        <select class="form-select" name="category" id="categoryFilter" onchange="filterData()">
+                            <option value="">All Categories</option>
+                            <?php
+                            $categories = query("SELECT DISTINCT kategori FROM buku WHERE if_visible = TRUE");
+                            foreach ($categories as $category) {
+                                $selected = isset($_GET['category']) && $_GET['category'] == $category['kategori'] ? 'selected' : '';
+                                echo "<option value=\"{$category['kategori']}\" $selected>{$category['kategori']}</option>";
+                            }
+                            ?>
+                        </select>
+                        <!-- Filter untuk memilih kategori buku -->
                     </div>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            DataTable Example
+                </form>
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
+                    <?php
+                    $search = isset($_GET['search']) ? $_GET['search'] : '';
+                    $category = isset($_GET['category']) ? $_GET['category'] : '';
+
+                    $query = "SELECT * FROM buku WHERE if_visible = TRUE";
+                    if ($search) {
+                        $query .= " AND (judul LIKE '%$search%' OR pengarang LIKE '%$search%' OR penerbit LIKE '%$search%' OR kategori LIKE '%$search%')";
+                    }
+                    if ($category) {
+                        $query .= " AND kategori = '$category'";
+                    }
+                    $query .= " ORDER BY tahun_terbit DESC";
+
+                    $buku = query($query);
+                    if (count($buku) > 0) {
+                        foreach ($buku as $bk):
+                            ?>
+                            <div class="col mb-2">
+                                <div class="card h-100 shadow-lg">
+                                    <div class="card h-100">
+                                        <img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Book Cover"
+                                            style="object-fit: cover; width: 100%; height: 500px;">
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?= $bk['judul']; ?></h5>
+                                        <p class="card-text text-small "><?= $bk['pengarang']; ?></p>
+                                        <p class="card-text text-start"><span class="badge bg-secondary">Penerbit:</span>
+                                            <?= $bk['penerbit']; ?></p>
+                                        <p class="card-text text-start"><span class="badge bg-secondary">Tahun Terbit:</span>
+                                            <?= $bk['tahun_terbit']; ?></p>
+                                        <p class="card-text text-start"><span class="badge bg-secondary">Jumlah Halaman:</span>
+                                            <?= $bk['halaman']; ?></p>
+                                        <p class="card-text text-start"><span class="badge bg-secondary">Kategori:</span>
+                                            <?= $bk['kategori']; ?></p>
+
+                                        <div class="d-flex justify-content-end">
+                                            <a href="detail_buku.php?id_buku=<?= $bk['id_buku']; ?>"
+                                                class="btn btn-outline-primary">Lihat Detail</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach;
+                    } else {
+                        ?>
+                        <div class="col mb-4">
+                            <div class="card h-100 shadow-md">
+                                <div class="card-body">
+                                    <h5 class="card-title">Buku Kosong </h5>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <table id="datatablesSimple">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Garrett Winters</td>
-                                        <td>Accountant</td>
-                                        <td>Tokyo</td>
-                                        <td>63</td>
-                                        <td>2011/07/25</td>
-                                        <td>$170,750</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ashton Cox</td>
-                                        <td>Junior Technical Author</td>
-                                        <td>San Francisco</td>
-                                        <td>66</td>
-                                        <td>2009/01/12</td>
-                                        <td>$86,000</td>
-                                    </tr>
-                                   
-                                
-                                </tbody>
-                            </table>
+                        <?php
+                    }
+                    ?>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Footer -->
+
+        <footer class="footer mt-3"
+            style="background: linear-gradient(129deg, #1a202c 0%, #010035 100%); font-size: 0.8rem;">
+            <div class="container py-3">
+                <div class="row g-4 justify-content-center">
+                    <!-- Logo and Description -->
+                    <div class="col-md-4 text-center">
+                        <div class="mb-4 d-flex align-items-center ms-5">
+                            <img src="../assets/img/logo1.png" alt="LibraryTech Logo" style="height: 60px;">
+                            <span class="ms-2 text-white fs-4">LibraryTech</span>
+                        </div>
+                        <p class="text-light opacity-75">
+                            Transforming the way you access knowledge. Modern library solutions for the digital age.
+                        </p>
+                    </div>
+                    <div class="col-md-4 absolute;">
+                        <h6 class="text-white mb-3 fw-bold text-center">Quick Links</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2 text-center"><a href="dashboard.php"
+                                    class="text-light text-decoration-none <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'opacity-100' : 'opacity-75'; ?>"
+                                    style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
+                                    onmouseout="this.style.color='#fff'">Dashboard</a>
+                            </li>
+                            <li class="mb-2 text-center"><a href="peminjaman.php"
+                                    class="text-light text-decoration-none <?php echo basename($_SERVER['PHP_SELF']) == 'peminjaman.php' ? 'opacity-100' : 'opacity-75'; ?>"
+                                    style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
+                                    onmouseout="this.style.color='#fff'">Peminjaman</a>
+                            </li>
+                            <li class="mb-2 text-center"><a href="pengembalian.php"
+                                    class="text-light text-decoration-none <?php echo basename($_SERVER['PHP_SELF']) == 'pengembalian.php' ? 'opacity-100' : 'opacity-75'; ?>"
+                                    style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
+                                    onmouseout="this.style.color='#fff'">Pengembalian</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="text-white mb-3 fw-bold text-center">Contact</h6>
+                        <div class="text-light opacity-75 text-center">
+                            <p class="mb-2" style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
+                                onmouseout="this.style.color='#fff'"><i class="fas fa-envelope me-2"></i> <span
+                                    style="margin-left: 8px;">Shiddiqduasatu@gmail.com</span></p>
+                            <p class="mb-2" style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
+                                onmouseout="this.style.color='#fff'"><i class="fab fa-whatsapp me-2"></i> <span
+                                    style="margin-left: 8px;">0853-2060-2504</span></p>
+                            <p class="mb-2"><i class="fab fa-instagram me-2"></i><span style="margin-left: 8px;"><a
+                                        href="https://www.instagram.com/Shiddiiq._/"
+                                        class="text-light text-decoration-none" style="transition: all 0.3s;"
+                                        onmouseover="this.style.color='#ffd700'"
+                                        onmouseout="this.style.color='#fff'">Shiddiiq._</a></span></p>
+                            <p class="mb-2"><i class="fab fa-github me-2"></i><span style="margin-left: 8px;"><a
+                                        href="https://github.com/Shiddiq7" class="text-light text-decoration-none"
+                                        style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
+                                        onmouseout="this.style.color='#fff'">Shiddiq7</a></span></p>
+                            <p class="mb-2" style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
+                                onmouseout="this.style.color='#fff'"><i class="fas fa-map-marker-alt me-2"></i> <span
+                                    style="margin-left: 8px;">Bandung, Indonesia</span></p>
+
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../js/scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="../assets/demo/chart-area-demo.js"></script>
-    <script src="../assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../js/datatables-simple-demo.js"></script>
+            </div>
+            <div class="py-2 text-center" style="background: rgba(0,0,0,0.2);">
+                <small class="text-white" style="font-size: 0.8rem;">© 2025 LibraryTech | All rights reserved</small>
+            </div>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+        <script src="../js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
+            crossorigin="anonymous"></script>
+        <script src="../assets/demo/chart-area-demo.js"></script>
+        <script src="../assets/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+            crossorigin="anonymous"></script>
+        <script src="../js/datatables-simple-demo.js"></script>
+
+        <!--  search Buku -->
+        <script>
+            function filterData() {
+                const searchQuery = document.getElementById('searchInput').value;
+                const category = document.getElementById('categoryFilter').value;
+                fetch(`?search=${encodeURIComponent(searchQuery)}&category=${encodeURIComponent(category)}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(data, 'text/html');
+                        const newContent = doc.querySelector('.row');
+                        document.querySelector('.row').innerHTML = newContent.innerHTML;
+                    });
+            }
+        </script>
 </body>
+
+
 
 </html>

@@ -1,5 +1,6 @@
 <?php
 require "../func.php";
+require "../Auth/cek_log.php";
 
 ?>
 
@@ -77,6 +78,12 @@ require "../func.php";
                             </nav>
                         </div>
 
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'kategori_buku.php' ? 'active' : ''; ?>"
+                            href="kategori_buku.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                            Kategori
+                        </a>
+
                         <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_anggota.php' ? 'active' : ''; ?>"
                             style="padding-left: 15px;" href="daftar_anggota.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
@@ -108,48 +115,84 @@ require "../func.php";
                                 data-bs-target="#tambahBuku">Tambah Buku</button>
                         </div>
                         <div class="card-body">
-                            <!-- Search -->
-                            <form method="get" class="mb-4 d-flex justify-content-start">
+                            <!-- Search and Filter -->
+                            <form method="get" class="mb-4 d-flex justify-content-between">
                                 <div class="input-group shadow-md" style="width: 400px;">
                                     <input class="form-control" type="text" name="search" id="searchInput"
                                         value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
                                         placeholder="Search for..." aria-label="Search for..."
                                         aria-describedby="btnNavbarSearch" onkeyup="filterData()" />
                                 </div>
+                                <div class="input-group shadow-md" style="width: 200px;">
+                                    <select class="form-select" name="category" id="categoryFilter" onchange="filterData()">
+                                        <option value="">All Categories</option>
+                                        <?php
+                                        $categories = query("SELECT DISTINCT kategori FROM buku WHERE if_visible = TRUE");
+                                        foreach ($categories as $category) {
+                                            $selected = isset($_GET['category']) && $_GET['category'] == $category['kategori'] ? 'selected' : '';
+                                            echo "<option value=\"{$category['kategori']}\" $selected>{$category['kategori']}</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
                             </form>
 
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
                                 <?php
                                 $search = isset($_GET['search']) ? $_GET['search'] : '';
+                                $category = isset($_GET['category']) ? $_GET['category'] : '';
 
-                                $buku = query("SELECT * FROM buku WHERE judul LIKE '%$search%' OR pengarang LIKE '%$search%' OR penerbit LIKE '%$search%' OR kategori LIKE '%$search%'");
-                                foreach ($buku as $bk):
-                                    ?>
-                                    <div class="col mb-2">
-                                        <div class="card h-100 shadow-lg">
-                                            <div class="card h-100">
-                                                <img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Book Cover"
-                                                    style="object-fit: cover; width: 100%; height: 500px;">
-                                            </div>
-                                            <div class="card-body">
-                                                <h5 class="card-title"><?= $bk['judul']; ?></h5>
-                                                <p class="card-text"><?= $bk['pengarang']; ?></p>
-                                                <p class="card-text"><span class="badge bg-secondary">Penerbit:</span>
-                                                    <?= $bk['penerbit']; ?></p>
-                                                <p class="card-text"><span class="badge bg-secondary">Tahun Terbit:</span>
-                                                    <?= $bk['tahun_terbit']; ?></p>
-                                                <p class="card-text"><span class="badge bg-secondary">Jumlah Halaman:</span>
-                                                    <?= $bk['halaman']; ?></p>
-                                                <p class="card-text"><span class="badge bg-secondary">Kategori:</span>
-                                                    <?= $bk['kategori']; ?></p>
-                                                <div class="d-flex justify-content-end">
-                                                    <a href="detail_buku.php?id_buku=<?= $bk['id_buku']; ?>"
-                                                        class="btn btn-outline-primary">Lihat Detail</a>
+                                $query = "SELECT * FROM buku WHERE if_visible = TRUE";
+                                if ($search) {
+                                    $query .= " AND (judul LIKE '%$search%' OR pengarang LIKE '%$search%' OR penerbit LIKE '%$search%' OR kategori LIKE '%$search%')";
+                                }
+                                if ($category) {
+                                    $query .= " AND kategori = '$category'";
+                                }
+                                $query .= " ORDER BY tahun_terbit DESC";
+
+                                $buku = query($query);
+                                if (count($buku) > 0) {
+                                    foreach ($buku as $bk):
+                                        ?>
+                                        <div class="col mb-2">
+                                            <div class="card h-100 shadow-lg">
+                                                <div class="card h-100">
+                                                    <img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Book Cover"
+                                                        style="object-fit: cover; width: 100%; height: 500px;">
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><?= $bk['judul']; ?></h5>
+                                                    <p class="card-text"><?= $bk['pengarang']; ?></p>
+                                                    <p class="card-text"><span class="badge bg-secondary">Penerbit:</span>
+                                                        <?= $bk['penerbit']; ?></p>
+                                                    <p class="card-text"><span class="badge bg-secondary">Tahun Terbit:</span>
+                                                        <?= $bk['tahun_terbit']; ?></p>
+                                                    <p class="card-text"><span class="badge bg-secondary">Jumlah Halaman:</span>
+                                                        <?= $bk['halaman']; ?></p>
+                                                    <p class="card-text"><span class="badge bg-secondary">Kategori:</span>
+                                                        <?= $bk['kategori']; ?></p>
+
+                                                    <div class="d-flex justify-content-end">
+                                                        <a href="detail_buku.php?id_buku=<?= $bk['id_buku']; ?>"
+                                                            class="btn btn-outline-primary">Lihat Detail</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    <?php endforeach; ?>
+                                <?php } else {
+                                    ?>
+                                    <div class="col mb-4">
+                                        <div class="card h-100 shadow-md">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Buku Kosong </h5>
+                                            </div>
+                                        </div>
                                     </div>
-                                <?php endforeach; ?>
+                                    <?php
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -176,7 +219,8 @@ require "../func.php";
                             <input type="file" class="form-control" id="cover" name="cover" accept=".jpg, .jpeg, .png"
                                 required onchange="previewImage()">
                         </div>
-                        <img src="" id="preview" style="max-width:200px;max-height:200px; display:block; margin: 0 auto; margin-bottom: 1rem;">
+                        <img src="" id="preview"
+                            style="max-width:200px;max-height:200px; display:block; margin: 0 auto; margin-bottom: 1rem;">
 
                         <div class="mb-3">
                             <label for="judul" class="form-label">Judul</label>
@@ -210,8 +254,14 @@ require "../func.php";
                             <label for="kategori" class="form-label">Kategori</label>
                             <select class="form-select" id="kategori" name="kategori" required>
                                 <option value="">Pilih Kategori</option>
-                                <option value="Fiksi">Fiksi</option>
-                                <option value="Non-Fiksi">Non-Fiksi</option>
+                                <?php
+                                $kategoriQuery = "SELECT DISTINCT nama_kategori FROM kategori";
+                                $kategoriResult = mysqli_query($conn, $kategoriQuery);
+                                while ($row = mysqli_fetch_assoc($kategoriResult)) {
+                                    $selected = $data['nama_kategori'] == $row['nama_kategori'] ? 'selected' : '';
+                                    echo "<option value='{$row['nama_kategori']}' $selected>{$row['nama_kategori']}</option>";
+                                }
+                                ?>
                             </select>
                         </div>
                         <br>
@@ -232,7 +282,8 @@ require "../func.php";
     <script>
         function filterData() {
             const searchQuery = document.getElementById('searchInput').value;
-            fetch(`?search=${encodeURIComponent(searchQuery)}`)
+            const category = document.getElementById('categoryFilter').value;
+            fetch(`?search=${encodeURIComponent(searchQuery)}&category=${encodeURIComponent(category)}`)
                 .then(response => response.text())
                 .then(data => {
                     const parser = new DOMParser();

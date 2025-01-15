@@ -75,8 +75,17 @@ require "../Auth/cek_log.php";
                                     href="peminjaman.php">Peminjaman</a>
                                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pengembalian.php' ? 'active' : ''; ?>"
                                     href="pengembalian.php">Pengembalian</a>
+
+
                             </nav>
                         </div>
+
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'kategori_buku.php' ? 'active' : ''; ?>"
+                            href="kategori_buku.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                            Kategori
+                        </a>
+                        
 
                         <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_anggota.php' ? 'active' : ''; ?>"
                             style="padding-left: 15px;" href="daftar_anggota.php">

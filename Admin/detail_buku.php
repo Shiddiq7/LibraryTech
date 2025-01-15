@@ -18,7 +18,7 @@ if (isset($_GET['id_buku'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Buku</title>
+    <title>Detail Buku - LibraryTech</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="icon" href="logo/logo.png" type="image/png">
@@ -185,8 +185,14 @@ if (isset($_GET['id_buku'])) {
                             <label for="kategori" class="form-label">Kategori</label>
                             <select class="form-select" id="kategori" name="kategori" required>
                                 <option value="">Pilih Kategori</option>
-                                <option value="Fiksi" <?= $data['kategori'] == 'Fiksi' ? 'selected' : '' ?>>Fiksi</option>
-                                <option value="Non-Fiksi" <?= $data['kategori'] == 'Non-Fiksi' ? 'selected' : '' ?>>Non-Fiksi</option>
+                                <?php
+                                $kategoriQuery = "SELECT DISTINCT nama_kategori FROM kategori";
+                                $kategoriResult = mysqli_query($conn, $kategoriQuery);
+                                while ($row = mysqli_fetch_assoc($kategoriResult)) {
+                                    $selected = $data['nama_kategori'] == $row['nama_kategori'] ? 'selected' : '';
+                                    echo "<option value='{$row['nama_kategori']}' $selected>{$row['nama_kategori']}</option>";
+                                }
+                                ?>
                             </select>
                         </div>
 
@@ -214,6 +220,7 @@ if (isset($_GET['id_buku'])) {
                 <div class="modal-footer">
                     <form method="POST">
                         <input type="hidden" name="id_buku" value="<?= $data['id_buku'] ?>">
+                        <input type="hidden" name="if_visible">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-danger" name="deleteBuku">Delete</button>
                     </form>
