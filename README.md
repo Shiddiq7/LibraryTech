@@ -1,23 +1,26 @@
 # LibraryTech
 
-LibraryTech adalah sebuah website yang dibuat untuk memudahkan pengguna dalam mencari buku yang tersedia di perpustakaan. Website ini dibuat menggunakan bahasa pemrograman PHP dan framework Bootstrap.
+LibraryTech adalah sebuah platform yang dirancang untuk memudahkan pengguna dalam menemukan buku yang tersedia di perpustakaan. Website ini dibangun dengan bahasa pemrograman PHP dan menggunakan framework Bootstrap.
 
 ## Fitur
 
-* Pencarian buku berdasarkan judul, pengarang, dan kategori
-* Daftar buku yang tersedia di perpustakaan
-* Detail buku yang dipilih
-* Fitur login dan logout untuk mengakses halaman admin
-* Fitur CRUD (create, read, update, delete) untuk mengelola data buku di halaman admin
+* Kemampuan pencarian buku berdasarkan judul, pengarang, dan kategori
+* Menampilkan daftar buku yang tersedia di perpustakaan
+* Fitur kategori buku untuk memudahkan pengguna dalam mencari buku berdasarkan genre
+* Tampilan responsif yang dapat diakses dari berbagai perangkat
+* Halaman statistik untuk melihat aktivitas perpustakaan seperti jumlah buku yang dipinjam dan buku yang dikembalikan
+* Menyediakan detail buku yang dipilih
+* Sistem login dan logout untuk akses halaman admin / user
+* Fitur CRUD (create, read, update, delete) untuk pengelolaan data buku di halaman admin
 
 ## Instalasi
 
-1. Clone repository ini ke komputer Anda
-2. Buat database baru di phpMyAdmin dan import file `Perpustakaan.sql` yang ada di folder `db`
-3. Konfigurasi file `config.php` yang ada di folder `config` untuk menghubungkan ke database
-4. Jalankan website dengan mengakses `index.php` di browser
-
+1. Clone repository ke komputer Anda
+2. Buat database baru di phpMyAdmin, lalu impor file `Perpustakaan.sql` yang terletak di folder `db`
+3. Atur konfigurasi file `func.php` ` untuk koneksi ke database
+4. Jalankan website dengan membuka `index.php` di browser
 
 ## Lisensi
 
-Website ini dibuat oleh Shiddiq. 
+Website ini dikembangkan oleh Shiddiq.
+
