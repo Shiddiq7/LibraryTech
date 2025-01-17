@@ -21,7 +21,7 @@ if (isset($_GET['id_buku'])) {
     <title>Detail Buku - LibraryTech</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../css/styles.css">
-    <link rel="icon" href="logo/logo.png" type="image/png">
+    <link rel="icon" href="../assets/img/logo1.png" type="image/png">
     <style>
         body {
             font-family: 'Arial', sans-serif;
