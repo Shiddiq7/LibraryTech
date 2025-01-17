@@ -25,7 +25,7 @@ if (isset($_POST['register'])) {
         echo "<script>alert('Registrasi berhasil!')</script>";
         header("location: login.php");
     } else {
-         echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
+        echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
                 Username atau Password Salah!
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>';
@@ -109,13 +109,21 @@ if (isset($_POST['register'])) {
                                             </div>
                                     </form>
                                 </div>
-                                <div class="card-footer text-center py-3">
-                                    <div class="small"><a href="login.php">Sudah punya akun? Login kuy!</a></div>
+                                <hr class="my-1" />
+                                <div class=" text-center py-3">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <span class="text-white-50 me-2">Sudah punya akun?</span>
+                                                <button type="button"
+                                                    class="btn btn-outline-light rounded-pill px-5 py-2 ms-2"
+                                                    onclick="window.location.href='login.php'">Login</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
             </main>
         </div>
     </div>

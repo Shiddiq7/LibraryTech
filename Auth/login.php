@@ -15,7 +15,7 @@ if (isset($_POST['login'])) {
         $row = mysqli_fetch_assoc($result);
         if (password_verify($password, $row['password'])) {
             $_SESSION['log'] = true;
-            $_SESSION['username'] = $username;            
+            $_SESSION['username'] = $username;
             $_SESSION['role'] = $row['role'];
 
             if ($row['role'] == 'Admin') {
@@ -117,8 +117,12 @@ if (!isset($_SESSION['log'])) {
                                         </div>
                                     </form>
                                 </div>
-                                <div style="position: relative; top: -25px;" class="card-footer text-center py-3">
-                                    <div class="small"><a href="register.php">Belum punya akun? Register kuy!</a></div>
+                                <hr class="my-1" />
+                                <div class="card-footer text-center py-3">
+                                    <div class="d-flex justify-content-center">
+                                        <button type="button" class="btn btn-outline-light rounded-pill px-5 py-2"
+                                            onclick="window.location.href='register.php'">Daftar Akun</button>
+                                    </div>
                                 </div>
 
                             </div>
