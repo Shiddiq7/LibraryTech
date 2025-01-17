@@ -25,7 +25,7 @@ if (isset($_GET['id_buku'])) {
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
+            background-color: #e5e5ea;
             color: #333;
             margin: 0;
             padding: 0;
@@ -105,6 +105,13 @@ if (isset($_GET['id_buku'])) {
                 <th style="font-weight: 400;">Judul Buku</th>
                 <td><?= $data['judul'] ?></td>
             </tr>
+
+            <tr>
+                <th style="font-weight: 400;">Deskripsi</th>
+                <td><?= (empty($data['deskripsi']) ? '<span style="font-size: larger;"> - </span>' : $data['deskripsi']) ?>
+                </td>
+            </tr>
+
             <tr>
                 <th style="font-weight: 400;">Penulis</th>
                 <td><?= $data['pengarang'] ?></td>
@@ -161,6 +168,13 @@ if (isset($_GET['id_buku'])) {
                             <input type="text" class="form-control" id="judul" name="judul"
                                 value="<?= $data['judul'] ?>" required>
                         </div>
+
+                        <div class="mb-3">
+                            <label for="deskripsi" class="form-label">Deskripsi</label>
+                            <textarea class="form-control" id="deskripsi"
+                                name="deskripsi"><?= $data['deskripsi'] ?></textarea>
+                        </div>
+
                         <div class="mb-3">
                             <label for="pengarang" class="form-label">Penulis</label>
                             <input type="text" class="form-control" id="pengarang" name="pengarang"
@@ -196,7 +210,7 @@ if (isset($_GET['id_buku'])) {
                             </select>
                         </div>
 
-                    </div>  
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary" name="editBuku">Edit Buku</button>

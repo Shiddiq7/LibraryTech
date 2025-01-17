@@ -18,6 +18,11 @@ require "../Auth/cek_log.php";
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #e5e5e5;
+        }
+    </style>
 </head>
 
 <body class="sb-nav-fixed">
@@ -85,7 +90,7 @@ require "../Auth/cek_log.php";
                             <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
                             Kategori
                         </a>
-                        
+
 
                         <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_anggota.php' ? 'active' : ''; ?>"
                             style="padding-left: 15px;" href="daftar_anggota.php">
@@ -115,7 +120,7 @@ require "../Auth/cek_log.php";
                                                 Daftar Buku</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800 mt-2">
                                                 <?php
-                                                $buku = query("SELECT COUNT(*) AS total FROM buku")[0]['total'];
+                                                $buku = query("SELECT COUNT(*) AS total FROM buku WHERE if_visible = TRUE")[0]['total'];
                                                 echo "<small>Total Buku = " . $buku . "</small>";
                                                 ?>
                                                 <a href="daftar_buku.php" class="text-decoration-none text-primary">

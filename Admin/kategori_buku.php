@@ -18,6 +18,11 @@ require "../Auth/cek_log.php";
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #e5e5e5;
+        }
+    </style>
 </head>
 
 <body class="sb-nav-fixed">
@@ -174,9 +179,11 @@ require "../Auth/cek_log.php";
                                                                 </div>
 
                                                                 <div class="mb-3">
-                                                                    <label for="deskripsi" class="form-label">Deskripsi</label>
+                                                                    <label for="deskripsi"
+                                                                        class="form-label">Deskripsi</label>
                                                                     <textarea class="form-control" id="deskripsi"
-                                                                        name="deskripsi" rows="3"><?= $deskripsi ?></textarea>
+                                                                        name="deskripsi"
+                                                                        rows="3"><?= $deskripsi ?></textarea>
                                                                 </div>
 
                                                                 <button type="submit" name="editKategori"

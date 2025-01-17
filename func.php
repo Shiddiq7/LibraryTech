@@ -166,6 +166,7 @@ if (isset($_POST['tambahBuku'])) {
     $cover_folder = "../assets/Buku/$cover";
 
     $judul = $_POST['judul'];
+    $deskripsi = $_POST['deskripsi'];
     $pengarang = $_POST['pengarang'];
     $penerbit = $_POST['penerbit'];
     $tahun_terbit = $_POST['tahun_terbit'];
@@ -187,7 +188,7 @@ if (isset($_POST['tambahBuku'])) {
     // Move the uploaded file to the uploads directory
     if (move_uploaded_file($cover_tmp, $cover_folder)) {
         // Insert data ke database
-        $query = "INSERT INTO buku (id_buku, cover, judul, pengarang, penerbit, tahun_terbit, halaman, kategori) VALUES ('$id_buku', '$cover_folder', '$judul', '$pengarang', '$penerbit', '$tahun_terbit', '$halaman', '$kategori')";
+        $query = "INSERT INTO buku (id_buku, cover, judul, deskripsi ,pengarang, penerbit, tahun_terbit, halaman, kategori) VALUES ('$id_buku', '$cover_folder', '$judul', '$deskripsi' ,'$pengarang', '$penerbit', '$tahun_terbit', '$halaman', '$kategori')";
         $result = mysqli_query($conn, $query);
 
         if ($result) {
@@ -239,6 +240,7 @@ if (isset($_POST['tambahBuku'])) {
 if (isset($_POST['editBuku'])) {
     $id_buku = $_POST['id_buku'];
     $judul = $_POST['judul'];
+    $deskripsi = $_POST['deskripsi'];
     $pengarang = $_POST['pengarang'];
     $penerbit = $_POST['penerbit'];
     $tahun_terbit = $_POST['tahun_terbit'];
@@ -252,7 +254,7 @@ if (isset($_POST['editBuku'])) {
         $cover_folder = "../assets/Buku/$cover";
 
         if (move_uploaded_file($cover_tmp, $cover_folder)) {
-            $query = "UPDATE buku SET cover = '$cover_folder', judul = '$judul', pengarang = '$pengarang', penerbit = '$penerbit', tahun_terbit = '$tahun_terbit', halaman = '$halaman' , kategori = '$kategori' WHERE id_buku = '$id_buku'";
+            $query = "UPDATE buku SET cover = '$cover_folder', judul = '$judul', deskripsi = '$deskripsi' ,pengarang = '$pengarang', penerbit = '$penerbit', tahun_terbit = '$tahun_terbit', halaman = '$halaman' , kategori = '$kategori' WHERE id_buku = '$id_buku'";
         } else {
             echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
             echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
@@ -269,7 +271,7 @@ if (isset($_POST['editBuku'])) {
             exit;
         }
     } else {
-        $query = "UPDATE buku SET judul = '$judul', pengarang = '$pengarang', penerbit = '$penerbit', tahun_terbit = '$tahun_terbit', halaman = '$halaman' , kategori = '$kategori' WHERE id_buku = '$id_buku'";
+        $query = "UPDATE buku SET judul = '$judul', deskripsi = '$deskripsi' ,pengarang = '$pengarang', penerbit = '$penerbit', tahun_terbit = '$tahun_terbit', halaman = '$halaman' , kategori = '$kategori' WHERE id_buku = '$id_buku'";
     }
 
     $result = mysqli_query($conn, $query);

@@ -15,7 +15,7 @@ if (isset($_POST['login'])) {
         $row = mysqli_fetch_assoc($result);
         if (password_verify($password, $row['password'])) {
             $_SESSION['log'] = true;
-            $_SESSION['username'] = $username;
+            $_SESSION['username'] = $username;            
             $_SESSION['role'] = $row['role'];
 
             if ($row['role'] == 'Admin') {

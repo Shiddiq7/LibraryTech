@@ -18,6 +18,11 @@ require "../Auth/cek_log.php";
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #e5e5e5;
+        }
+    </style>
 </head>
 
 <body class="sb-nav-fixed">
@@ -124,7 +129,8 @@ require "../Auth/cek_log.php";
                                         aria-describedby="btnNavbarSearch" onkeyup="filterData()" />
                                 </div>
                                 <div class="input-group shadow-md" style="width: 200px;">
-                                    <select class="form-select" name="category" id="categoryFilter" onchange="filterData()">
+                                    <select class="form-select" name="category" id="categoryFilter"
+                                        onchange="filterData()">
                                         <option value="">All Categories</option>
                                         <?php
                                         $categories = query("SELECT DISTINCT kategori FROM buku WHERE if_visible = TRUE");
@@ -225,6 +231,11 @@ require "../Auth/cek_log.php";
                         <div class="mb-3">
                             <label for="judul" class="form-label">Judul</label>
                             <input type="text" class="form-control" id="judul" name="judul" required maxlength="50">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="deskripsi" class="form-label">Deskripsi</label>
+                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea>
                         </div>
 
                         <div class="mb-3">
