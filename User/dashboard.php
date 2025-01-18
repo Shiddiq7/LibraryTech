@@ -220,12 +220,12 @@ require "../Auth/cek_log.php";
                             style="height: 600px; object-fit: cover; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
                         <div
                             class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100">
-                            <img src="../assets/img/logo1.png" style="height: 160px; position: absolute; top: 60px;"
-                                alt="LibraryTech Logo">
+                            <img src="../assets/img/logo1.png" class="img-fluid"
+                                style="height: 160px; position: absolute; top: 60px;" alt="LibraryTech Logo">
                             <h1 style="color: #fff; text-align: center; animation: fadeIn 2s;">Welcome to LibraTech</h1>
-                            <p style="color: lightgray; position: absolute; bottom: 30px; animation: slideUp 3.8s;">
-                                <b>LibraryTech</b>
-                                adalah perpustakaan digital modern yang menyediakan
+                            <p class="d-none d-md-block"
+                                style="color: lightgray; position: absolute; bottom: 30px; animation: slideUp 3.8s;">
+                                <b>LibraryTech</b> adalah perpustakaan digital modern yang menyediakan
                                 akses mudah ke berbagai koleksi buku, jurnal, dan sumber pembelajaran digital. Dengan
                                 sistem peminjaman dan pengembalian yang efisien, kami berkomitmen untuk memudahkan
                                 pengguna dalam mengakses sumber daya perpustakaan kapan saja dan di mana saja.
