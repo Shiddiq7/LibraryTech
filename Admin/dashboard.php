@@ -237,54 +237,84 @@ require "../Auth/cek_log.php";
                         </div>
                     </div>
                 </div>
-                <div class="card mb-4">
+
+                <div class="card mb-4" style="max-width: 100%;">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
-                        DataTable Example
+                        Tabel Buku
                     </div>
                     <div class="card-body">
-                        <table id="datatablesSimple">
+                        <table id="datatablesSimple" style="width:100%;">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
+                                    <th>QR Code</th>
+                                    <th>ID Buku</th>
+                                    <th>Judul Buku</th>
+                                    <th>Pengarang</th>
+                                    <th>Penerbit</th>
+                                    <th>Tahun Terbit</th>
+                                    <th>Jumlah Halaman</th>
                                 </tr>
                             </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
-                                </tr>
-                            </tfoot>
                             <tbody>
-                                <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>Edinburgh</td>
-                                    <td>61</td>
-                                    <td>2011/04/25</td>
-                                    <td>$320,800</td>
-                                </tr>
-                                <tr>
-                                    <td>Garrett Winters</td>
-                                    <td>Accountant</td>
-                                    <td>Tokyo</td>
-                                    <td>63</td>
-                                    <td>2011/07/25</td>
-                                    <td>$170,750</td>
-                                </tr>
+                                <?php
+                                $query = "SELECT * FROM buku";
+                                $result = mysqli_query($conn, $query);
+                                while ($data = mysqli_fetch_assoc($result)) {
+                                    $qrData = $data['id_buku'] . ', ' . $data['judul'] . ', ' . $data['pengarang'] . ', ' . $data['penerbit'] . ', ' . $data['tahun_terbit'] . ', ' . $data['halaman'];
+                                    $qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=' . urlencode($qrData);
+                                    ?>
+                                    <tr>
+                                        <td style="overflow: hidden;">
+                                            <a href="<?= $qrCodeUrl ?>" target="_blank">
+                                                <img src="<?= $qrCodeUrl ?>" alt="QR Code"
+                                                    style="transition: all 0.3s ease-in-out;"
+                                                    onmouseover="this.style.transform='scale(1.2)';"
+                                                    onmouseout="this.style.transform='scale(1)';" />
+                                            </a>
+                                        </td>
+                                        <td><?= $data['id_buku'] ?></td>
+                                        <td><?= $data['judul'] ?></td>
+                                        <td><?= $data['pengarang'] ?></td>
+                                        <td><?= $data['penerbit'] ?></td>
+                                        <td><?= $data['tahun_terbit'] ?></td>
+                                        <td><?= $data['halaman'] ?></td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
+
+                <footer class="py-4"
+                    style="background: linear-gradient(135deg, #1a202c, #343a40); color: #fff;  width: 100%; bottom: 0;">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-light">
+                                <i class="fas fa-envelope me-2"></i>
+                                <a class="text-decoration-none" style="color: #ffd700;"
+                                    target="_blank">shiddiqduasatu@gmail.com</a>
+                            </div>
+                            <div class="text-light">
+                                <i class="fab fa-whatsapp me-2"></i>
+                                <a href="https://wa.me/6285320602504" class="text-decoration-none"
+                                    style="color: #ffd700;" target="_blank">0853-2060-2504</a>
+                            </div>
+                            <div class="text-light">
+                                <i class="fab fa-instagram me-2"></i>
+                                <a href="https://www.instagram.com/Shiddiiq._/" class="text-decoration-none"
+                                    style="color: #ffd700;" target="_blank">@Shiddiiq._</a>
+                            </div>
+                            <div class="text-light">
+                                <i class="fab fa-github me-2"></i>
+                                <a href="https://github.com/Shiddiq7" class="text-decoration-none"
+                                    style="color: #ffd700;" target="_blank">Shiddiq7</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
         </div>
         </main>
     </div>

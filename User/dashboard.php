@@ -395,17 +395,21 @@ require "../Auth/cek_log.php";
                         <p class="mb-2" style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
                             onmouseout="this.style.color='#fff'"><i class="fas fa-envelope me-2"></i> <span
                                 style="margin-left: 8px;">Shiddiqduasatu@gmail.com</span></p>
+
                         <p class="mb-2" style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
                             onmouseout="this.style.color='#fff'"><i class="fab fa-whatsapp me-2"></i> <span
                                 style="margin-left: 8px;">0853-2060-2504</span></p>
+
                         <p class="mb-2"><i class="fab fa-instagram me-2"></i><span style="margin-left: 8px;"><a
                                     href="https://www.instagram.com/Shiddiiq._/" class="text-light text-decoration-none"
                                     style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
                                     onmouseout="this.style.color='#fff'">Shiddiiq._</a></span></p>
+
                         <p class="mb-2"><i class="fab fa-github me-2"></i><span style="margin-left: 8px;"><a
                                     href="https://github.com/Shiddiq7" class="text-light text-decoration-none"
                                     style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
                                     onmouseout="this.style.color='#fff'">Shiddiq7</a></span></p>
+
                         <p class="mb-2" style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
                             onmouseout="this.style.color='#fff'"><i class="fas fa-map-marker-alt me-2"></i> <span
                                 style="margin-left: 8px;">Bandung, Indonesia</span></p>
@@ -415,7 +419,8 @@ require "../Auth/cek_log.php";
             </div>
         </div>
         <div class="py-2 text-center" style="background: rgba(0,0,0,0.2);">
-            <small class="text-white" style="font-size: 0.8rem;">© 2025 LibraryTech | Shiddiq | All rights reserved</small>
+            <small class="text-white" style="font-size: 0.8rem;">© 2025 LibraryTech | Shiddiq | All rights
+                reserved</small>
         </div>
     </footer>
 
