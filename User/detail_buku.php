@@ -134,11 +134,50 @@ if (isset($_GET['id_buku'])) {
             </tr>
         </table>
         <div class="d-flex justify-content-center gap-2 mt-4">
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#pinjamModal">Pinjam
+                Buku</button>
             <a href="dashboard.php" class="btn btn-outline-secondary ms-auto">Kembali</a>
         </div>
     </div>
 
+    <br>
 
+
+    <!-- Modal Pinjam -->
+    <div class="modal fade" id="pinjamModal" tabindex="-1" aria-labelledby="pinjamModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pinjamModalLabel">Pinjam Buku</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        <input type="hidden" name="cover" value="<?= $data['cover'] ?>">
+                        <input type="hidden" name="username" value="<?= $_SESSION['username'] ?>">
+                        <input type="hidden" name="id_buku" value="<?= $data['id_buku'] ?>">
+                        <input type="hidden" name="judul" value="<?= $data['judul'] ?>">
+                        <input type="hidden" name="pengarang" value="<?= $data['pengarang'] ?>">
+                        <input type="hidden" name="penerbit" value="<?= $data['penerbit'] ?>">
+
+                        <div class="mb-3">
+                            <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
+                            <input type="date" class="form-control" id="tanggal_pinjam" name="tanggal_pinjam" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tanggal_kembali" class="form-label">Tanggal Kembali</label>
+                            <input type="date" class="form-control" id="tanggal_kembali" name="tanggal_kembali"
+                                required>
+                           
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-outline-primary" name="pinjam">Pinjam</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

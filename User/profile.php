@@ -123,14 +123,15 @@ require '../Auth/cek_log.php';
                 <th style="font-weight: 400;">Role</th>
                 <td><?= $data['role'] ?></td>
             </tr>
-            </tr>
+
+
 
         </table>
         <div class="d-flex justify-content-center gap-2 mt-4">
             <a href="dashboard.php" class="btn btn-outline-secondary ms-auto">Kembali</a>
         </div>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
 </body>

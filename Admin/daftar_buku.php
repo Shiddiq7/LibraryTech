@@ -17,12 +17,9 @@ require "../Auth/cek_log.php";
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
+    <link href="../css/selfstyle.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <style>
-        body {
-            background-color: #e5e5e5;
-        }
-    </style>
+
 </head>
 
 <body class="sb-nav-fixed">
@@ -53,8 +50,9 @@ require "../Auth/cek_log.php";
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion"
+                style="background: linear-gradient(135deg, #3a3f44, #1a1d21);">
+                <div class="sb-sidenav-menu" style="color: #ffffff;">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading"></div>
                         <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>"
@@ -74,10 +72,23 @@ require "../Auth/cek_log.php";
                         <div class="collapse" id="collapseLibrary" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
+                                <!-- daftar buku -->
                                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_buku.php' ? 'active' : ''; ?>"
-                                    href="layout-static.html">Daftar Buku</a>
-                                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'peminjaman.php' ? 'active' : ''; ?>"
-                                    href="layout-sidenav-light.html">Peminjaman</a>
+                                    href="#">Daftar Buku</a>
+
+                                <!-- peminjaman  -->
+                                <?php
+                                $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
+                                $isActive = basename($_SERVER['PHP_SELF']) == 'pinjam.php';
+                                ?>
+                                <a class="nav-link <?= $isActive ? 'active text-highlight' : ''; ?>" href="pinjam.php"
+                                    style="color: <?= $newDataCount > 0 ? 'orange' : ($isActive ? 'white' : ''); ?>">
+                                    Peminjaman
+                                    <?php if ($newDataCount > 0): ?>
+                                        <span class="dot bg-warning"></span>
+                                    <?php endif; ?>
+                                </a>
+
                                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pengembalian.php' ? 'active' : ''; ?>"
                                     href="layout-sidenav-dark.html">Pengembalian</a>
                             </nav>

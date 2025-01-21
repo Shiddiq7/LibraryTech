@@ -348,7 +348,7 @@ if (isset($_POST['deleteBuku'])) {
 // Tambah Kategori
 if (isset($_POST['tambahKategori'])) {
     $nama_kategori = $_POST['nama_kategori'];
-    $deskripsi= $_POST['deskripsi'];
+    $deskripsi = $_POST['deskripsi'];
     $query = "INSERT INTO kategori (nama_kategori, deskripsi) VALUES ('$nama_kategori', '$deskripsi')";
     $result = mysqli_query($conn, $query);
 
@@ -451,6 +451,102 @@ if (isset($_POST['deleteKategori'])) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Gagal Hapus Kategori!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+        </script>";
+    }
+}
+
+
+// Tambah Peminjaman
+if (isset($_POST['pinjam'])) {
+
+    $username = $_SESSION['username'];
+    $query = "SELECT id_user FROM user WHERE username = '$username'";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        $data = mysqli_fetch_assoc($result);
+        $id_user = $data['id_user'];
+    } else {
+        echo "Failed to retrieve id_user.";
+    }
+    $id_buku = $_POST['id_buku'];
+
+
+    $cover = $_POST['cover'];
+    $judul = $_POST['judul'];
+    $pengarang = $_POST['pengarang'];
+    $penerbit = $_POST['penerbit'];
+    $tanggal_pinjam = $_POST['tanggal_pinjam'];
+    $tanggal_kembali = $_POST['tanggal_kembali'];
+
+    $query = "INSERT INTO pinjam (id_user,id_buku,username, cover, judul, pengarang, penerbit, tanggal_pinjam, tanggal_kembali) VALUES ('$id_user',' $id_buku ','$username', '$cover', '$judul', '$pengarang', '$penerbit', '$tanggal_pinjam', '$tanggal_kembali')";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil Pinjam Buku!',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(function() {
+                    window.history.back();
+                });
+            });
+        </script>";
+    } else {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Pinjam Buku!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+        </script>";
+    }
+}
+
+// Konfirmasi Peminjaman
+if (isset($_POST['confirmPinjam'])) {
+    $id_pinjam = $_POST['id_pinjam'];
+    $status = "Dipinjam";
+    $query = "UPDATE pinjam SET status = '$status' WHERE id_pinjam = '$id_pinjam'";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil Konfirmasi Peminjaman!',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(function() {
+                    window.history.back();
+                });
+            });
+        </script>";
+    } else {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Konfirmasi Peminjaman!',
                     showConfirmButton: false,
                     timer: 1500
                 });

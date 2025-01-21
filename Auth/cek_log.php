@@ -4,7 +4,7 @@ if (isset($_SESSION['log'])) {
     if (headers_sent()) {
         header('location: login.php');
     } else {
-        header('location: Auth/login.php');
+        header('location: ../Auth/login.php');
     }
 }
 ?>

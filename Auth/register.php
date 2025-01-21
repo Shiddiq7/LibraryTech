@@ -77,7 +77,7 @@ if (isset($_POST['register'])) {
                                             <div class="form-outline mb-4">
                                                 <label class="form-label text-white" for="inputEmail">Email</label>
                                                 <input type="email" id="inputEmail" name="email" class="form-control"
-                                                    required maxlength="100" />
+                                                    required maxlength="100" minlength="10" />
                                             </div>
 
 
@@ -85,7 +85,7 @@ if (isset($_POST['register'])) {
                                                 <label class="form-label text-white"
                                                     for="inputUsername">Username</label>
                                                 <input type="text" id="inputUsername" name="username"
-                                                    class="form-control" required maxlength="50" />
+                                                    class="form-control" required maxlength="50" minlength="10" />
                                             </div>
 
                                             <div class="form-outline mb-4">
@@ -130,6 +130,8 @@ if (isset($_POST['register'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="../js/scripts.js"></script>
+
+    <!-- Toggle Password -->
     <script>
         function togglePassword() {
             var x = document.getElementById("inputPassword");

@@ -13,7 +13,7 @@ if (isset($_GET['id_buku'])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"></html>
 
 <head>
     <meta charset="UTF-8">
@@ -81,6 +81,15 @@ if (isset($_GET['id_buku'])) {
             .table td {
                 padding: 8px;
             }
+        }
+
+        .dot {
+            height: 10px;
+            width: 10px;
+            background-color: orange;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 5px;
         }
     </style>
 </head>

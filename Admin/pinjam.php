@@ -17,12 +17,9 @@ require "../Auth/cek_log.php";
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
+    <link href="../css/selfstyle.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <style>
-        body {
-            background-color: #e5e5e5;
-        }
-    </style>
+
 </head>
 
 <body class="sb-nav-fixed">
@@ -53,8 +50,9 @@ require "../Auth/cek_log.php";
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion"
+                style="background: linear-gradient(135deg, #3a3f44, #1a1d21);">
+                <div class="sb-sidenav-menu" style="color: #ffffff;">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading"></div>
                         <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>"
@@ -74,10 +72,24 @@ require "../Auth/cek_log.php";
                         <div class="collapse" id="collapseLibrary" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
+                                <!-- daftar buku -->
                                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_buku.php' ? 'active' : ''; ?>"
                                     href="daftar_buku.php">Daftar Buku</a>
-                                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pinjam.php' ? 'active' : ''; ?>"
-                                    href="pinjam.php">Peminjaman</a>
+
+                                <!-- peminjaman  -->
+                                <?php
+                                $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
+                                $isActive = basename($_SERVER['PHP_SELF']) == 'pinjam.php';
+                                ?>
+                                <a class="nav-link <?= $isActive ? 'active text-highlight' : ''; ?>" href="pinjam.php"
+                                    style="color: <?= $newDataCount > 0 ? 'orange' : ($isActive ? 'white' : ''); ?>">
+                                    Peminjaman
+                                    <?php if ($newDataCount > 0): ?>
+                                        <span class="dot bg-warning"></span>
+                                    <?php endif; ?>
+                                </a>
+
+                                <!-- pengembalian  -->
                                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pengembalian.php' ? 'active' : ''; ?>"
                                     href="layout-sidenav-dark.html">Pengembalian</a>
                             </nav>
@@ -106,7 +118,7 @@ require "../Auth/cek_log.php";
                     <h1 class="mt-4">Daftar Buku Pinjam</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Daftar Buku</li>
+                        <li class="breadcrumb-item active">Peminjaman</li>
                     </ol>
 
                     <div class="card mb-4">
@@ -126,12 +138,21 @@ require "../Auth/cek_log.php";
                                         value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
                                         placeholder="Search for..." aria-label="Search for..."
                                         aria-describedby="btnNavbarSearch" onkeyup="filterData()" />
+
                                 </div>
                             </form>
 
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
                                 <?php
-                                $pinjam = query("SELECT * FROM pinjam ORDER BY tanggal_pinjam DESC");
+                                if (isset($_GET['search'])) {
+                                    $search = $_GET['search'];
+                                    $pinjam = query("SELECT * FROM pinjam WHERE id_buku LIKE '%$search%' OR judul LIKE '%$search%' 
+                                        OR pengarang LIKE '%$search%' OR penerbit LIKE '%$search%' 
+                                        OR username LIKE '%$search%' ORDER BY FIELD(status, 'Menunggu Konfirmasi') DESC");
+                                } else {
+                                    $pinjam = query("SELECT * FROM pinjam ORDER BY FIELD(status, 'Menunggu Konfirmasi')  DESC");
+                                }
+
                                 if (count($pinjam) > 0) {
                                     foreach ($pinjam as $pj):
                                         ?>
@@ -163,42 +184,49 @@ require "../Auth/cek_log.php";
                                                             <?= $pj['status']; ?>
                                                         </span>
                                                     </p>
+                                                    <hr class="my-2"><br>
 
                                                     <div class="d-flex justify-content-end">
-                                                        <button class="btn btn-outline-primary"
-                                                            onclick="showConfirmationModal()">Konfirmasi</button>
+                                                        <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                                            data-bs-target="#confirmModal<?= $pj['id_pinjam'] ?>"
+                                                            <?= $pj['status'] == 'Dipinjam' || $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>>Confirm</button>
                                                     </div>
 
-                                                    <!-- Confirmation Modal -->
-                                                    <div class="modal fade" id="confirmationModal" tabindex="-1"
-                                                        aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                                                    <!-- Modal Pinjam -->
+                                                    <div class="modal fade" id="confirmModal<?= $pj['id_pinjam'] ?>"
+                                                        tabindex="-1" aria-labelledby="confirmModalLabel<?= $pj['id_pinjam'] ?>"
+                                                        aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="confirmationModalLabel">
-                                                                        Konfirmasi Peminjaman</h5>
+                                                                    <h5 class="modal-title"
+                                                                        id="confirmModalLabel<?= $pj['id_pinjam'] ?>">Konfirmasi
+                                                                        Peminjaman</h5>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p>Anda yakin ingin mengkonfirmasi peminjaman buku ini?</p>
+                                                                    Kamu yakin ingin mengonfirmasi peminjaman buku ini?
                                                                     <ul>
-                                                                        <li>Judul Buku: <?= $pj['judul']; ?>
-                                                                            [<?= $pj['id_buku']; ?>]</li>
-                                                                        <li>Username: <?= $pj['username']; ?>
-                                                                            [<?= $pj['id_user']; ?>]</li>
+                                                                        <li>Judul: <?= $pj['judul'] ?> [<?= $pj['id_buku'] ?>]
+                                                                        </li>
+                                                                        <li>User: <?= $pj['username'] ?> [<?= $pj['id_user'] ?>]
+                                                                        </li>
                                                                     </ul>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Batal</button>
-                                                                    <button type="button" class="btn btn-primary"
-                                                                        name="konfirmasi">Konfirmasi</button>
+                                                                    <form method="POST">
+                                                                        <input type="hidden" name="id_pinjam"
+                                                                            value="<?= $pj['id_pinjam'] ?>">
+                                                                        <button type="button" class="btn btn-outline-danger"
+                                                                            data-bs-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-outline-primary"
+                                                                            name="confirmPinjam">Confirm</button>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
 
                                                 </div>
                                             </div>
@@ -236,8 +264,7 @@ require "../Auth/cek_log.php";
     <script>
         function filterData() {
             const searchQuery = document.getElementById('searchInput').value;
-            const category = document.getElementById('categoryFilter').value;
-            fetch(`?search=${encodeURIComponent(searchQuery)}&category=${encodeURIComponent(category)}`)
+            fetch(`?search=${encodeURIComponent(searchQuery)}`)
                 .then(response => response.text())
                 .then(data => {
                     const parser = new DOMParser();
@@ -249,14 +276,7 @@ require "../Auth/cek_log.php";
     </script>
 
 
-    <!-- Confirmation Modal -->
-    <script>
-        function showConfirmationModal() {
-            var confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
-            confirmationModal.show();
-        }
 
-    </script>
 </body>
 
 </html>

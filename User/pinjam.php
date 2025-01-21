@@ -1,5 +1,6 @@
 <?php
 require "../func.php";
+require "../Auth/cek_log.php";
 ?>
 
 <!DOCTYPE html>
@@ -203,158 +204,86 @@ require "../func.php";
             </div>
         </div>
     </nav>
-    <br><br>
-    <section class="hero-section" style="max-height: 500px;">
-        <div class="container-fluid px-0">
-            <div id="carouselExampleCaptions" class="carousel slide shadow-lg rounded-5" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-                        aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
-                </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="../assets/img/Libr.jpeg" class="d-block w-100 rounded-5" alt="..."
-                            style="height: 600px; object-fit: cover; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
-                        <div
-                            class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100">
-                            <img src="../assets/img/logo1.png" class="img-fluid"
-                                style="height: 160px; position: absolute; top: 60px;" alt="LibraryTech Logo">
-                            <h1 style="color: #fff; text-align: center; animation: fadeIn 2s;">Welcome to LibraTech</h1>
-                            <p class="d-none d-md-block"
-                                style="color: lightgray; position: absolute; bottom: 30px; animation: slideUp 3.8s;">
-                                <b>LibraryTech</b> adalah perpustakaan digital modern yang menyediakan
-                                akses mudah ke berbagai koleksi buku, jurnal, dan sumber pembelajaran digital. Dengan
-                                sistem peminjaman dan pengembalian yang efisien, kami berkomitmen untuk memudahkan
-                                pengguna dalam mengakses sumber daya perpustakaan kapan saja dan di mana saja.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="../assets/img/ils.jpg" class="d-block w-100 rounded-5" alt="..."
-                            style="height: 600px; object-fit: cover;">
-                        <div
-                            class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100">
-                            <h1 style="color: #333; text-align: center; animation: fadeIn 2s;">Explore Our Collection
-                            </h1>
-                            <p class="d-none d-md-block"
-                                style="color: black; position: absolute; bottom: 30px; animation: slideUp 3.8s;">
-                                <b>LibraryTech</b> menyediakan berbagai koleksi buku, jurnal, dan sumber pembelajaran
-                            </p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="../assets/img/albert.png" class="d-block w-100 rounded-5" alt="..."
-                            style="height: 600px; object-fit: cover;">
-                        <div class="carousel-caption d-flex justify-content-start align-items-center h-100">
-                            <h4 style="text-align: left; font-family: 'Pacifico', cursive; color: white; animation: typeWriter 1s;"
-                                id="typewriter">
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="prev" style="filter: invert(100%);">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="next" style="filter: invert(100%);">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-        </div>
-    </section>
 
-    <br><br><br><br><br><br>
-    <hr style="border: 1px solid #666; margin: 40px 0; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
-
+    <br><br><br><br>
     <section class="features">
         <div class="container">
-            <h2 class="text-center mt-"
-                style="font-family: 'Lato', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #4a4a4a;">
-                DAFTAR BUKU</h2>
+            <h1 class="display-4 fw-bold text-center">Daftar Peminjaman</h1>
+            <hr class="my-4" />
+
             <br><br>
 
             <!-- Search and Filter -->
-            <form method="GET" class="mb-4 d-flex justify-content-between">
-                <div class="input-group shadow" style="width: 400px;">
+            <form method="get" class="mb-4 d-flex justify-content-between">
+                <div class="input-group shadow-md" style="width: 400px;">
                     <input class="form-control" type="text" name="search" id="searchInput"
                         value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
                         placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch"
                         onkeyup="filterData()" />
-                    <!-- Search input untuk mencari buku berdasarkan judul, pengarang, penerbit, atau kategori -->
-                </div>
-                <div class="input-group shadow" style="width: 200px;">
-                    <span class="input-group-text" id="basic-addon2"><i class="fas fa-filter"></i></span>
-                    <select class="form-select" name="category" id="categoryFilter" onchange="filterData()">
-                        <option value="">All Categories</option>
-                        <?php
-                        $categories = query("SELECT DISTINCT kategori FROM buku WHERE if_visible = TRUE");
-                        foreach ($categories as $category) {
-                            $selected = isset($_GET['category']) && $_GET['category'] == $category['kategori'] ? 'selected' : '';
-                            echo "<option value=\"{$category['kategori']}\" $selected>{$category['kategori']}</option>";
-                        }
-                        ?>
-                    </select>
-                    <!-- Filter untuk memilih kategori buku -->
+
                 </div>
             </form>
 
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
                 <?php
-                $search = isset($_GET['search']) ? $_GET['search'] : '';
-                $category = isset($_GET['category']) ? $_GET['category'] : '';
-
-                $query = "SELECT * FROM buku WHERE if_visible = TRUE";
-                if ($search) {
-                    $query .= " AND (judul LIKE '%$search%' OR pengarang LIKE '%$search%' OR penerbit LIKE '%$search%' OR kategori LIKE '%$search%')";
+                if (isset($_GET['search'])) {
+                    $search = $_GET['search'];
+                    $pinjam = query("SELECT * FROM pinjam WHERE (id_buku LIKE '%$search%' OR judul LIKE '%$search%' 
+                                        OR pengarang LIKE '%$search%' OR penerbit LIKE '%$search%' 
+                                        OR username LIKE '%$search%') ORDER BY FIELD(status, 'Menunggu Konfirmasi') DESC`");
+                } else {
+                    $pinjam = query("SELECT * FROM pinjam WHERE username = '$_SESSION[username]' ORDER BY FIELD(status, 'Dipinjam')  DESC ");
                 }
-                if ($category) {
-                    $query .= " AND kategori = '$category'";
-                }
-                $query .= " ORDER BY tahun_terbit DESC";
 
-                $buku = query($query);
-                if (count($buku) > 0) {
-                    foreach ($buku as $bk):
+                if (count($pinjam) > 0) {
+                    foreach ($pinjam as $pj):
                         ?>
                         <div class="col mb-2">
                             <div class="card h-100 shadow-lg">
                                 <div class="card h-100">
-                                    <img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Book Cover"
+                                    <img class="card-img-top" src="<?= $pj['cover']; ?>" alt="Book Cover"
                                         style="object-fit: cover; width: 100%; height: 500px;">
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title"><?= $bk['judul']; ?></h5>
-                                    <p class="card-text text-small "><?= $bk['pengarang']; ?></p>
+                                    <h5 class="card-title"><?= $pj['judul']; ?> [<?= $pj['id_buku']; ?>]</h5>
+                                    <p class="card-text"><?= $pj['pengarang']; ?></p>
                                     <p class="card-text text-start"><span class="badge bg-secondary">Penerbit:</span>
-                                        <?= $bk['penerbit']; ?></p>
-                                    <p class="card-text text-start"><span class="badge bg-secondary">Tahun Terbit:</span>
-                                        <?= $bk['tahun_terbit']; ?></p>
-                                    <p class="card-text text-start"><span class="badge bg-secondary">Jumlah Halaman:</span>
-                                        <?= $bk['halaman']; ?></p>
-                                    <p class="card-text text-start"><span class="badge bg-secondary">Kategori:</span>
-                                        <?= $bk['kategori']; ?></p>
+                                        <?= $pj['penerbit']; ?></p>
 
+                                    <p class="card-text text-start"><span class="badge bg-secondary">Username:</span>
+                                        <?= $pj['username']; ?> [<?= $pj['id_user']; ?>]</p>
+                                    <p class="card-text text-start"><span class="badge bg-secondary">Tanggal Pinjam:</span>
+                                        <?= $pj['tanggal_pinjam']; ?></p>
+                                    <p class="card-text text-start"><span class="badge bg-secondary">Tanggal
+                                            Kembali:</span>
+                                        <?= $pj['tanggal_kembali']; ?></p>
+                                    <p class="card-text text-start">
+                                        <span
+                                            class="badge <?= $pj['status'] == 'Menunggu Konfirmasi' ? 'bg-warning' : ($pj['status'] == 'Dipinjam' ? 'bg-success' : ($pj['status'] == 'Dikembalikan' ? 'bg-secondary' : '')); ?>">Status:</span>
+
+                                        <span
+                                            style="color: <?= $pj['status'] == 'Menunggu Konfirmasi' ? 'orange' : ($pj['status'] == 'Dipinjam' ? 'green' : ($pj['status'] == 'Dikembalikan' ? '' : '')) ?>">
+                                            <?= $pj['status']; ?>
+                                        </span>
+                                    </p>
+                                    <hr class="my-2"><br>
                                     <div class="d-flex justify-content-end">
-                                        <a href="detail_buku.php?id_buku=<?= $bk['id_buku']; ?>"
-                                            class="btn btn-outline-primary">Lihat Detail</a>
+                                        <button class="btn btn-outline-primary" <?= $pj['status'] == 'Menunggu Konfirmasi' || $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>>
+                                            Baca Buku
+                                        </button>
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
-                    <?php endforeach;
-                } else {
+                    <?php endforeach; ?>
+                <?php } else {
                     ?>
-                    <div class="col mb-4">
+                    <div class=" col-12">
                         <div class="card h-100 shadow-md">
-                            <div class="card-body">
-                                <h5 class="card-title">Buku Kosong </h5>
+                            <div class="card-body d-flex justify-content-center">
+                                <h5 class="card-title">Buku Pinjam Kosong</h5>
                             </div>
                         </div>
                     </div>
@@ -429,7 +358,8 @@ require "../func.php";
                                 style="margin-left: 8px;"><a href="https://www.google.com/maps/place/Bandung,+Indonesia"
                                     class="text-light text-decoration-none" target="_blank"
                                     style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
-                                    onmouseout="this.style.color='#fff'">Bandung, Indonesia</a></span></p>
+                                    onmouseout="this.style.color='#fff'">Bandung, Indonesia</a></span>
+                        </p>
 
                     </div>
                 </div>
@@ -455,8 +385,7 @@ require "../func.php";
     <script>
         function filterData() {
             const searchQuery = document.getElementById('searchInput').value;
-            const category = document.getElementById('categoryFilter').value;
-            fetch(`?search=${encodeURIComponent(searchQuery)}&category=${encodeURIComponent(category)}`)
+            fetch(`?search=${encodeURIComponent(searchQuery)}`)
                 .then(response => response.text())
                 .then(data => {
                     const parser = new DOMParser();
@@ -467,27 +396,6 @@ require "../func.php";
         }
     </script>
 
-    <!--  typewriter -->
-    <script>
-        const text = `"Satu-satunya hal yang benar-benar harus kamu ketahui adalah lokasi PERPUSTAKAAN."`;
-        const author = "Albert Einstein";
-        let i = 0;
-        const typewriter = () => {
-            if (i < text.length) {
-                document.getElementById('typewriter').innerHTML += text.charAt(i);
-                i++;
-                setTimeout(typewriter, 50);
-            } else if (i === text.length) {
-                document.getElementById('typewriter').innerHTML += `<br><em style="font-size: 1rem">${author}</em>`;
-                setTimeout(() => {
-                    document.getElementById('typewriter').innerHTML = '';
-                    i = 0;
-                    typewriter();
-                }, 10000);
-            }
-        }
-        typewriter();
-    </script>
 </body>
 
 

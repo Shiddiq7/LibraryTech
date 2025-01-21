@@ -44,3 +44,51 @@
     endforeach;
     ?>
 </div>
+
+
+// session
+if (isset($_POST['login'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $query = "SELECT * FROM user WHERE username='$username'";
+    $result = mysqli_query($conn, $query);
+
+    $hitung = mysqli_num_rows($result);
+    if ($hitung > 0) {
+        $row = mysqli_fetch_assoc($result);
+        if (password_verify($password, $row['password'])) {
+            $_SESSION['log'] = true;
+            $_SESSION['username'] = $username;
+            $_SESSION['role'] = $row['role'];
+
+            if ($row['role'] == 'Admin') {
+                header("location:../Admin/dashboard.php");
+            } else {
+                header("location:../User/dashboard.php");
+            }
+        } else {
+            echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Username atau Password Salah!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+        }
+    } else {
+        echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
+                Username atau Password Salah!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+    }
+}
+
+if (!isset($_SESSION['log'])) {
+
+} else {
+    if ($_SESSION['role'] == 'Admin') {
+        header('location: ../Admin/dashboard.php');
+    } else {
+        header('location: ../User/dashboard.php');
+    }
+}
+
+?>
