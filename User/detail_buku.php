@@ -134,7 +134,8 @@ if (isset($_GET['id_buku'])) {
             </tr>
         </table>
         <div class="d-flex justify-content-center gap-2 mt-4">
-            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#pinjamModal">Pinjam
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                data-bs-target="#pinjamModal">Pinjam
                 Buku</button>
             <a href="dashboard.php" class="btn btn-outline-secondary ms-auto">Kembali</a>
         </div>
@@ -162,13 +163,19 @@ if (isset($_GET['id_buku'])) {
 
                         <div class="mb-3">
                             <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
-                            <input type="date" class="form-control" id="tanggal_pinjam" name="tanggal_pinjam" required>
+                            <input type="date" class="form-control" id="tanggal_pinjam" name="tanggal_pinjam" required
+                                onchange="
+                                    var date = new Date(this.value);
+                                    date.setDate(date.getDate() + 7);
+                                    document.getElementById('tanggal_kembali').min = this.value;
+                                    document.getElementById('tanggal_kembali').max = date.toISOString().split('T')[0];
+                                ">
+                            <small class="text-muted">Maksimal Pinjam Buku adalah 7 Hari</small>
                         </div>
                         <div class="mb-3">
                             <label for="tanggal_kembali" class="form-label">Tanggal Kembali</label>
                             <input type="date" class="form-control" id="tanggal_kembali" name="tanggal_kembali"
                                 required>
-                           
                         </div>
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-outline-primary" name="pinjam">Pinjam</button>

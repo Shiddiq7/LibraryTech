@@ -294,10 +294,10 @@ require "../func.php";
                     <select class="form-select" name="category" id="categoryFilter" onchange="filterData()">
                         <option value="">All Categories</option>
                         <?php
-                        $categories = query("SELECT DISTINCT kategori FROM buku WHERE if_visible = TRUE");
+                        $categories = query("SELECT * FROM kategori");
                         foreach ($categories as $category) {
-                            $selected = isset($_GET['category']) && $_GET['category'] == $category['kategori'] ? 'selected' : '';
-                            echo "<option value=\"{$category['kategori']}\" $selected>{$category['kategori']}</option>";
+                            $selected = isset($_GET['category']) && $_GET['category'] == $category['nama_kategori'] ? 'selected' : '';
+                            echo "<option value=\"{$category['nama_kategori']}\" $selected>{$category['nama_kategori']}</option>";
                         }
                         ?>
                     </select>
@@ -391,7 +391,7 @@ require "../func.php";
                                 style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
                                 onmouseout="this.style.color='#fff'">Dashboard</a>
                         </li>
-                        <li class="mb-2 text-center"><a href="peminjaman.php"
+                        <li class="mb-2 text-center"><a href="pinjam.php"
                                 class="text-light text-decoration-none <?php echo basename($_SERVER['PHP_SELF']) == 'peminjaman.php' ? 'opacity-100' : 'opacity-75'; ?>"
                                 style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
                                 onmouseout="this.style.color='#fff'">Peminjaman</a>
@@ -429,8 +429,8 @@ require "../func.php";
                                 style="margin-left: 8px;"><a href="https://www.google.com/maps/place/Bandung,+Indonesia"
                                     class="text-light text-decoration-none" target="_blank"
                                     style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
-                                    onmouseout="this.style.color='#fff'">Bandung, Indonesia</a></span></p>
-
+                                    onmouseout="this.style.color='#fff'">Bandung, Indonesia</a></span>
+                        </p>
                     </div>
                 </div>
             </div>

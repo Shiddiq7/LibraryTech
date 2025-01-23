@@ -63,10 +63,16 @@ require "../Auth/cek_log.php";
                         </a>
 
                         <div class="sb-sidenav-menu-heading">Management</div>
+                        <?php
+                        $newLibraryCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
+                        ?>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             data-bs-target="#collapseLibrary" aria-expanded="false" aria-controls="collapseLibrary">
                             <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                             Library
+                            <?php if ($newLibraryCount > 0): ?>
+                                <span style="margin-left: 20px;" class="dot bg-warning"></span>
+                            <?php endif; ?>
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
 

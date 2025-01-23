@@ -2,6 +2,7 @@
 require "../func.php";
 require "../Auth/cek_log.php";
 
+
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +20,7 @@ require "../Auth/cek_log.php";
     <link href="../css/styles.css" rel="stylesheet" />
     <link href="../css/selfstyle.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-   
+
 </head>
 
 <body class="sb-nav-fixed">
@@ -62,10 +63,16 @@ require "../Auth/cek_log.php";
                         </a>
 
                         <div class="sb-sidenav-menu-heading">Management</div>
+                        <?php
+                        $newLibraryCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
+                        ?>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             data-bs-target="#collapseLibrary" aria-expanded="false" aria-controls="collapseLibrary">
                             <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                             Library
+                            <?php if ($newLibraryCount > 0): ?>
+                                <span style="margin-left: 20px;" class="dot bg-warning"></span>
+                            <?php endif; ?>
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
 
@@ -85,7 +92,7 @@ require "../Auth/cek_log.php";
                                     style="color: <?= $newDataCount > 0 ? 'orange' : ($isActive ? 'white' : ''); ?>">
                                     Peminjaman
                                     <?php if ($newDataCount > 0): ?>
-                                        <span class="dot bg-warning"></span>
+                                        <span style="margin-left: 20px;" class="dot bg-warning"></span>
                                     <?php endif; ?>
                                 </a>
 
@@ -268,7 +275,7 @@ require "../Auth/cek_log.php";
                             </thead>
                             <tbody>
                                 <?php
-                                $query = "SELECT * FROM buku";
+                                $query = "SELECT * FROM buku WHERE if_visible = TRUE";
                                 $result = mysqli_query($conn, $query);
                                 while ($data = mysqli_fetch_assoc($result)) {
                                     $qrData = $data['id_buku'] . ', ' . $data['judul'] . ', ' . $data['pengarang'] . ', ' . $data['penerbit'] . ', ' . $data['tahun_terbit'] . ', ' . $data['halaman'];
