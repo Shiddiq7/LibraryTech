@@ -13,7 +13,7 @@ require "../Auth/cek_log.php";
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Daftar Kategori - LibraryTech</title>
+    <title>Daftar Kategori - LibraTech</title>
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
@@ -28,7 +28,7 @@ require "../Auth/cek_log.php";
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3 d-flex align-items-center" href="index.php">
             <img src="../assets/img/logo1.png" width="80" height="80" class="d-inline-block align-top" alt="">
-            <span class="ms-2">LibraryTech</span>
+            <span class="ms-2">LibraTech</span>
         </a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href=""><i

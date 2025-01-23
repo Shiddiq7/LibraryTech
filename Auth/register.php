@@ -55,78 +55,53 @@ if (isset($_POST['register'])) {
 </head>
 
 <body class="bg-success">
-    <div id="layoutAuthentication">
-        <div id="layoutAuthentication_content">
-            <main>
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-5">
-                            <div class="card shadow-lg border-0 rounded-lg mt-5"
-                                style="background-color:transparent ; backdrop-filter: blur(15px);">
-                                <div class="card-header text-center">
-                                    <div class="text-center mb-2">
-                                        <img src="../assets/img/logo1.png" width="200" alt="logo libra tech">
-                                    </div>
-                                    <h3 class=" text-white">Register</h3>
-                                </div>
-                                <div class="card-body p-5">
+    <section class="vh-100" style="background: url('../assets/img/Libr.jpeg') no-repeat center center fixed; background-size: cover;">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col col-xl-14">
+                    <div class="card" style="border-radius: 1rem; background-color: rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px); width: 100%;">
+                        <div class="row g-0">
+                            <div class="col-md-6 col-lg-5 d-none d-md-block">
+                                <img src="../assets/img/register.jpg" alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem; width: 100%; height: 100%;" />
+                            </div>
+                            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                                <div class="card-body p-4 p-lg-5 text-black">
                                     <form method="post">
-                                        <div class="form-outline mb-4">
-                                            <input type="hidden" id="inputId" name="id_user" value="" />
-
-                                            <div class="form-outline mb-4">
-                                                <label class="form-label text-white" for="inputEmail">Email</label>
-                                                <input type="email" id="inputEmail" name="email" class="form-control"
-                                                    required maxlength="100" minlength="10" />
-                                            </div>
-
-
-                                            <div class="form-outline mb-4">
-                                                <label class="form-label text-white"
-                                                    for="inputUsername">Username</label>
-                                                <input type="text" id="inputUsername" name="username"
-                                                    class="form-control" required maxlength="50" minlength="10" />
-                                            </div>
-
-                                            <div class="form-outline mb-4">
-                                                <label class="form-label text-white"
-                                                    for="inputPassword">Password</label>
-                                                <input type="password" id="inputPassword" name="password"
-                                                    class="form-control" required minlength="8" maxlength="8" />
-
-                                                <div class="form-check form-switch mt-2">
-                                                    <input class="form-check-input" type="checkbox" id="viewPassword"
-                                                        onclick="togglePassword()" />
-                                                    <label class="form-check-label text-white" for="viewPassword">Show
-                                                        Password</label>
-                                                </div>
-                                            </div>
-
-                                            <br>
-                                            <div class="d-flex justify-content-center">
-                                                <button type="submit" name="register"
-                                                    class="btn btn-sm btn-primary border-0 py-2 px-4 rounded-pill w-100">Register</button>
-                                            </div>
-                                    </form>
-                                </div>
-                                <hr class="my-1" />
-                                <div class=" text-center py-3">
-                                    <div class="d-flex justify-content-center">
-                                        <div class="d-flex justify-content-center">
-                                            <div class="d-flex justify-content-center align-items-center">
-                                                <span class="text-white-50 me-2">Sudah punya akun?</span>
-                                                <button type="button"
-                                                    class="btn btn-outline-light rounded-pill px-5 py-2 ms-2"
-                                                    onclick="window.location.href='login.php'">Login</button>
-                                            </div>
+                                        <div class="d-flex align-items-center mb-3 pb-1">
+                                            <img src="../assets/img/logo1.png" width="100" height="100" class="me-3" alt="Logo" />
+                                            <span class="h1 fw-bold mb-0">LibraTech</span>
                                         </div>
-                                    </div>
+                                        <h4 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px; color: white;">Register to your account</h4>
+                                        <label class="form-label fs-5" for="inputEmail" style="color: white;">Email</label>
+                                        <div class="form-outline mb-4">
+                                            <input type="email" id="inputEmail" name="email" class="form-control form-control-lg fs-5" required maxlength="100" minlength="10" />
+                                        </div>
+                                        <label class="form-label fs-5" for="inputUsername" style="color: white;">Username</label>
+                                        <div class="form-outline mb-4">
+                                            <input type="text" id="inputUsername" name="username" class="form-control form-control-lg fs-5" required maxlength="50" minlength="10" />
+                                        </div>
+                                        <label class="form-label fs-5" for="inputPassword" style="color: white;">Password</label>
+                                        <div class="form-outline mb-4">
+                                            <input type="password" id="inputPassword" name="password" class="form-control form-control-lg fs-5" required minlength="8" maxlength="8" />
+                                        </div>
+                                        <div class="form-check form-switch mt-1" style="margin-left: 10px;">
+                                            <input class="form-check-input fs-5" type="checkbox" id="viewPassword" onclick="togglePassword()" />
+                                            <label class="form-check-label fs-5" for="viewPassword" style="color: white;">Show Password</label>
+                                        </div>
+                                        <br><br>
+                                        <div class="pt-1 mb-4">
+                                            <button class="btn btn-dark btn-lg w-100 fs-5" type="submit" name="register" style="color: white;">Register</button>
+                                        </div>
+                                        <p class="mb-5 pb-lg-2 fs-5" style="color: white;">Already have an account? <a href="login.php" style="color: white;">Login here</a></p>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-            </main>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="../js/scripts.js"></script>

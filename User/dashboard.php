@@ -226,7 +226,7 @@ require "../func.php";
                             <h1 style="color: #fff; text-align: center; animation: fadeIn 2s;">Welcome to LibraTech</h1>
                             <p class="d-none d-md-block"
                                 style="color: lightgray; position: absolute; bottom: 30px; animation: slideUp 3.8s;">
-                                <b>LibraryTech</b> adalah perpustakaan digital modern yang menyediakan
+                                <b>LibraTech</b> adalah perpustakaan digital modern yang menyediakan
                                 akses mudah ke berbagai koleksi buku, jurnal, dan sumber pembelajaran digital. Dengan
                                 sistem peminjaman dan pengembalian yang efisien, kami berkomitmen untuk memudahkan
                                 pengguna dalam mengakses sumber daya perpustakaan kapan saja dan di mana saja.
@@ -234,7 +234,7 @@ require "../func.php";
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="../assets/img/ils.jpg" class="d-block w-100 rounded-5" alt="..."
+                        <img src="../assets/img/ils2.jpg" class="d-block w-100 rounded-5" alt="..."
                             style="height: 600px; object-fit: cover;">
                         <div
                             class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100">
@@ -242,7 +242,7 @@ require "../func.php";
                             </h1>
                             <p class="d-none d-md-block"
                                 style="color: black; position: absolute; bottom: 30px; animation: slideUp 3.8s;">
-                                <b>LibraryTech</b> menyediakan berbagai koleksi buku, jurnal, dan sumber pembelajaran
+                                <b>LibraTech</b> menyediakan berbagai koleksi buku, jurnal, dan sumber pembelajaran
                             </p>
                         </div>
                     </div>
@@ -377,7 +377,7 @@ require "../func.php";
                 <div class="col-md-4 text-center">
                     <div class="mb-4 d-flex align-items-center ms-5">
                         <img src="../assets/img/logo1.png" alt="LibraryTech Logo" style="height: 60px;">
-                        <span class="ms-2 text-white fs-4">LibraryTech</span>
+                        <span class="ms-2 text-white fs-4">LibraTech</span>
                     </div>
                     <p class="text-light opacity-75">
                         Transforming the way you access knowledge. Modern library solutions for the digital age.
