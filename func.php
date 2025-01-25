@@ -555,4 +555,44 @@ if (isset($_POST['confirmPinjam'])) {
     }
 }
 
+// Kembalikan Buku
+if (isset($_POST['kembali'])) {
+    $id_pinjam = $_POST['id_pinjam'];
+    $tanggal_kembali = date('Y-m-d');
+
+    $status = "Dikembalikan";
+    $query = "UPDATE pinjam SET status = '$status', tanggal_kembali = '$tanggal_kembali' WHERE id_pinjam = '$id_pinjam'";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil Kembalikan Buku!',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(function() {
+                    window.history.back();
+                });
+            });
+        </script>";
+    } else {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+        echo "<script>
+            $(document).ready(function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Kembalikan Buku!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+        </script>";
+    }
+}
+
 ?>

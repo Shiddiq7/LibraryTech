@@ -95,8 +95,7 @@ require "../Auth/cek_log.php";
                                     <?php endif; ?>
                                 </a>
 
-                                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pengembalian.php' ? 'active' : ''; ?>"
-                                    href="layout-sidenav-dark.html">Pengembalian</a>
+                                
                             </nav>
                         </div>
 

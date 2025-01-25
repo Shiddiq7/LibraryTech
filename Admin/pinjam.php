@@ -95,9 +95,7 @@ require "../Auth/cek_log.php";
                                     <?php endif; ?>
                                 </a>
 
-                                <!-- pengembalian  -->
-                                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pengembalian.php' ? 'active' : ''; ?>"
-                                    href="layout-sidenav-dark.html">Pengembalian</a>
+
                             </nav>
                         </div>
 
@@ -121,7 +119,7 @@ require "../Auth/cek_log.php";
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Daftar Buku Pinjam</h1>
+                    <h1 class="mt-4">Daftar Buku Pinjam & Kembali</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
                         <li class="breadcrumb-item active">Peminjaman</li>
@@ -144,20 +142,38 @@ require "../Auth/cek_log.php";
                                         value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
                                         placeholder="Search for..." aria-label="Search for..."
                                         aria-describedby="btnNavbarSearch" onkeyup="filterData()" />
-
+                                </div>
+                                <div class="input-group shadow-md" style="width: 200px;">
+                                    <span class="input-group-text" id="basic-addon1"><i
+                                            class="fas fa-filter"></i></span>
+                                    <select class="form-select" name="status" id="statusFilter" onchange="filterData()">
+                                        <option value="">All Status</option>
+                                        <option value="Menunggu Konfirmasi" <?= isset($_GET['status']) && $_GET['status'] == 'Menunggu Konfirmasi' ? 'selected' : ''; ?>>Menunggu
+                                            Konfirmasi</option>
+                                        <option value="Dipinjam" <?= isset($_GET['status']) && $_GET['status'] == 'Dipinjam' ? 'selected' : ''; ?>>Dipinjam</option>
+                                        <option value="Dikembalikan" <?= isset($_GET['status']) && $_GET['status'] == 'Dikembalikan' ? 'selected' : ''; ?>>Dikembalikan</option>
+                                    </select>
                                 </div>
                             </form>
 
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
                                 <?php
-                                if (isset($_GET['search'])) {
-                                    $search = $_GET['search'];
-                                    $pinjam = query("SELECT * FROM pinjam WHERE id_buku LIKE '%$search%' OR judul LIKE '%$search%' 
-                                        OR pengarang LIKE '%$search%' OR penerbit LIKE '%$search%' 
-                                        OR username LIKE '%$search%' ORDER BY FIELD(status, 'Menunggu Konfirmasi') DESC");
-                                } else {
-                                    $pinjam = query("SELECT * FROM pinjam ORDER BY FIELD(status, 'Menunggu Konfirmasi')  DESC");
+                                $statusFilter = isset($_GET['status']) ? $_GET['status'] : '';
+                                $search = isset($_GET['search']) ? $_GET['search'] : '';
+                                $query = "SELECT * FROM pinjam";
+
+                                if ($search) {
+                                    $query .= " WHERE (id_buku LIKE '%$search%' OR judul LIKE '%$search%' 
+                                                OR pengarang LIKE '%$search%' OR penerbit LIKE '%$search%' 
+                                                OR username LIKE '%$search%')";
                                 }
+
+                                if ($statusFilter) {
+                                    $query .= $search ? " AND status = '$statusFilter'" : " WHERE status = '$statusFilter'";
+                                }
+
+                                $query .= " ORDER BY FIELD(status, 'Menunggu Konfirmasi') DESC, FIELD(status, 'Dikembalikan') ASC";
+                                $pinjam = query($query);
 
                                 if (count($pinjam) > 0) {
                                     foreach ($pinjam as $pj):
@@ -270,7 +286,8 @@ require "../Auth/cek_log.php";
     <script>
         function filterData() {
             const searchQuery = document.getElementById('searchInput').value;
-            fetch(`?search=${encodeURIComponent(searchQuery)}`)
+            const statusFilter = document.getElementById('statusFilter').value;
+            fetch(`?search=${encodeURIComponent(searchQuery)}&status=${encodeURIComponent(statusFilter)}`)
                 .then(response => response.text())
                 .then(data => {
                     const parser = new DOMParser();

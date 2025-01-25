@@ -80,6 +80,7 @@ require "../Auth/cek_log.php";
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_buku.php' ? 'active' : ''; ?>"
                                     href="daftar_buku.php">Daftar Buku</a>
+                                    
                                 <!-- peminjaman  -->
                                 <?php
                                 $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
@@ -90,9 +91,7 @@ require "../Auth/cek_log.php";
                                     <?php if ($newDataCount > 0): ?>
                                         <span class="dot bg-warning"></span>
                                     <?php endif; ?>
-                                </a>
-                                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pengembalian.php' ? 'active' : ''; ?>"
-                                    href="pengembalian.php">Pengembalian</a>
+                                </a>                             
                             </nav>
                         </div>
 

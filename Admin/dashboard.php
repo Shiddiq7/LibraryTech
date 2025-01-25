@@ -1,3 +1,5 @@
+usePointStyle: true
+
 <?php
 require "../func.php";
 require "../Auth/cek_log.php";
@@ -96,9 +98,8 @@ require "../Auth/cek_log.php";
                                     <?php endif; ?>
                                 </a>
 
-                                <!-- pengembalian -->
-                                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pengembalian.php' ? 'active' : ''; ?>"
-                                    href="pengembalian.php">Pengembalian</a>
+
+
                             </nav>
                         </div>
 
@@ -166,11 +167,10 @@ require "../Auth/cek_log.php";
                                                 $peminjaman = query("SELECT COUNT(*) AS total FROM pinjam")[0]['total'];
                                                 echo "<small>Total Peminjaman = " . $peminjaman . "</small>";
                                                 ?>
-                                                <a href="peminjaman.php" class="text-decoration-none text-primary">
-                                                </a>
+
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800 mt-3 text-end">
-                                                <a href="pinjam.php" class="text-decoration-none text-primary">View
+                                                <a href="pinjam.php?status=Dipinjam" class="text-decoration-none text-primary">View
                                                     Details</a>
                                             </div>
                                         </div>
@@ -189,14 +189,13 @@ require "../Auth/cek_log.php";
                                                 Pengembalian Buku</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800 mt-2">
                                                 <?php
-                                                $pengembalian = query("SELECT COUNT(*) AS total FROM kembali")[0]['total'];
-                                                echo "<small>Total Pengembalian = " . $pengembalian . "</small>";
+                                                $dikembalikan = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Dikembalikan'")[0]['total'];
+                                                echo "<small>Total Dikembalikan = " . $dikembalikan . "</small>";
                                                 ?>
-                                                <a href="pengembalian.php" class="text-decoration-none text-primary">
-                                                </a>
+
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800 mt-3 text-end">
-                                                <a href="pengembalian.php"
+                                                <a href="pinjam.php?status=Dikembalikan"
                                                     class="text-decoration-none text-primary">View
                                                     Details</a>
                                             </div>
@@ -234,27 +233,125 @@ require "../Auth/cek_log.php";
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xl-6">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-chart-area me-1"></i>
-                                Area Chart Example
-                            </div>
-                            <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-chart-bar me-1"></i>
-                                Bar Chart Example
-                            </div>
-                            <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
-                        </div>
-                    </div>
+                
+                <!-- Grafik -->
+                <div
+                    style="width: 100%; max-width: 1800px; margin: 0 auto; height: 600px; background: linear-gradient(to bottom right, #ffffff, #f8f9fa); padding: 35px; border-radius: 15px; box-shadow: 0 6px 12px rgba(0,0,0,0.08);">
+                    <canvas id="myChart" style="height: 100%;"></canvas>
                 </div>
 
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                <script>
+                    const ctx = document.getElementById('myChart');
+
+                    <?php
+                    $dates = query("SELECT DISTINCT DATE(tanggal_pinjam) AS date FROM pinjam ORDER BY date");
+                    $labels = [];
+                    $data = [];
+                    foreach ($dates as $date) {
+                        $labels[] = $date['date'];
+                        $count = query("SELECT COUNT(*) AS total FROM pinjam WHERE DATE(tanggal_pinjam) = '" . $date['date'] . "'")[0]['total'];
+                        $data[] = $count;
+                    }
+                    ?>
+
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: <?php echo json_encode($labels) ?>,
+                            datasets: [{
+                                label: 'Buku Dipinjam',
+                                data: <?php echo json_encode($data) ?>,
+                                fill: true,
+                                backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 3,
+                                pointRadius: 6,
+                                pointBackgroundColor: '#fff',
+                                pointBorderColor: 'rgba(54, 162, 235, 1)',
+                                pointHoverRadius: 8,
+                                tension: 0.3
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        font: {
+                                            family: 'Helvetica',
+                                            size: 14,
+                                            weight: '500'
+                                        },
+                                        padding: 25,
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'BUKU DIPINJAM PER-TANGGAL',
+                                    font: {
+                                        family: 'Helvetica',
+                                        size: 24,
+                                        weight: 'bold'
+                                    },
+                                    padding: {
+                                        top: 15,
+                                        bottom: 35
+                                    },
+                                    color: '#333'
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        font: {
+                                            family: 'Helvetica',
+                                            size: 13
+                                        }
+                                    }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: 'rgba(0,0,0,0.05)',
+                                        drawBorder: false
+                                    },
+                                    ticks: {
+                                        font: {
+                                            family: 'Helvetica',
+                                            size: 13
+                                        },
+                                        callback: function (value) {
+                                            return value.toLocaleString();
+                                        }
+                                    }
+                                }
+                            },
+                            animation: {
+                                duration: 2000,
+                                easing: 'easeInOutQuart'
+                            },
+                            interaction: {
+                                intersect: false,
+                                mode: 'index'
+                            },
+                            elements: {
+                                line: {
+                                    borderJoinStyle: 'round'
+                                }
+                            }
+                        }
+                    });
+                </script>
+
+
+                <!-- Tabel Buku -->
                 <div class="card mb-4" style="max-width: 100%;">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
@@ -304,7 +401,9 @@ require "../Auth/cek_log.php";
                         </table>
                     </div>
                 </div>
+                
 
+                <!-- Footer -->
                 <footer class="py-4"
                     style="background: linear-gradient(135deg, #1a202c, #343a40); color: #fff;  width: 100%; bottom: 0;">
                     <div class="container-fluid px-4">

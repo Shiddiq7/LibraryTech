@@ -77,7 +77,7 @@ if (!isset($_SESSION['log'])) {
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col col-xl-14"> <!-- Expanded the width of the card -->
                     <div class="card"
-                        style="border-radius: 1rem; background-color: rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px);">
+                        style="border-radius: 1rem; background-color: rgba(90, 90, 90, 0.3); backdrop-filter: blur(25px);">
                         <div class="row g-0">
                             <div class="col-md-6 col-lg-5 d-none d-md-block">
                                 <img src="../assets/img/Login.jpg" alt="login form" class="img-fluid"
@@ -89,7 +89,7 @@ if (!isset($_SESSION['log'])) {
                                         <div class="d-flex align-items-center mb-3 pb-1">
                                             <img src="../assets/img/logo1.png" width="100" height="100" class="me-3"
                                                 alt="Logo" />
-                                            <span class="h1 fw-bold mb-0">LibraTech</span>
+                                            <span class="h1 fw-bold mb-0" style="color: white;">LibraTech</span>
                                         </div>
                                         <h4 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;"></h4>
                                         <h4 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px; color: white;">Login

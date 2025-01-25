@@ -220,20 +220,36 @@ require "../Auth/cek_log.php";
                         value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
                         placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch"
                         onkeyup="filterData()" />
-
+                </div>
+                <div class="input-group shadow-md" style="width: 200px;">
+                    <span class="input-group-text" id="basic-addon2"><i class="fas fa-filter"></i></span>
+                    <select class="form-select" name="status" id="statusFilter" onchange="filterData()">
+                        <option value="">All Status</option>
+                        <option value="Menunggu Konfirmasi" <?= isset($_GET['status']) && $_GET['status'] == 'Menunggu Konfirmasi' ? 'selected' : ''; ?>>Menunggu Konfirmasi</option>
+                        <option value="Dipinjam" <?= isset($_GET['status']) && $_GET['status'] == 'Dipinjam' ? 'selected' : ''; ?>>Dipinjam</option>
+                        <option value="Dikembalikan" <?= isset($_GET['status']) && $_GET['status'] == 'Dikembalikan' ? 'selected' : ''; ?>>Dikembalikan</option>
+                    </select>
                 </div>
             </form>
 
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
                 <?php
-                if (isset($_GET['search'])) {
-                    $search = $_GET['search'];
-                    $pinjam = query("SELECT * FROM pinjam WHERE (id_buku LIKE '%$search%' OR judul LIKE '%$search%' 
-                                        OR pengarang LIKE '%$search%' OR penerbit LIKE '%$search%' 
-                                        OR username LIKE '%$search%') ORDER BY FIELD(status, 'Menunggu Konfirmasi') DESC`");
-                } else {
-                    $pinjam = query("SELECT * FROM pinjam WHERE username = '$_SESSION[username]' ORDER BY FIELD(status, 'Dipinjam')  DESC ");
+                $statusFilter = isset($_GET['status']) ? $_GET['status'] : '';
+                $search = isset($_GET['search']) ? $_GET['search'] : '';
+                $query = "SELECT * FROM pinjam WHERE username = '$_SESSION[username]'";
+
+                if ($search) {
+                    $query .= " AND (id_buku LIKE '%$search%' OR judul LIKE '%$search%' 
+                                OR pengarang LIKE '%$search%' OR penerbit LIKE '%$search%' 
+                                OR username LIKE '%$search%')";
                 }
+
+                if ($statusFilter) {
+                    $query .= " AND status = '$statusFilter'";
+                }
+
+                $query .= " ORDER BY FIELD(status, 'Dipinjam') DESC, FIELD(status, 'Dikembalikan') ASC";
+                $pinjam = query($query);
 
                 if (count($pinjam) > 0) {
                     foreach ($pinjam as $pj):
@@ -267,13 +283,60 @@ require "../Auth/cek_log.php";
                                         </span>
                                     </p>
                                     <hr class="my-2"><br>
-                                    <div class="d-flex justify-content-end">
+
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                            data-bs-target="#kembaliModal<?= $pj['id_pinjam'] ?>"
+                                            <?= $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>>Kembalikan Buku</button>
+
+                                        <!-- Modal Kembali -->
+                                        <div class="modal fade" id="kembaliModal<?= $pj['id_pinjam'] ?>" tabindex="-1"
+                                            aria-labelledby="kembaliModalLabel<?= $pj['id_pinjam'] ?>" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="kembaliModalLabel<?= $pj['id_pinjam'] ?>">
+                                                            Konfirmasi Pengembalian
+                                                        </h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <img src="<?= $pj['cover'] ?>" alt="Cover Buku"
+                                                                    class="img-thumbnail">
+                                                            </div>
+                                                            <div class="col-8">
+                                                                <p class="card-text"><strong>Judul:</strong> <?= $pj['judul'] ?>
+                                                                </p>
+                                                                <p class="card-text"><strong>Pengarang:</strong>
+                                                                    <?= $pj['pengarang'] ?></p>
+                                                                <p class="card-text"><strong>Tanggal Pinjam:</strong>
+                                                                    <?= $pj['tanggal_pinjam'] ?></p>
+                                                                <br>
+                                                                <p>Apakah Anda yakin ingin mengembalikan buku ini?</p>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Batal</button>
+                                                        <form method="POST">
+                                                            <input type="hidden" name="id_pinjam"
+                                                                value="<?= $pj['id_pinjam'] ?>">
+                                                            <button type="submit" class="btn btn-outline-primary"
+                                                                <?= $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>
+                                                                name="kembali">Kembalikan</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <button class="btn btn-outline-primary" <?= $pj['status'] == 'Menunggu Konfirmasi' || $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>>
-                                            Baca Buku
+                                            <?= $pj['status'] == 'Dikembalikan' ? 'Dikembalikan' : 'Baca Buku' ?>
                                         </button>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -296,6 +359,7 @@ require "../Auth/cek_log.php";
 
 
 
+
     <!-- Footer -->
 
     <footer class="footer mt-3"
@@ -306,7 +370,7 @@ require "../Auth/cek_log.php";
                 <div class="col-md-4 text-center">
                     <div class="mb-4 d-flex align-items-center ms-5">
                         <img src="../assets/img/logo1.png" alt="LibraryTech Logo" style="height: 60px;">
-                        <span class="ms-2 text-white fs-4">LibraryTech</span>
+                        <span class="ms-2 text-white fs-4">LibraTech</span>
                     </div>
                     <p class="text-light opacity-75">
                         Transforming the way you access knowledge. Modern library solutions for the digital age.
@@ -366,7 +430,7 @@ require "../Auth/cek_log.php";
             </div>
         </div>
         <div class="py-2 text-center" style="background: rgba(0,0,0,0.2);">
-            <small class="text-white" style="font-size: 0.8rem;">© 2025 LibraryTech | Shiddiq | All rights
+            <small class="text-white" style="font-size: 0.8rem;">© 2025 LibraTech | Shiddiq | All rights
                 reserved</small>
         </div>
     </footer>
@@ -385,7 +449,8 @@ require "../Auth/cek_log.php";
     <script>
         function filterData() {
             const searchQuery = document.getElementById('searchInput').value;
-            fetch(`?search=${encodeURIComponent(searchQuery)}`)
+            const statusFilter = document.getElementById('statusFilter').value;
+            fetch(`?search=${encodeURIComponent(searchQuery)}&status=${encodeURIComponent(statusFilter)}`)
                 .then(response => response.text())
                 .then(data => {
                     const parser = new DOMParser();
