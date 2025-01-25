@@ -160,19 +160,18 @@ require "../func.php";
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg shadow-lg"
-        style="background: linear-gradient(139deg, #0f509e 0%, #ffffff 100%);">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img style="height: 50px;" alt="LibraryTech Logo" src="../assets/img/logo1.png" />
-                <b>LibraTech</b>
+    <nav class="navbar navbar-expand-lg shadow-sm bg-white">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img style="height: 40px;" alt="LibraryTech Logo" src="../assets/img/logo1.png" />
+                <span class="ms-2 fw-bold" style="color:rgb(1, 17, 255);">LibraTech</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <i class="fas fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-                <ul class="navbar-nav">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>"
                             href="dashboard.php"><b>Dashboard</b></a>
@@ -181,22 +180,21 @@ require "../func.php";
                         <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pinjam.php' ? 'active' : ''; ?>"
                             href="pinjam.php"><b>Peminjaman</b></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pengembalian.php' ? 'active' : ''; ?>"
-                            href="pengembalian.php"><b>Pengembalian</b></a>
-                    </li>
+
                 </ul>
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false"><i class="fas fa-bars fa-fw"></i></a>
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"
+                                style="font-size: 1.5rem;"></i></a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#"><b><?php echo $_SESSION['username'] ?></b></a></li>
+                            <li><a class="dropdown-item text-muted"
+                                    href="#"><b><?php echo $_SESSION['username'] ?></b></a></li>
                             <li><a class="dropdown-item" href="profile.php">Profile</a></li>
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
-                            <li><a class="dropdown-item" href="../Auth/logout.php"><b>Logout</b></a></li>
+                            <li><a class="dropdown-item text-danger" href="../Auth/logout.php"><b>Logout</b></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -396,11 +394,7 @@ require "../func.php";
                                 style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
                                 onmouseout="this.style.color='#fff'">Peminjaman</a>
                         </li>
-                        <li class="mb-2 text-center"><a href="pengembalian.php"
-                                class="text-light text-decoration-none <?php echo basename($_SERVER['PHP_SELF']) == 'pengembalian.php' ? 'opacity-100' : 'opacity-75'; ?>"
-                                style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
-                                onmouseout="this.style.color='#fff'">Pengembalian</a>
-                        </li>
+
                     </ul>
                 </div>
                 <div class="col-md-4">

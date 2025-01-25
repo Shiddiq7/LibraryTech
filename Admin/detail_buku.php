@@ -150,6 +150,7 @@ if (isset($_GET['id_buku'])) {
             <a href="daftar_buku.php" class="btn btn-outline-secondary ms-auto">Kembali</a>
         </div>
     </div>
+    <br>
 
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
