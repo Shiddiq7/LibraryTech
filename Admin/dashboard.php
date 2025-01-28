@@ -164,7 +164,7 @@ require "../Auth/cek_log.php";
                                                 Peminjaman Buku</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800 mt-2">
                                                 <?php
-                                                $peminjaman = query("SELECT COUNT(*) AS total FROM pinjam")[0]['total'];
+                                                $peminjaman = query("SELECT COUNT(*) AS total FROM pinjam where status = 'Dipinjam'")[0]['total'];
                                                 echo "<small>Total Peminjaman = " . $peminjaman . "</small>";
                                                 ?>
 

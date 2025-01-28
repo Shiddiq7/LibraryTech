@@ -206,6 +206,7 @@ if (isset($_GET['id_buku'])) {
                         <div class="mb-3">
                             <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
                             <input type="date" class="form-control" id="tanggal_pinjam" name="tanggal_pinjam" required
+                                min="<?= date('Y-m-d') ?>"
                                 onchange="
                                     var date = new Date(this.value);
                                     date.setDate(date.getDate() + 7);

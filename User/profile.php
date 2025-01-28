@@ -73,6 +73,25 @@ require '../Auth/cek_log.php';
             .table td {
                 padding: 8px;
             }
+
+            .table {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 5px;
+            }
+
+            .table th,
+            .table td {
+                padding: 5px;
+            }
+
+            .table {
+                font-size: 0.7rem;
+            }
         }
     </style>
 </head>
@@ -123,9 +142,6 @@ require '../Auth/cek_log.php';
                 <th style="font-weight: 400;">Role</th>
                 <td><?= $data['role'] ?></td>
             </tr>
-
-
-
         </table>
         <div class="d-flex justify-content-center gap-2 mt-4">
             <a href="dashboard.php" class="btn btn-outline-secondary ms-auto">Kembali</a>

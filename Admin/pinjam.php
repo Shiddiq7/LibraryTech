@@ -206,6 +206,12 @@ require "../Auth/cek_log.php";
                                                             <?= $pj['status']; ?>
                                                         </span>
                                                     </p>
+                                                    <?php if ($pj['status'] == 'Dipinjam' && strtotime($pj['tanggal_kembali']) < time()): ?>
+                                                        <p class="card-text text-danger">
+                                                            <span class="badge bg-danger">Terlambat</span>
+                                                            Terlambat dikembalikan
+                                                        </p>
+                                                    <?php endif; ?>
                                                     <hr class="my-2"><br>
 
                                                     <div class="d-flex justify-content-end">

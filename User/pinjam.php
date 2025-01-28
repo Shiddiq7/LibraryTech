@@ -282,8 +282,12 @@ require "../Auth/cek_log.php";
                                     <hr class="my-2"><br>
 
                                     <div class="d-flex justify-content-between">
-                                        <button class="btn btn-outline-secondary" data-bs-toggle="modal"
-                                            data-bs-target="#kembaliModal<?= $pj['id_pinjam'] ?>"
+                                        <?php
+                                        $currentDate = date('Y-m-d');
+                                        $isLate = $currentDate > $pj['tanggal_kembali'];
+                                        ?>
+                                        <button class="btn <?= $isLate ? 'btn-danger' : 'btn-outline-secondary'; ?>"
+                                            data-bs-toggle="modal" data-bs-target="#kembaliModal<?= $pj['id_pinjam'] ?>"
                                             <?= $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>>Kembalikan Buku</button>
 
                                         <!-- Modal Kembali -->

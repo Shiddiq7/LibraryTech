@@ -63,10 +63,6 @@ if (isset($_POST['register'])) {
                     <div class="card"
                         style="border-radius: 1rem; background-color: rgba(90, 90, 90, 0.3); backdrop-filter: blur(25px);">
                         <div class="row g-0">
-                            <div class="col-md-6 col-lg-5 d-none d-md-block">
-                                <img src="../assets/img/register.jpg" alt="login form" class="img-fluid"
-                                    style="border-radius: 1rem 0 0 1rem; width: 100%; height: 100%;" />
-                            </div>
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                 <div class="card-body p-4 p-lg-5 text-black">
                                     <form method="post">
@@ -113,6 +109,10 @@ if (isset($_POST['register'])) {
                                                 href="login.php" style="color: white;">Login here</a></p>
                                     </form>
                                 </div>
+                            </div>
+                            <div class="col-md-6 col-lg-5 d-none d-md-block">
+                                <img src="../assets/img/register.jpg" alt="login form" class="img-fluid"
+                                    style="border-radius: 0 1rem 1rem 0; width: 100%; height: 100%;" />
                             </div>
                         </div>
                     </div>
