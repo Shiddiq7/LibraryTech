@@ -9,7 +9,83 @@ $db = 'perpustakaan';
 $conn = mysqli_connect($host, $user, $pass, $db);
 
 
+// Generate OTP
+function generateOTP($length = 6)
+{
+    $characters = '0123456789';
+    $otp = '';
+    for ($i = 0; $i < $length; $i++) {
+        $otp .= $characters[rand(0, strlen($characters) - 1)];
+    }
+    return $otp;
+}
 
+// Send OTP
+function sendOTP($email, $otp)
+{
+    $subject = "Your OTP Code";
+    $message = "Your OTP code is $otp";
+    $headers = "From: :LibraTech@librarytech.com";
+    mail($email, $subject, $message, $headers);
+}
+
+// Register User
+if (isset($_POST['register'])) {
+    // Ensure $id_user is properly set
+    $email = $_POST['email'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    // Generate id_user
+    $initials = strtoupper(substr($username, 0, 2)); // Get first two characters of username
+    $query = "SELECT COUNT(*) as count FROM user WHERE if_visible = TRUE";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    $count = $row['count'] + 1; // Get the next user number
+    $id_user = $initials . str_pad($count, 4, '0', STR_PAD_LEFT); // Combine initials and padded number
+
+    // Generate OTP and store it in the session
+    $otp = generateOTP();
+    $_SESSION['otp'] = $otp;
+    $_SESSION['email'] = $email;
+
+    $query = "INSERT INTO user (id_user, Email, username, password, verify) VALUES ('$id_user', '$email', '$username', '$hashed_password', 0)";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        sendOTP($email, $otp);
+        echo "<script>alert('Registrasi berhasil! Silakan cek email Anda untuk kode OTP.')</script>";
+        header("location: verify_otp.php");
+    } else {
+        echo "<script>alert('Registrasi gagal!')</script>";
+    }
+}
+
+// Verify OTP
+if (isset($_POST['verifyOTP'])) {
+    $otp = implode('', $_POST['otp']);
+    if ($otp == $_SESSION['otp']) {
+        $email = $_SESSION['email'];
+        $query = "UPDATE user SET verify=1 WHERE Email='$email'";
+        mysqli_query($conn, $query);
+        echo "<script>alert('Verifikasi berhasil!')</script>";
+        header("location: Auth/login.php");
+    } else {
+        echo "<script>alert('Kode OTP salah!')</script>";
+        header("location: Auth/verify_otp.php");
+    }
+}
+
+// Resend OTP
+if (isset($_POST['resendOTP'])) {
+    $email = $_SESSION['email'];
+    $otp = generateOTP();
+    $_SESSION['otp'] = $otp;
+    sendOTP($email, $otp);
+    echo "<script>alert('Kode OTP telah dikirim ulang ke email Anda.')</script>";
+    header("location: Auth/verify_otp.php");
+}
 
 // tambah Anggota
 if (isset($_POST['tambahAnggota'])) {

@@ -1,36 +1,7 @@
 <?php
 require '../func.php';
 
-// Register
-if (isset($_POST['register'])) {
-    $id_user = $_POST['id_user'];
-    $email = $_POST['email'];
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // Generate id_user
-    $initials = strtoupper(substr($username, 0, 2)); // Get first two characters of username
-    $query = "SELECT COUNT(*) as count FROM user WHERE if_visible = TRUE";
-    $result = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($result);
-    $count = $row['count'] + 1; // Get the next user number
-    $id_user = $initials . str_pad($count, 4, '0', STR_PAD_LEFT); // Combine initials and padded number
-
-
-    $query = "INSERT INTO user ( id_user, Email ,username, password) VALUES ( '$id_user' ,' $email ','$username', '$hashed_password')";
-    $result = mysqli_query($conn, $query);
-
-    if ($result) {
-        echo "<script>alert('Registrasi berhasil!')</script>";
-        header("location: login.php");
-    } else {
-        echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
-                Username atau Password Salah!
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>';
-    }
-}
 
 ?>
 <!DOCTYPE html>
@@ -84,7 +55,7 @@ if (isset($_POST['register'])) {
                                             style="color: white;">Username</label>
                                         <div class="form-outline mb-4">
                                             <input type="text" id="inputUsername" name="username"
-                                                class="form-control form-control-lg fs-5" required maxlength="50"
+                                                class="form-control form-control-lg fs-5" required maxlength="10"
                                                 minlength="10" />
                                         </div>
                                         <label class="form-label fs-5" for="inputPassword"

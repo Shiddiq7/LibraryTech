@@ -181,8 +181,8 @@ if (isset($_GET['id_buku'])) {
 
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label">Deskripsi</label>
-                            <textarea class="form-control" id="deskripsi"
-                                name="deskripsi"><?= $data['deskripsi'] ?></textarea>
+                            <textarea class="form-control form-control-lg" id="deskripsi"
+                                name="deskripsi" rows="4"><?= $data['deskripsi'] ?></textarea>
                         </div>
 
                         <div class="mb-3">

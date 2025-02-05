@@ -25,7 +25,7 @@ require "../Auth/cek_log.php";
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3 d-flex align-items-center" href="index.php">
+        <a class="navbar-brand ps-3 d-flex align-items-center" href="#">
             <img src="../assets/img/logo1.png" width="80" height="80" class="d-inline-block align-top" alt="">
             <span class="ms-2">LibraTech</span>
         </a>

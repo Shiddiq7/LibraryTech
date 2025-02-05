@@ -13,7 +13,7 @@ if (isset($_POST['login'])) {
     $hitung = mysqli_num_rows($result);
     if ($hitung > 0) {
         $row = mysqli_fetch_assoc($result);
-        if (password_verify($password, $row['password'])) {
+        if ($row['verify'] == 1 && password_verify($password, $row['password'])) {
             $_SESSION['log'] = true;
             $_SESSION['username'] = $username;
             $_SESSION['role'] = $row['role'];
@@ -25,7 +25,7 @@ if (isset($_POST['login'])) {
             }
         } else {
             echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Username atau Password Salah!
+                    Akun belum diverifikasi atau Username atau Password Salah!
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
         }

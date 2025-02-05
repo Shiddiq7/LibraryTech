@@ -363,8 +363,8 @@ require "../Auth/cek_log.php";
 
     <!-- Footer -->
 
-    <footer class="footer mt-3"
-        style="background: linear-gradient(129deg, #1a202c 0%, #010035 100%); font-size: 0.8rem;">
+    <footer class="footer mt-3 fixed-bottom"
+        style="background: linear-gradient(129deg, #1a202c 0%, #010035 100%); font-size: 0.8rem; ">
         <div class="container py-3">
             <div class="row g-4 justify-content-center">
                 <!-- Logo and Description -->

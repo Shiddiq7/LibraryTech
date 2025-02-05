@@ -1,5 +1,3 @@
-usePointStyle: true
-
 <?php
 require "../func.php";
 require "../Auth/cek_log.php";
@@ -28,7 +26,7 @@ require "../Auth/cek_log.php";
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3 d-flex align-items-center" href="index.php">
+        <a class="navbar-brand ps-3 d-flex align-items-center" href="#">
             <img src="../assets/img/logo1.png" width="80" height="80" class="d-inline-block align-top" alt="">
             <span class="ms-2">LibraTech</span>
         </a>
@@ -170,7 +168,8 @@ require "../Auth/cek_log.php";
 
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800 mt-3 text-end">
-                                                <a href="pinjam.php?status=Dipinjam" class="text-decoration-none text-primary">View
+                                                <a href="pinjam.php?status=Dipinjam"
+                                                    class="text-decoration-none text-primary">View
                                                     Details</a>
                                             </div>
                                         </div>
@@ -233,7 +232,7 @@ require "../Auth/cek_log.php";
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Grafik -->
                 <div
                     style="width: 100%; max-width: 1800px; margin: 0 auto; height: 600px; background: linear-gradient(to bottom right, #ffffff, #f8f9fa); padding: 35px; border-radius: 15px; box-shadow: 0 6px 12px rgba(0,0,0,0.08);">
@@ -254,6 +253,18 @@ require "../Auth/cek_log.php";
                         $count = query("SELECT COUNT(*) AS total FROM pinjam WHERE DATE(tanggal_pinjam) = '" . $date['date'] . "'")[0]['total'];
                         $data[] = $count;
                     }
+
+                    if(empty($dates)) {
+                        echo "document.getElementById('myChart').style.display = 'none';";
+                        echo "const noDataDiv = document.createElement('div');";
+                        echo "noDataDiv.style.textAlign = 'center';"; 
+                        echo "noDataDiv.style.padding = '250px 0';";
+                        echo "noDataDiv.style.fontSize = '24px';";
+                        echo "noDataDiv.style.fontWeight = 'bold';";
+                        echo "noDataDiv.style.color = '#666';";
+                        echo "noDataDiv.innerText = 'Tidak ada Buku yang di pinjam';";
+                        echo "document.getElementById('myChart').parentNode.appendChild(noDataDiv);";
+                    } else {
                     ?>
 
                     new Chart(ctx, {
@@ -348,6 +359,8 @@ require "../Auth/cek_log.php";
                             }
                         }
                     });
+
+                    <?php } ?>
                 </script>
 
 
@@ -401,7 +414,7 @@ require "../Auth/cek_log.php";
                         </table>
                     </div>
                 </div>
-                
+
 
                 <!-- Footer -->
                 <footer class="py-4"
