@@ -1,13 +1,14 @@
 <?php
 session_start();
 
+require 'vendor/autoload.php'; // Include PHPMailer
+
 $host = 'localhost';
 $user = 'root';
 $pass = '';
 $db = 'perpustakaan';
 
 $conn = mysqli_connect($host, $user, $pass, $db);
-
 
 // Generate OTP
 function generateOTP($length = 6)
@@ -20,13 +21,35 @@ function generateOTP($length = 6)
     return $otp;
 }
 
-// Send OTP
-function sendOTP($email, $otp)
+// Send OTP using PHPMailer
+function sendOTP($email, $otp, $username)
 {
-    $subject = "Your OTP Code";
-    $message = "Your OTP code is $otp";
-    $headers = "From: :LibraTech@librarytech.com";
-    mail($email, $subject, $message, $headers);
+    $mail = new PHPMailer\PHPMailer\PHPMailer();
+    try {
+        //Server settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com'; // Set the SMTP server to send through
+        $mail->SMTPAuth = true;
+        $mail->Username = 'shiddiqduasatu@gmail.com'; // SMTP username
+        $mail->Password = 'abzqaggnahfewfnr'; // SMTP password
+        $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        //Recipients
+        $mail->setFrom('no-reply@librarytech.com', 'LibraTech');
+        $mail->addAddress($email);
+
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'Kode OTP Anda';
+        $mail->Body = "<p>Hai $username, <br><br> Kode OTP Anda adalah <b>$otp</b>. <br><br> Silakan gunakan kode OTP ini untuk verifikasi akun Anda.<br><br>Terima kasih,<br>Tim LibraTech</p>";
+
+        $mail->send();
+        echo "Message has been sent";
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        error_log("Mailer Error: {$mail->ErrorInfo}"); // Log the error
+    }
 }
 
 // Register User
@@ -54,7 +77,7 @@ if (isset($_POST['register'])) {
     $result = mysqli_query($conn, $query);
 
     if ($result) {
-        sendOTP($email, $otp);
+        sendOTP($email, $otp, $username);
         echo "<script>alert('Registrasi berhasil! Silakan cek email Anda untuk kode OTP.')</script>";
         header("location: verify_otp.php");
     } else {
@@ -82,10 +105,12 @@ if (isset($_POST['resendOTP'])) {
     $email = $_SESSION['email'];
     $otp = generateOTP();
     $_SESSION['otp'] = $otp;
-    sendOTP($email, $otp);
+    sendOTP($email, $otp, $username);
     echo "<script>alert('Kode OTP telah dikirim ulang ke email Anda.')</script>";
     header("location: Auth/verify_otp.php");
 }
+
+
 
 // tambah Anggota
 if (isset($_POST['tambahAnggota'])) {
@@ -138,75 +163,41 @@ if (isset($_POST['tambahAnggota'])) {
 }
 
 
-// Edit Anggota
-if (isset($_POST['editAnggota'])) {
+// Delete Profile
+if (isset($_POST['deleteProfile'])) {
     $id_user = $_POST['id_user'];
-    $email = $_POST['email'];
-    $username = $_POST['username'];
+    $confirm_password = $_POST['confirm_password'];
 
-    $query = "UPDATE user SET Email = '$email', username = '$username' WHERE id_user = '$id_user'";
+    // Get stored password
+    $query = "SELECT password FROM user WHERE id_user = '$id_user'";
     $result = mysqli_query($conn, $query);
+    $user = mysqli_fetch_assoc($result);
 
-    if ($result) {
-        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
-        echo "<script>
-            $(document).ready(function() {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil Edit Anggota!',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(function() {
-                    window.location = 'daftar_anggota.php';
+    if (password_verify($confirm_password, $user['password'])) {
+        $delete = "UPDATE user SET if_visible = FALSE, verify = FALSE WHERE id_user = '$id_user'";
+        $result = mysqli_query($conn, $delete);
+
+        if ($result) {
+            session_destroy();
+            echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+            echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+            echo "<script>
+                $(document).ready(function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Profile Deleted Successfully!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        window.location = '../Auth/login.php';
+                    });
                 });
-            });
-        </script>";
+            </script>";
+        }
     } else {
-        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
-        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-        echo "<script>
-            $(document).ready(function() {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal Edit Anggota!',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            });
-        </script>";
+        echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">Password Salah!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
     }
 }
-
-// Hapus Anggota
-if (isset($_POST['deleteAnggota'])) {
-
-    $id_user = $_POST['id_user'];
-    $visible = $_POST['if_visible'];
-    $delete = "UPDATE user SET if_visible = FALSE WHERE id_user = '$id_user'";
-    $result = mysqli_query($conn, $delete);
-
-    if ($result) {
-        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
-        echo "<script>
-            $(document).ready(function() {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil Hapus!',
-                    text: 'Anggota berhasil dihapus!',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(function() {
-                    window.location = 'daftar_anggota.php';
-                });
-            });
-        </script>";
-    } else {
-        echo "<script>alert('Gagal menghapus anggota!');</script>";
-    }
-}
-
 
 // Daftar Buku
 // Fungsi query digunakan untuk mengirimkan query ke database dan mengembalikan hasilnya dalam bentuk array associative

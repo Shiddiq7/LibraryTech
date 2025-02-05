@@ -118,14 +118,22 @@ require '../Auth/cek_log.php';
             </tr>
 
             <?php
-            $query = "SELECT Email FROM user WHERE username = '$_SESSION[username]'";
+            $query = "SELECT Email, verify FROM user WHERE username = '$_SESSION[username]'";
             $result = mysqli_query($conn, $query);
             $data = mysqli_fetch_assoc($result);
             ?>
             <tr>
                 <th style="font-weight: 400;">Email</th>
-                <td><?= isset($data['Email']) ? $data['Email'] : 'Not available' ?></td>
+                <td><?= isset($data['Email']) ? $data['Email'] : 'Not available' ?>
+                    <?php if (isset($data['verify']) && $data['verify'] == 1): ?>
+                        <span style="margin-left: 10px;" class="badge bg-success">Verified</span>
+                    <?php else: ?>
+                        <span class="badge bg-warning text-dark">Not Verified</span>
+                    <?php endif; ?>
+                </td>
             </tr>
+
+
 
             <tr>
                 <th style="font-weight: 400;">Username</th>
@@ -142,6 +150,53 @@ require '../Auth/cek_log.php';
                 <th style="font-weight: 400;">Role</th>
                 <td><?= $data['role'] ?></td>
             </tr>
+            <tr>
+                <td colspan="2" style="text-align: start;">
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                        data-bs-target="#deleteModal">
+                        Delete Profile
+                    </button>
+                </td>
+
+                <!-- Updated Delete Modal -->
+                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Delete Profile</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form method="POST">
+                                <div class="modal-body">
+                                    <p class="text-danger">Are you sure you want to delete your profile? This action
+                                        cannot be undone.</p>
+                                    <div class="mb-3">
+                                        <label for="confirm_password" class="form-label">Please enter your password to
+                                            confirm:</label>
+                                        <input type="password" class="form-control" id="confirm_password"
+                                            name="confirm_password" required minlength="8" maxlength="8">
+                                    </div>
+                                    <?php
+                                    $query = "SELECT id_user FROM user WHERE username = '$_SESSION[username]'";
+                                    $result = mysqli_query($conn, $query);
+                                    $data = mysqli_fetch_assoc($result);
+                                    ?>
+                                    <input type="hidden" name="id_user" value="<?= $data['id_user'] ?>">
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" name="deleteProfile" class="btn btn-danger">Delete
+                                            Profile</button>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </tr>
+
         </table>
         <div class="d-flex justify-content-center gap-2 mt-4">
             <a href="dashboard.php" class="btn btn-outline-secondary ms-auto">Kembali</a>
@@ -150,6 +205,9 @@ require '../Auth/cek_log.php';
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
+
+
+
 </body>
 
 </html>

@@ -139,7 +139,6 @@ require "../Auth/cek_log.php";
                                         <th>Email</th>
                                         <th>Username</th>
                                         <th>Role</th>
-                                        <th>Actions</th>
 
                                     </tr>
                                 </thead>
@@ -162,80 +161,7 @@ require "../Auth/cek_log.php";
                                             <td><?= $email ?></td>
                                             <td><?= $username ?></td>
                                             <td><?= $role ?></td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#edit<?= $id_user ?>">Edit</button>
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#delete<?= $id_user ?>">Delete</button>
-                                            </td>
-
-
-
-                                            <!-- Modal edit-->
-                                            <div class="modal fade" id="edit<?= $id_user ?>" tabindex="-1"
-                                                aria-labelledby="edit<?= $id_user ?>Label" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="edit<?= $id_user ?>Label">Edit Data
-                                                            </h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-
-                                                        <div class="modal-body">
-                                                            <form method="post">
-                                                                <input type="hidden" name="id_user" value="<?= $id_user ?>">
-
-                                                                <div class="mb-3">
-                                                                    <label for="email" class="form-label">Email</label>
-                                                                    <input type="email" class="form-control" id="email"
-                                                                        name="email" value="<?= $email ?>" maxlength="100">
-                                                                </div>
-
-                                                                <div class="mb-3">
-                                                                    <label for="username"
-                                                                        class="form-label">Username</label>
-                                                                    <input type="text" class="form-control" id="username"
-                                                                        name="username" value="<?= $username ?>"
-                                                                        maxlength="50">
-                                                                </div>
-
-                                                                <button type="submit" name="editAnggota"
-                                                                    class="btn btn-primary">Edit</button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Modal delete-->
-                                            <div class="modal fade" id="delete<?= $id_user ?>" tabindex="-1"
-                                                aria-labelledby="delete<?= $id_user ?>Label" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="delete<?= $id_user ?>Label">Delete
-                                                                Data</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <p>Kamu yakin ingin menghapus data <?= $username ?>
-                                                                <?= "[", $id_user, "]" ?> ?
-                                                            </p>
-                                                            <form method="post">
-                                                                <input type="hidden" name="id_user" value="<?= $id_user ?>">
-                                                                <input type="hidden" name="if_visible">
-                                                                <button type="submit" name="deleteAnggota"
-                                                                    class="btn btn-danger">Iya</button>
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">Tidak</button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            
 
                                         </tr>
 

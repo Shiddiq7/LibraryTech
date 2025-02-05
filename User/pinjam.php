@@ -1,6 +1,55 @@
 <?php
 require "../func.php";
 require "../Auth/cek_log.php";
+
+require "../vendor/autoload.php";
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+$id_user = isset($_SESSION['id_user']) ? $_SESSION['id_user'] : 0;
+$pinjam = query("SELECT * FROM pinjam WHERE id_user = $id_user AND status = 'Dipinjam' ORDER BY tanggal_kembali ASC");
+
+foreach ($pinjam as $pj) {
+    if (strtotime($pj['tanggal_kembali']) < time()) {
+        $lastSent = isset($_SESSION['pengingat_' . $pj['id_pinjam']]) ? $_SESSION['pengingat_' . $pj['id_pinjam']] : 0;
+        if (time() - $lastSent >= 5 * 3600) { // 5 hours
+            $mail = new PHPMailer(true);
+
+            try {
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';
+                $mail->SMTPAuth = true;
+                $mail->Username = 'shiddiqduasatu@gmail.com';
+                $mail->Password = 'abzqaggnahfewfnr';
+                $mail->SMTPSecure = 'tls';
+                $mail->Port = 587;
+
+                $mail->setFrom('shiddiqduasatu@gmail.com', 'LibraTech');
+                $mail->addAddress($_SESSION['email']);
+
+                $mail->isHTML(true);
+                $mail->Subject = 'Pengingat Penting: Pengembalian Buku Terlambat';
+                $mail->Body = '<p>Yth. ' . $_SESSION['username'] . ',</p>
+                <p>Dengan hormat, kami ingin memberitahukan bahwa Anda telah melewati batas waktu pengembalian untuk buku :.</p>
+                <p><strong>Judul Buku:</strong> ' . $pj['judul'] . '</p>
+                <p><strong>ID Buku:</strong> ' . $pj['id_buku'] . '</p>
+                <p><strong>Tanggal Peminjaman:</strong> ' . $pj['tanggal_pinjam'] . '</p>
+                <p><strong>Tanggal Pengembalian:</strong> ' . $pj['tanggal_kembali'] . '</p>
+                <p>Kami mohon agar Anda dapat segera mengembalikan buku tersebut.</p>
+                <p>Terima kasih atas perhatian dan kerja sama Anda.</p>
+                <p>Salam hormat,</p>
+                <p><strong>Tim LibraTech</strong></p>';
+
+                $mail->send();
+
+                $_SESSION['pengingat_' . $pj['id_pinjam']] = time();
+            } catch (Exception $e) {
+                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            }
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -272,13 +321,22 @@ require "../Auth/cek_log.php";
                                         <?= $pj['tanggal_kembali']; ?></p>
                                     <p class="card-text text-start">
                                         <span
-                                            class="badge <?= $pj['status'] == 'Menunggu Konfirmasi' ? 'bg-warning' : ($pj['status'] == 'Dipinjam' ? 'bg-success' : ($pj['status'] == 'Dikembalikan' ? 'bg-secondary' : '')); ?>">Status:</span>
+                                            class="badge <?= $pj['status'] == 'Menunggu Konfirmasi' ? 'bg-warning' : ($pj['status'] == 'Dipinjam' ? 'bg-success' : ($pj['status'] == 'Dikembalikan' ? 'bg-secondary' : '')); ?>">Status:
+                                        </span>
 
                                         <span
                                             style="color: <?= $pj['status'] == 'Menunggu Konfirmasi' ? 'orange' : ($pj['status'] == 'Dipinjam' ? 'green' : ($pj['status'] == 'Dikembalikan' ? '' : '')) ?>">
                                             <?= $pj['status']; ?>
                                         </span>
+
                                     </p>
+                                    <?php if ($pj['status'] == 'Dipinjam' && strtotime($pj['tanggal_kembali']) < time()): ?>
+                                        <p class="card-text text-start text-danger">
+                                            <span class="badge bg-danger">Terlambat</span>
+                                            Terlambat dikembalikan
+                                        </p>
+                                    <?php endif; ?>
+
                                     <hr class="my-2"><br>
 
                                     <div class="d-flex justify-content-between">
@@ -288,7 +346,10 @@ require "../Auth/cek_log.php";
                                         ?>
                                         <button class="btn <?= $isLate ? 'btn-danger' : 'btn-outline-secondary'; ?>"
                                             data-bs-toggle="modal" data-bs-target="#kembaliModal<?= $pj['id_pinjam'] ?>"
-                                            <?= $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>>Kembalikan Buku</button>
+                                            <?= $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>>Kembalikan Buku
+                                        </button>
+
+
 
                                         <!-- Modal Kembali -->
                                         <div class="modal fade" id="kembaliModal<?= $pj['id_pinjam'] ?>" tabindex="-1"
@@ -363,7 +424,7 @@ require "../Auth/cek_log.php";
 
     <!-- Footer -->
 
-    <footer class="footer mt-3 fixed-bottom"
+    <footer class="footer mt-3"
         style="background: linear-gradient(129deg, #1a202c 0%, #010035 100%); font-size: 0.8rem; ">
         <div class="container py-3">
             <div class="row g-4 justify-content-center">
