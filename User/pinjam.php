@@ -25,9 +25,14 @@ foreach ($pinjam as $pj) {
                 $mail->SMTPSecure = 'tls';
                 $mail->Port = 587;
 
-                $mail->setFrom('shiddiqduasatu@gmail.com', 'LibraTech');
-                $mail->addAddress($_SESSION['email']);
+                //Recipients
+                $mail->setFrom('no-reply@librarytech.com', 'LibraTech');
 
+                // get email from tabel user
+                $email_user = query("SELECT Email FROM user WHERE username = '$_SESSION[username]'");
+                $mail->addAddress($email_user[0]['Email']);
+
+                // Content
                 $mail->isHTML(true);
                 $mail->Subject = 'Pengingat Penting: Pengembalian Buku Terlambat';
                 $mail->Body = '<p>Yth. ' . $_SESSION['username'] . ',</p>
