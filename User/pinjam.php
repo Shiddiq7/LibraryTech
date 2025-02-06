@@ -17,6 +17,7 @@ foreach ($pinjam as $pj) {
             $mail = new PHPMailer(true);
 
             try {
+                //Server settings
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
@@ -25,10 +26,10 @@ foreach ($pinjam as $pj) {
                 $mail->SMTPSecure = 'tls';
                 $mail->Port = 587;
 
-                //Recipients
+                // pengirim
                 $mail->setFrom('no-reply@librarytech.com', 'LibraTech');
 
-                // get email from tabel user
+                // penerima
                 $email_user = query("SELECT Email FROM user WHERE username = '$_SESSION[username]'");
                 $mail->addAddress($email_user[0]['Email']);
 

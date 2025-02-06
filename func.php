@@ -42,7 +42,9 @@ function sendOTP($email, $otp, $username)
         // Content
         $mail->isHTML(true);
         $mail->Subject = 'Kode OTP Anda';
-        $mail->Body = "<p>Hai $username, <br><br> Kode OTP Anda adalah <b>$otp</b>. <br><br> Silakan gunakan kode OTP ini untuk verifikasi akun Anda.<br><br>Terima kasih,<br>Tim LibraTech</p>";
+        $mail->Body = "<p>Hai $username, <br><br> Kode OTP Anda adalah:</p> 
+        <h2> <b>$otp</b> </h2>
+        <p><br> Silakan gunakan kode OTP ini untuk verifikasi akun Anda.<br><br>Terima kasih,<br>Tim LibraTech</p>";
 
         $mail->send();
         echo "Message has been sent";
