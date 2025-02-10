@@ -106,17 +106,17 @@
 
         <form method="post" action="../func.php">
             <div class="otp-input-container">
-                <input type="text" name="otp[]" class="otp-input" maxlength="1" onkeyup="moveToNext(this, event)"
+                <input type="number" name="otp[]" class="otp-input" maxlength="1" required onkeyup="moveToNext(this, event)"
                     onpaste="handlePaste(event)">
-                <input type="text" name="otp[]" class="otp-input" maxlength="1" onkeyup="moveToNext(this, event)"
+                <input type="number" name="otp[]" class="otp-input" maxlength="1" required onkeyup="moveToNext(this, event)"
                     onpaste="handlePaste(event)">
-                <input type="text" name="otp[]" class="otp-input" maxlength="1" onkeyup="moveToNext(this, event)"
+                <input type="number" name="otp[]" class="otp-input" maxlength="1" required onkeyup="moveToNext(this, event)"
                     onpaste="handlePaste(event)">
-                <input type="text" name="otp[]" class="otp-input" maxlength="1" onkeyup="moveToNext(this, event)"
+                <input type="number" name="otp[]" class="otp-input" maxlength="1" required onkeyup="moveToNext(this, event)"
                     onpaste="handlePaste(event)">
-                <input type="text" name="otp[]" class="otp-input" maxlength="1" onkeyup="moveToNext(this, event)"
+                <input type="number" name="otp[]" class="otp-input" maxlength="1" required onkeyup="moveToNext(this, event)"
                     onpaste="handlePaste(event)">
-                <input type="text" name="otp[]" class="otp-input" maxlength="1" onkeyup="moveToNext(this, event)"
+                <input type="number" name="otp[]" class="otp-input" maxlength="1" required onkeyup="moveToNext(this, event)"
                     onpaste="handlePaste(event)">
             </div>
             <br>

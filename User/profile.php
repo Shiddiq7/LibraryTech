@@ -1,8 +1,6 @@
 <?php
 require '../func.php';
-require '../Auth/cek_log.php';
-
-
+require '../Auth/cek_log.php'; // Include middleware for role checks
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -208,6 +206,5 @@ require '../Auth/cek_log.php';
 
 
 
-</body>
 
 </html>

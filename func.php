@@ -97,7 +97,10 @@ if (isset($_POST['verifyOTP'])) {
         echo "<script>alert('Verifikasi berhasil!')</script>";
         header("location: Auth/login.php");
     } else {
-        echo "<script>alert('Kode OTP salah!')</script>";
+        echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
+        Kode OTP salah! , Harap masukkan kode OTP yang sesuaix  
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>';
         header("location: Auth/verify_otp.php");
     }
 }
