@@ -210,6 +210,25 @@ if (isset($_GET['id_buku'])) {
             if (mysqli_num_rows($result) == 0) {
                 $query = "INSERT INTO Review (id_buku, judul, username, rating) VALUES ('$id_buku', '$judul', '$username', '$rating')";
                 mysqli_query($conn, $query);
+                echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
+                echo '<script>
+                        swal({
+                            title: "Terima Kasih!",
+                            text: "Komentar Anda telah diterima!",
+                            icon: "success",
+                            button: "Oke",
+                        });
+                    </script>';
+            } else {
+                echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
+                echo '<script>
+                        swal({
+                            title: "Gagal!",
+                            text: "Anda sudah memberikan rating sebelumnya!",
+                            icon: "error",
+                            button: "Oke",
+                        });
+                    </script>';
             }
         }
         ?>
@@ -223,7 +242,27 @@ if (isset($_GET['id_buku'])) {
             $komentar = $_POST['ulasan'];
 
             $query = "UPDATE review SET ulasan = '$komentar' WHERE id_buku = '$id_buku' AND username = '$username'";
-            mysqli_query($conn, $query);
+            if (mysqli_query($conn, $query)) {
+                echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
+                echo '<script>
+                        swal({
+                            title: "Terima Kasih!",
+                            text: "Ulasan Anda telah diterima!",
+                            icon: "success",
+                            button: "Oke",
+                        });
+                      </script>';
+            } else {
+                echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
+                echo '<script>
+                        swal({
+                            title: "Gagal!",
+                            text: "Terjadi kesalahan saat menyimpan ulasan Anda!",
+                            icon: "error",
+                            button: "Oke",
+                        });
+                      </script>';
+            }
             ?>
         <?php endif; ?>
 
@@ -259,20 +298,34 @@ if (isset($_GET['id_buku'])) {
     <form method="post">
         <div class="mb-3 ms-3 me-3">
             <label for="ulasan" class="form-label">Komentar/Ulasan</label>
-            <textarea class="form-control" id="ulasan" name="ulasan" rows="7" placeholder="Tulis ulasan Anda di sini..."
-                required></textarea>
+            <div style="position: relative;">
+                <textarea class="form-control" id="ulasan" name="ulasan" rows="7" placeholder="Tulis ulasan Anda di sini..."
+                    style="border-radius: 20px;" maxlength="250" required></textarea>
+                <small class="text-muted" style="position: absolute; bottom: 5px; left: 10px;">Karakter tersisa: <span id="charCount">250</span></small>
+            </div>
             <input type="hidden" name="id_buku" value="<?= $data['id_buku'] ?>">
             <input type="hidden" name="username" value="<?= $_SESSION['username'] ?>">
             <button type="submit" name="komentar" class="btn btn-outline-info mt-3">
                 <i class="fas fa-paper-plane"></i> Kirim Ulasan
             </button>
+           
+            <!-- Script untuk menghitung karakter tersisa -->
+            <script>
+                const ulasanInput = document.getElementById('ulasan');
+                const charCountSpan = document.getElementById('charCount');
+                ulasanInput.addEventListener('input', function () {
+                    const remainingChars = 250 - ulasanInput.value.length;
+                    charCountSpan.textContent = remainingChars;
+                });
+            </script>
         </div>
     </form>
     <br>
 
+    <hr style="border: 2px solid black; margin-left: 20px; margin-right: 20px;">
 
     <!-- Display Reviews -->
-    <div class="container-fluid" style="max-width: 2000px; ">
+    <div class="container-fluid" style="max-width: 2000px; border-radius: 10px;">
         <h3 class="text-center mt-5"
             style="font-family: 'Lato', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">
             Ulasan Buku</h3>
@@ -283,16 +336,24 @@ if (isset($_GET['id_buku'])) {
 
         if (mysqli_num_rows($result) > 0):
             while ($review = mysqli_fetch_assoc($result)): ?>
-                <div class="card mt-3 shadow-sm border-0">
+                <div class="card mt-3 shadow-sm border-0" style="border-radius: 10px;">
                     <div class="card-body">
-                        <h5 class="card-title mb-1" style="font-weight: bold;"><?= htmlspecialchars($review['username']); ?>
-                        </h5><br>
-                        <p class="card-text mb-2" style="font-style: italic;"><?= htmlspecialchars($review['ulasan']); ?></p>
-                        <div class="card-text">
-                            <?php for ($i = 1; $i <= 5; $i++): ?>
-                                <i class="<?= $i <= $review['rating'] ? 'fas' : 'far'; ?> fa-star text-warning"></i>
-                            <?php endfor; ?>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="me-3">
+                                <i class="fas fa-user-circle" style="font-size: 2rem; color: #007bff;"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title mb-0" style="font-weight: bold;">
+                                    <?= htmlspecialchars($review['username']); ?>
+                                </h5>
+                                <div class="card-text">
+                                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                                        <i class="<?= $i <= $review['rating'] ? 'fas' : 'far'; ?> fa-star text-warning"></i>
+                                    <?php endfor; ?>
+                                </div>
+                            </div>
                         </div>
+                        <p class="card-text" style="font-style: italic;"><?= htmlspecialchars($review['ulasan']); ?></p>
                     </div>
                 </div>
             <?php endwhile;
