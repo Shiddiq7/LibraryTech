@@ -2,6 +2,63 @@
 require "../func.php";
 require "../Auth/cek_log.php";
 
+require "../vendor/autoload.php";
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+$id_user = isset($_SESSION['id_user']) ? $_SESSION['id_user'] : 0;
+$pinjam = query("SELECT * FROM pinjam WHERE id_user = $id_user AND status = 'Dipinjam' ORDER BY tanggal_kembali ASC");
+
+foreach ($pinjam as $pj) {
+    if (strtotime($pj['tanggal_kembali']) < time()) {
+        $lastSent = isset($_SESSION['pengingat_' . $pj['id_pinjam']]) ? $_SESSION['pengingat_' . $pj['id_pinjam']] : 0;
+        if (time() - $lastSent >= 5 * 3600) { // 5 hours
+            $mail = new PHPMailer(true);
+
+            try {
+                //Server settings
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';
+                $mail->SMTPAuth = true;
+                $mail->Username = 'shiddiqduasatu@gmail.com';
+                $mail->Password = 'abzqaggnahfewfnr';
+                $mail->SMTPSecure = 'tls';
+                $mail->Port = 587;
+
+                // pengirim
+                $mail->setFrom('no-reply@librarytech.com', 'LibraTech');
+
+                // penerima
+                $email_user = query("SELECT Email FROM pinjam WHERE id_pinjam = " . $pj['id_pinjam'] . " LIMIT 1");
+                if (isset($email_user[0]['Email'])) {
+                    $mail->addAddress($email_user[0]['Email']);
+                }
+
+                // Content
+                $mail->isHTML(true);
+                $mail->Subject = 'Pengingat Penting: Pengembalian Buku Terlambat';
+                $pengingat = query("SELECT username FROM pinjam WHERE Email = '" . $email_user[0]['Email'] . "'");
+                $mail->Body = '<p>Yth. ' . $pengingat[0]['username'] . ',</p>
+                <p>Dengan hormat, kami ingin memberitahukan bahwa Anda telah melewati batas waktu pengembalian untuk buku :.</p>
+                <p><strong>Judul Buku:</strong> ' . $pj['judul'] . '</p>
+                <p><strong>ID Buku:</strong> ' . $pj['id_buku'] . '</p>
+                <p><strong>Tanggal Peminjaman:</strong> ' . $pj['tanggal_pinjam'] . '</p>
+                <p><strong>Tanggal Pengembalian:</strong> ' . $pj['tanggal_kembali'] . '</p>
+                <p>Kami mohon agar Anda dapat segera mengembalikan buku tersebut.</p>
+                <p>Terima kasih atas perhatian dan kerja sama Anda.</p>
+                <p>Salam hormat,</p>
+                <p><strong>Tim LibraTech</strong></p>';
+
+                $mail->send();
+
+                $_SESSION['pengingat_' . $pj['id_pinjam']] = time();
+            } catch (Exception $e) {
+                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            }
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>

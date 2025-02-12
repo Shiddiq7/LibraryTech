@@ -198,6 +198,8 @@ if (isset($_GET['id_buku'])) {
                     <form method="POST">
                         <input type="hidden" name="cover" value="<?= $data['cover'] ?>">
                         <input type="hidden" name="username" value="<?= $_SESSION['username'] ?>">
+                        <?php $email = query("SELECT email FROM user WHERE username = '$_SESSION[username]'")[0]['email']; ?>
+                        <input type="hidden" name="email" value="<?= $email ?>">
                         <input type="hidden" name="id_buku" value="<?= $data['id_buku'] ?>">
                         <input type="hidden" name="judul" value="<?= $data['judul'] ?>">
                         <input type="hidden" name="pengarang" value="<?= $data['pengarang'] ?>">

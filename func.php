@@ -547,7 +547,8 @@ if (isset($_POST['pinjam'])) {
     }
     $id_buku = $_POST['id_buku'];
 
-
+    $email = $_POST['email'];
+    
     $cover = $_POST['cover'];
     $judul = $_POST['judul'];
     $pengarang = $_POST['pengarang'];
@@ -555,7 +556,7 @@ if (isset($_POST['pinjam'])) {
     $tanggal_pinjam = $_POST['tanggal_pinjam'];
     $tanggal_kembali = $_POST['tanggal_kembali'];
 
-    $query = "INSERT INTO pinjam (id_user,id_buku,username, cover, judul, pengarang, penerbit, tanggal_pinjam, tanggal_kembali) VALUES ('$id_user',' $id_buku ','$username', '$cover', '$judul', '$pengarang', '$penerbit', '$tanggal_pinjam', '$tanggal_kembali')";
+    $query = "INSERT INTO pinjam (id_user,id_buku,username, Email ,cover, judul, pengarang, penerbit, tanggal_pinjam, tanggal_kembali) VALUES ('$id_user',' $id_buku ','$username','$email','$cover', '$judul', '$pengarang', '$penerbit', '$tanggal_pinjam', '$tanggal_kembali')";
     $result = mysqli_query($conn, $query);
 
     if ($result) {
