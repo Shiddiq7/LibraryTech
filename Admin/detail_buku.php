@@ -13,7 +13,9 @@ if (isset($_GET['id_buku'])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en"></html>
+<html lang="en">
+
+</html>
 
 <head>
     <meta charset="UTF-8">
@@ -141,6 +143,26 @@ if (isset($_GET['id_buku'])) {
                 <th style="font-weight: 400;">Kategori</th>
                 <td><?= $data['kategori'] ?></td>
             </tr>
+            <tr>
+                <th style="font-weight: 400;">Rating</th>
+                <td>
+                    <?php
+                    $query = "SELECT AVG(rating) AS avg_rating FROM Review WHERE id_buku = '$id_buku'";
+                    $result = mysqli_query($conn, $query);
+                    $row = mysqli_fetch_assoc($result);
+                    $avg_rating = number_format((float) $row['avg_rating'], 1, '.', '');
+                    $bintang = '';
+                    for ($i = 1; $i <= 5; $i++) {
+                        if ($avg_rating >= $i) {
+                            $bintang .= '<i class="fas fa-star text-warning"></i>';
+                        } else {
+                            $bintang .= '<i class="far fa-star text-warning"></i>';
+                        }
+                    }
+                    echo $bintang;
+                    ?>
+                </td>
+            </tr>
         </table>
         <div class="d-flex justify-content-center gap-2 mt-4">
 
@@ -181,8 +203,8 @@ if (isset($_GET['id_buku'])) {
 
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label">Deskripsi</label>
-                            <textarea class="form-control form-control-lg" id="deskripsi"
-                                name="deskripsi" rows="4"><?= $data['deskripsi'] ?></textarea>
+                            <textarea class="form-control form-control-lg" id="deskripsi" name="deskripsi"
+                                rows="4"><?= $data['deskripsi'] ?></textarea>
                         </div>
 
                         <div class="mb-3">

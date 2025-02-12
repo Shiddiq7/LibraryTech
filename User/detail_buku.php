@@ -174,7 +174,78 @@ if (isset($_GET['id_buku'])) {
                 <th style="font-weight: 400;">Kategori</th>
                 <td><?= $data['kategori'] ?></td>
             </tr>
+            <tr>
+                <th style="font-weight: 400;">Rating</th>
+                <td>
+                    <?php
+                    $query = "SELECT AVG(rating) AS avg_rating FROM Review WHERE id_buku = '$id_buku'";
+                    $result = mysqli_query($conn, $query);
+                    $row = mysqli_fetch_assoc($result);
+                    $avg_rating = number_format((float) $row['avg_rating'], 1, '.', '');
+                    $bintang = '';
+                    for ($i = 1; $i <= 5; $i++) {
+                        if ($avg_rating >= $i) {
+                            $bintang .= '<i class="fas fa-star text-warning"></i>';
+                        } else {
+                            $bintang .= '<i class="far fa-star text-warning"></i>';
+                        }
+                    }
+                    echo $bintang;
+                    ?>
+                </td>
+            </tr>
+
         </table>
+        <!-- Rating -->
+        <?php
+        if (isset($_POST['rating'])) {
+            $rating = $_POST['rating'];
+            $id_buku = $data['id_buku'];
+            $judul = $data['judul'];
+            $username = $_SESSION['username'];
+
+            $query = "SELECT * FROM Review WHERE id_buku = '$id_buku' AND username = '$username'";
+            $result = mysqli_query($conn, $query);
+
+            if (mysqli_num_rows($result) == 0) {
+                $query = "INSERT INTO Review (id_buku, judul, username, rating) VALUES ('$id_buku', '$judul', '$username', '$rating')";
+                mysqli_query($conn, $query);
+            }
+        }
+        ?>
+
+        <!-- Ulasan -->
+        <?php if (isset($_POST['ulasan'])): ?>
+            <?php
+            $id_buku = $data['id_buku'];
+            $judul = $data['judul'];
+            $username = $_SESSION['username'];
+            $komentar = $_POST['ulasan'];
+
+            $query = "UPDATE review SET ulasan = '$komentar' WHERE id_buku = '$id_buku' AND username = '$username'";
+            mysqli_query($conn, $query);
+            ?>
+        <?php endif; ?>
+
+        <!-- Rating input -->
+        <form method="post">
+            <div class="mb-3 text-center">
+                <label for="rating" class="form-label">Rating</label>
+                <div id="star-rating" style="font-size: 24px; color: #ffc107; display: flex; justify-content: center;">
+                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                        <i class="far fa-star" data-value="<?= $i ?>"></i>
+                    <?php endfor; ?>
+                </div>
+                <input type="hidden" id="rating" name="rating" value="0">
+                <input type="hidden" name="id_buku" value="<?= $data['id_buku'] ?>">
+                <input type="hidden" name="judul" value="<?= $data['judul'] ?>">
+                <input type="hidden" name="username" value="<?= $_SESSION['username'] ?>">
+                <button type="submit" class="btn btn-outline-info mt-3">
+                    <i class="fas fa-paper-plane"></i> Submit
+                </button>
+            </div>
+        </form>
+
         <div class="d-flex justify-content-center gap-2 mt-4">
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                 data-bs-target="#pinjamModal">Pinjam
@@ -184,6 +255,52 @@ if (isset($_GET['id_buku'])) {
     </div>
 
     <br>
+    <!-- Komentar/Ulasan input -->
+    <form method="post">
+        <div class="mb-3 ms-3 me-3">
+            <label for="ulasan" class="form-label">Komentar/Ulasan</label>
+            <textarea class="form-control" id="ulasan" name="ulasan" rows="7" placeholder="Tulis ulasan Anda di sini..."
+                required></textarea>
+            <input type="hidden" name="id_buku" value="<?= $data['id_buku'] ?>">
+            <input type="hidden" name="username" value="<?= $_SESSION['username'] ?>">
+            <button type="submit" name="komentar" class="btn btn-outline-info mt-3">
+                <i class="fas fa-paper-plane"></i> Kirim Ulasan
+            </button>
+        </div>
+    </form>
+    <br>
+
+
+    <!-- Display Reviews -->
+    <div class="container-fluid" style="max-width: 2000px; ">
+        <h3 class="text-center mt-5"
+            style="font-family: 'Lato', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">
+            Ulasan Buku</h3>
+        <?php
+        $id_buku = $data['id_buku'];
+        $query = "SELECT username, ulasan, rating FROM Review WHERE id_buku = '$id_buku' AND ulasan IS NOT NULL";
+        $result = mysqli_query($conn, $query);
+
+        if (mysqli_num_rows($result) > 0):
+            while ($review = mysqli_fetch_assoc($result)): ?>
+                <div class="card mt-3 shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title mb-1" style="font-weight: bold;"><?= htmlspecialchars($review['username']); ?>
+                        </h5><br>
+                        <p class="card-text mb-2" style="font-style: italic;"><?= htmlspecialchars($review['ulasan']); ?></p>
+                        <div class="card-text">
+                            <?php for ($i = 1; $i <= 5; $i++): ?>
+                                <i class="<?= $i <= $review['rating'] ? 'fas' : 'far'; ?> fa-star text-warning"></i>
+                            <?php endfor; ?>
+                        </div>
+                    </div>
+                </div>
+            <?php endwhile;
+        else: ?>
+            <p class="text-center" style="color: #777; font-size: 1.1rem;">Belum ada ulasan untuk buku ini.</p>
+        <?php endif; ?>
+    </div>
+    <br><br><br>
 
 
     <!-- Modal Pinjam -->
@@ -208,8 +325,7 @@ if (isset($_GET['id_buku'])) {
                         <div class="mb-3">
                             <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
                             <input type="date" class="form-control" id="tanggal_pinjam" name="tanggal_pinjam" required
-                                min="<?= date('Y-m-d') ?>"
-                                onchange="
+                                min="<?= date('Y-m-d') ?>" onchange="
                                     var date = new Date(this.value);
                                     date.setDate(date.getDate() + 7);
                                     document.getElementById('tanggal_kembali').min = this.value;
@@ -229,13 +345,14 @@ if (isset($_GET['id_buku'])) {
                 </div>
             </div>
         </div>
+
     </div>
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
 
-    <!-- preview -->
     <script>
         function previewImage() {
             const image = document.querySelector('#cover');
@@ -254,6 +371,23 @@ if (isset($_GET['id_buku'])) {
                 preview.src = "";
             }
         }
+    </script>
+    <script>
+        document.querySelectorAll('#star-rating i').forEach(star => {
+            star.addEventListener('click', function () {
+                const ratingValue = this.getAttribute('data-value');
+                document.getElementById('rating').value = ratingValue;
+                document.querySelectorAll('#star-rating i').forEach((s, index) => {
+                    if (index < ratingValue) {
+                        s.classList.remove('far');
+                        s.classList.add('fas');
+                    } else {
+                        s.classList.remove('fas');
+                        s.classList.add('far');
+                    }
+                });
+            });
+        });
     </script>
 </body>
 

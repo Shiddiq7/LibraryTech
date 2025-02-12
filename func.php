@@ -4,8 +4,8 @@ session_start();
 require 'vendor/autoload.php'; // Include PHPMailer
 
 $host = 'localhost';
-$user = 'root';
-$pass = '';
+$user = 'LibraTech';
+$pass = 'Lupalagi21';
 $db = 'perpustakaan';
 
 $conn = mysqli_connect($host, $user, $pass, $db);
@@ -667,5 +667,7 @@ if (isset($_POST['kembali'])) {
         </script>";
     }
 }
+
+
 
 ?>

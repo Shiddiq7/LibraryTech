@@ -126,6 +126,8 @@ require "../Auth/cek_log.php";
                         <li class="breadcrumb-item active">Dashboard</li>
                     </ol>
                     <div class="row">
+
+                    <!-- Total Buku -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card shadow h-100 py-2">
                                 <div class="card-body">
@@ -152,6 +154,7 @@ require "../Auth/cek_log.php";
                             </div>
                         </div>
 
+                        <!-- Peminjaman -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card shadow h-100 py-2">
                                 <div class="card-body">
@@ -178,6 +181,7 @@ require "../Auth/cek_log.php";
                             </div>
                         </div>
 
+                        <!-- Pengembalian -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card shadow h-100 py-2">
                                 <div class="card-body">
@@ -203,7 +207,8 @@ require "../Auth/cek_log.php";
                                 </div>
                             </div>
                         </div>
-
+                        
+                        <!-- Daftar Anggota -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card shadow h-100 py-2">
                                 <div class="card-body">

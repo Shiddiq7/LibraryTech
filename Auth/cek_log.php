@@ -9,12 +9,12 @@ if (!isset($_SESSION['log'])) {
 $role = $_SESSION['role'];
 $currentUrl = $_SERVER['REQUEST_URI'];
 
-if ($role == 'Anggota' && strpos($currentUrl, '/Admin/') !== false) {
+if ($role == 'Anggota' && (strpos($currentUrl, '/Admin/') !== false || strpos($currentUrl, '/Auth/') !== false)) {
     header('Location: ../User/dashboard.php');
     exit();
 }
 
-if ($role == 'Admin' && strpos($currentUrl, '/User/') !== false) {
+if ($role == 'Admin' && (strpos($currentUrl, '/User/') !== false || strpos($currentUrl, '/Auth/') !== false)) {
     header('Location: ../Admin/dashboard.php');
     exit();
 }
