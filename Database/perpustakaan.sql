@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 05, 2025 at 12:21 PM
+-- Generation Time: Feb 12, 2025 at 01:30 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.12
 
@@ -51,7 +51,8 @@ INSERT INTO `buku` (`id_buku`, `cover`, `judul`, `deskripsi`, `pengarang`, `pene
 ('P01', '../assets/Buku/POM.jpeg', 'Psychology Of Money', '-', 'Shiddiq', 'Eka', 2001, '21', 'Pendidikan', 1),
 ('PE17', '../assets/Buku/PKN.jpeg', 'Pendidikan Kewarganegaraan', '', 'Shiddiq', 'Andri', 2017, '320', 'Pendidikan', 1),
 ('SE18', '../assets/Buku/senbud.jpeg', 'Seni Budaya', '', 'Asep', 'Shiddiq', 2018, '222', 'Pendidikan', 1),
-('SO19', '../assets/Buku/Solo leveling.jpeg', 'Solo Leveling', 'Solo Leveling adalah sebuah manhwa aksi-fantasi yang mengikuti petualangan Sung Jin-Woo, seorang pemburu terlemah yang secara misterius mendapatkan kemampuan untuk meningkatkan kekuatannya tanpa batas. Setelah mengalami insiden mengerikan dalam sebuah dungeon berbahaya, Jin-Woo menemukan dirinya memiliki sistem leveling yang mirip dengan game RPG, yang memungkinkannya untuk menjadi lebih kuat dan menyelesaikan berbagai misi. Kisah ini menampilkan pertempuran epik, peningkatan kekuatan yang menakjubkan, dan perjalanan Jin-Woo untuk menjadi pemburu terkuat di dunia.', 'Shiddiq', 'Firdaus', 2019, '200', 'Komik', 1);
+('SO19', '../assets/Buku/Solo leveling.jpeg', 'Solo Leveling', 'Solo Leveling adalah sebuah manhwa aksi-fantasi yang mengikuti petualangan Sung Jin-Woo, seorang pemburu terlemah yang secara misterius mendapatkan kemampuan untuk meningkatkan kekuatannya tanpa batas. Setelah mengalami insiden mengerikan dalam sebuah dungeon berbahaya, Jin-Woo menemukan dirinya memiliki sistem leveling yang mirip dengan game RPG, yang memungkinkannya untuk menjadi lebih kuat dan menyelesaikan berbagai misi. Kisah ini menampilkan pertempuran epik, peningkatan kekuatan yang menakjubkan, dan perjalanan Jin-Woo untuk menjadi pemburu terkuat di dunia.', 'Shiddiq', 'Firdaus', 2019, '200', 'Komik', 1),
+('TO22', '../assets/Buku/SNBT.jpeg', 'Top One Buku Pintar SNBT', 'Buku Belajar Persiapan untuk mengikuti SNBT', 'Shiddiq', 'Eka', 2022, '120', 'Pendidikan', 1);
 
 -- --------------------------------------------------------
 
@@ -106,6 +107,7 @@ CREATE TABLE `pinjam` (
   `id_user` varchar(10) NOT NULL,
   `id_buku` varchar(10) NOT NULL,
   `username` varchar(50) NOT NULL,
+  `Email` varchar(50) NOT NULL,
   `cover` varchar(255) NOT NULL,
   `judul` varchar(50) NOT NULL,
   `pengarang` varchar(50) NOT NULL,
@@ -114,6 +116,13 @@ CREATE TABLE `pinjam` (
   `tanggal_kembali` date NOT NULL,
   `status` enum('Menunggu Konfirmasi','Dipinjam','Dikembalikan') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'Menunggu Konfirmasi'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `pinjam`
+--
+
+INSERT INTO `pinjam` (`id_pinjam`, `id_user`, `id_buku`, `username`, `Email`, `cover`, `judul`, `pengarang`, `penerbit`, `tanggal_pinjam`, `tanggal_kembali`, `status`) VALUES
+(65, 'SH0002', ' ON97 ', 'shiddiq211', 'shiddiqduasatu@gmail.com', '../assets/Buku/OP.jpeg', 'One Piece', 'Eiichiro Oda', 'Shueisha', '2025-02-12', '2025-02-12', 'Dipinjam');
 
 -- --------------------------------------------------------
 
@@ -137,7 +146,9 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id_user`, `Email`, `username`, `password`, `role`, `verify`, `if_visible`) VALUES
 ('0', 'admin@gmail.com', 'Admin', '$2y$10$Hv691UPJqS9vEL40f/v2iud7eK8gJENtWvzokm218o79pRhWuXLcS', 'Admin', 1, 0),
-('SH0001', 'shiddiqduasatu@gmail.com', 'shiddiq211', '$2y$10$binS3HEHBTGax.TrfL3ByewbcaboAowQmJRIf0N5Fl4.ANCClvnia', 'Anggota', 1, 1);
+('AZ0003', 'azrianawan@gmail.com', 'azrianhnf1', '$2y$10$aiBJKULVWKlfRStD.bxMDuqpDo5ZygCo9AfOuGoLnt2FLHQT5Ufva', 'Anggota', 1, 1),
+('FR0002', 'firdausarwork88@gmail.com', 'frdausaa88', '$2y$10$Q1wsFrwF9PcAKM2L4WfJmet.2ks/XHnqf3BmUK3AY90o0LmktLYB2', 'Anggota', 1, 1),
+('SH0002', 'shiddiqduasatu@gmail.com', 'Shiddiq211', '$2y$10$PqArFEJsDSBAC8zslsV9se7SJAz4pxsIHoCBY5th5h6iWcdlvIw6W', 'Anggota', 1, 1);
 
 --
 -- Indexes for dumped tables
@@ -197,7 +208,7 @@ ALTER TABLE `kembali`
 -- AUTO_INCREMENT for table `pinjam`
 --
 ALTER TABLE `pinjam`
-  MODIFY `id_pinjam` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id_pinjam` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
