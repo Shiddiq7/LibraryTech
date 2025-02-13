@@ -1,10 +1,9 @@
 <?php
-session_start();
-
 if (!isset($_SESSION['log'])) {
-    header('Location: ../Auth/login.php');
+    header('Location: http://localhost/librarytech/Auth/login.php') || header('Location: ../Auth/login.php');
     exit();
 }
+
 
 $role = $_SESSION['role'];
 $currentUrl = $_SERVER['REQUEST_URI'];

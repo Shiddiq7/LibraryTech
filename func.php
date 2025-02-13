@@ -62,28 +62,42 @@ if (isset($_POST['register'])) {
     $password = $_POST['password'];
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // Generate id_user
-    $initials = strtoupper(substr($username, 0, 2)); // Get first two characters of username
-    $query = "SELECT COUNT(*) as count FROM user WHERE if_visible = TRUE";
-    $result = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($result);
-    $count = $row['count'] + 1; // Get the next user number
-    $id_user = $initials . str_pad($count, 4, '0', STR_PAD_LEFT); // Combine initials and padded number
+    // Check for duplicate email or username
+    $checkQuery = "SELECT * FROM user WHERE Email='$email' OR username='$username'";
+    $checkResult = mysqli_query($conn, $checkQuery);
 
-    // Generate OTP and store it in the session
-    $otp = generateOTP();
-    $_SESSION['otp'] = $otp;
-    $_SESSION['email'] = $email;
-
-    $query = "INSERT INTO user (id_user, Email, username, password, verify) VALUES ('$id_user', '$email', '$username', '$hashed_password', 0)";
-    $result = mysqli_query($conn, $query);
-
-    if ($result) {
-        sendOTP($email, $otp, $username);
-        echo "<script>alert('Registrasi berhasil! Silakan cek email Anda untuk kode OTP.')</script>";
-        header("location: verify_otp.php");
+    if (mysqli_num_rows($checkResult) > 0) {
+        echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
+                Email atau username sudah terdaftar!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
     } else {
-        echo "<script>alert('Registrasi gagal!')</script>";
+        // Generate id_user
+        $initials = strtoupper(substr($username, 0, 2)); // Get first two characters of username
+        $query = "SELECT COUNT(*) as count FROM user WHERE if_visible = TRUE";
+        $result = mysqli_query($conn, $query);
+        $row = mysqli_fetch_assoc($result);
+        $count = $row['count'] + 1; // Get the next user number
+        $id_user = $initials . str_pad($count, 4, '0', STR_PAD_LEFT); // Combine initials and padded number
+
+        // Generate OTP and store it in the session
+        $otp = generateOTP();
+        $_SESSION['otp'] = $otp;
+        $_SESSION['email'] = $email;
+
+        $query = "INSERT INTO user (id_user, Email, username, password, verify) VALUES ('$id_user', '$email', '$username', '$hashed_password', 0)";
+        $result = mysqli_query($conn, $query);
+
+        if ($result) {
+            sendOTP($email, $otp, $username);
+            echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-success alert-dismissible fade show" role="alert">
+                    Registrasi berhasil! Silakan cek email Anda untuk kode OTP.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+            header("location: verify_otp.php");
+        } else {
+            echo "<script>alert('Registrasi gagal!')</script>";
+        }
     }
 }
 
@@ -548,7 +562,7 @@ if (isset($_POST['pinjam'])) {
     $id_buku = $_POST['id_buku'];
 
     $email = $_POST['email'];
-    
+
     $cover = $_POST['cover'];
     $judul = $_POST['judul'];
     $pengarang = $_POST['pengarang'];

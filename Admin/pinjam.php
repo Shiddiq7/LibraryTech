@@ -40,7 +40,7 @@ foreach ($pinjam as $pj) {
                 $mail->Subject = 'Pengingat Penting: Pengembalian Buku Terlambat';
                 $pengingat = query("SELECT username FROM pinjam WHERE Email = '" . $email_user[0]['Email'] . "'");
                 $mail->Body = '<p>Yth. ' . $pengingat[0]['username'] . ',</p>
-                <p>Dengan hormat, kami ingin memberitahukan bahwa Anda telah melewati batas waktu pengembalian untuk buku :.</p>
+                <p>Dengan hormat, kami ingin memberitahukan bahwa Anda telah melewati batas waktu pengembalian untuk buku :</p>
                 <p><strong>Judul Buku:</strong> ' . $pj['judul'] . '</p>
                 <p><strong>ID Buku:</strong> ' . $pj['id_buku'] . '</p>
                 <p><strong>Tanggal Peminjaman:</strong> ' . $pj['tanggal_pinjam'] . '</p>
