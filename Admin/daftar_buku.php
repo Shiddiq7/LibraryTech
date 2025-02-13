@@ -51,7 +51,7 @@ require "../Auth/cek_log.php";
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion"
-                style="background: linear-gradient(135deg, #3a3f44, #1a1d21);">
+                style="background: linear-gradient(135deg, #161b22, #0f1217);">
                 <div class="sb-sidenav-menu" style="color: #ffffff;">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading"></div>
@@ -95,7 +95,7 @@ require "../Auth/cek_log.php";
                                     <?php endif; ?>
                                 </a>
 
-                                
+
                             </nav>
                         </div>
 
@@ -159,6 +159,16 @@ require "../Auth/cek_log.php";
                                 </div>
                             </form>
 
+                            <style>
+                                .card {
+                                    transition: all 0.3s;
+                                }
+
+                                .card:hover {
+                                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+                                    transform: translateY(-5px);
+                                }
+                            </style>
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
                                 <?php
                                 $search = isset($_GET['search']) ? $_GET['search'] : '';

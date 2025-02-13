@@ -108,7 +108,7 @@ foreach ($pinjam as $pj) {
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion"
-                style="background: linear-gradient(135deg, #3a3f44, #1a1d21);">
+                style="background: linear-gradient(135deg, #161b22, #0f1217);">
                 <div class="sb-sidenav-menu" style="color: #ffffff;">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading"></div>
@@ -194,16 +194,20 @@ foreach ($pinjam as $pj) {
                         <div class="card-body">
                             <!-- Search -->
                             <form method="get" class="mb-4 d-flex justify-content-between">
-                                <div class="input-group shadow-md" style="width: 400px;">
+                                <div class="input-group shadow" style="width: 400px;">
                                     <input class="form-control" type="text" name="search" id="searchInput"
                                         value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
                                         placeholder="Search for..." aria-label="Search for..."
                                         aria-describedby="btnNavbarSearch" onkeyup="filterData()" />
                                 </div>
-                                <div class="input-group shadow-md" style="width: 200px;">
-                                    <span class="input-group-text" id="basic-addon1"><i
-                                            class="fas fa-filter"></i></span>
-                                    <select class="form-select" name="status" id="statusFilter" onchange="filterData()">
+
+                                <!-- Status -->
+                                <div class="input-group shadow rounded d-flex justify-content-end"
+                                    style="width: 200px;">
+                                    <span class="input-group-text bg-light border-0" id="basic-addon1"><i
+                                            class="fas fa-filter text-primary"></i></span>
+                                    <select class="form-select border-0" name="status" id="statusFilter"
+                                        onchange="filterData()">
                                         <option value="">All Status</option>
                                         <option value="Menunggu Konfirmasi" <?= isset($_GET['status']) && $_GET['status'] == 'Menunggu Konfirmasi' ? 'selected' : ''; ?>>Menunggu
                                             Konfirmasi</option>
@@ -211,12 +215,39 @@ foreach ($pinjam as $pj) {
                                         <option value="Dikembalikan" <?= isset($_GET['status']) && $_GET['status'] == 'Dikembalikan' ? 'selected' : ''; ?>>Dikembalikan</option>
                                     </select>
                                 </div>
+
+                                <!-- Filter month -->
+                                <div class="input-group shadow rounded" style="width: 220px; overflow: hidden;">
+                                    <span class="input-group-text bg-light border-0" id="basic-addon1"><i
+                                            class="fas fa-calendar text-primary"></i></span>
+                                    <select class="form-select border-0" name="month" id="monthFilter"
+                                        onchange="filterData()">
+                                        <option value="" class="text-muted">All Months</option>
+                                        <?php for ($m = 1; $m <= 12; $m++): ?>
+                                            <option value="<?= $m ?>" <?= isset($_GET['month']) && $_GET['month'] == $m ? 'selected' : ''; ?>>
+                                                <?= date('F', mktime(0, 0, 0, $m, 1)) ?>
+                                            </option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </div>
                             </form>
+
+                            <style>
+                                .card {
+                                    transition: all 0.3s;
+                                }
+
+                                .card:hover {
+                                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+                                    transform: translateY(-5px);
+                                }
+                            </style>
 
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
                                 <?php
                                 $statusFilter = isset($_GET['status']) ? $_GET['status'] : '';
                                 $search = isset($_GET['search']) ? $_GET['search'] : '';
+                                $monthFilter = isset($_GET['month']) ? $_GET['month'] : '';
                                 $query = "SELECT * FROM pinjam";
 
                                 if ($search) {
@@ -227,6 +258,10 @@ foreach ($pinjam as $pj) {
 
                                 if ($statusFilter) {
                                     $query .= $search ? " AND status = '$statusFilter'" : " WHERE status = '$statusFilter'";
+                                }
+
+                                if ($monthFilter) {
+                                    $query .= ($search || $statusFilter) ? " AND MONTH(tanggal_pinjam) = '$monthFilter'" : " WHERE MONTH(tanggal_pinjam) = '$monthFilter'";
                                 }
 
                                 $query .= " ORDER BY FIELD(status, 'Menunggu Konfirmasi') DESC, FIELD(status, 'Dikembalikan') ASC";
@@ -350,7 +385,8 @@ foreach ($pinjam as $pj) {
         function filterData() {
             const searchQuery = document.getElementById('searchInput').value;
             const statusFilter = document.getElementById('statusFilter').value;
-            fetch(`?search=${encodeURIComponent(searchQuery)}&status=${encodeURIComponent(statusFilter)}`)
+            const monthFilter = document.getElementById('monthFilter').value;
+            fetch(`?search=${encodeURIComponent(searchQuery)}&status=${encodeURIComponent(statusFilter)}&month=${encodeURIComponent(monthFilter)}`)
                 .then(response => response.text())
                 .then(data => {
                     const parser = new DOMParser();

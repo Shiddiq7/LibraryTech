@@ -51,7 +51,7 @@ require "../Auth/cek_log.php";
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion"
-                style="background: linear-gradient(135deg, #3a3f44, #1a1d21);">
+                style="background: linear-gradient(135deg, #161b22, #0f1217);">
                 <div class="sb-sidenav-menu" style="color: #ffffff;">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading"></div>
@@ -80,7 +80,7 @@ require "../Auth/cek_log.php";
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_buku.php' ? 'active' : ''; ?>"
                                     href="daftar_buku.php">Daftar Buku</a>
-                                    
+
                                 <!-- peminjaman  -->
                                 <?php
                                 $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
@@ -91,7 +91,7 @@ require "../Auth/cek_log.php";
                                     <?php if ($newDataCount > 0): ?>
                                         <span class="dot bg-warning"></span>
                                     <?php endif; ?>
-                                </a>                             
+                                </a>
                             </nav>
                         </div>
 
@@ -127,7 +127,7 @@ require "../Auth/cek_log.php";
                                 <i class="fas fa-table me-1"></i>
                                 Member
                             </div>
-                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#tambahAnggota">Tambah Anggota</button>
                         </div>
                         <div class="card-body">
@@ -161,7 +161,7 @@ require "../Auth/cek_log.php";
                                             <td><?= $email ?></td>
                                             <td><?= $username ?></td>
                                             <td><?= $role ?></td>
-                                            
+
 
                                         </tr>
 

@@ -52,7 +52,7 @@ require "../Auth/cek_log.php";
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion"
-                style="background: linear-gradient(135deg, #3a3f44, #1a1d21);">
+                style="background: linear-gradient(135deg, #161b22, #0f1217);">
                 <div class="sb-sidenav-menu" style="color: #ffffff;">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading"></div>
@@ -131,7 +131,7 @@ require "../Auth/cek_log.php";
                                 <i class="fas fa-table me-1"></i>
                                 Kategori Buku
                             </div>
-                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#tambahKategori">Tambah Kategori</button>
                         </div>
                         <div class="card-body">
@@ -163,9 +163,11 @@ require "../Auth/cek_log.php";
                                             <td><?= $nama_kategori ?></td>
                                             <td><?= $deskripsi ?></td>
                                             <td>
-                                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                                    data-bs-toggle="modal"
                                                     data-bs-target="#edit<?= $id_kat ?>">Edit</button>
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                <button type="button" class="btn btn-outline-danger btn-sm"
+                                                    data-bs-toggle="modal"
                                                     data-bs-target="#delete<?= $id_kat ?>">Delete</button>
                                             </td>
 

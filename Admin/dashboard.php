@@ -37,7 +37,7 @@ require "../Auth/cek_log.php";
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto me-3 me-lg-4">
             <li class="nav-item dropdown">
-                
+
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -53,7 +53,7 @@ require "../Auth/cek_log.php";
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion"
-                style="background: linear-gradient(135deg, #3a3f44, #1a1d21);">
+                style="background: linear-gradient(135deg, #161b22, #0f1217);">
                 <div class="sb-sidenav-menu" style="color: #ffffff;">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading"></div>
@@ -98,7 +98,6 @@ require "../Auth/cek_log.php";
                                 </a>
 
 
-
                             </nav>
                         </div>
 
@@ -128,7 +127,7 @@ require "../Auth/cek_log.php";
                     </ol>
                     <div class="row">
 
-                    <!-- Total Buku -->
+                        <!-- Total Buku -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card shadow h-100 py-2">
                                 <div class="card-body">
@@ -208,7 +207,7 @@ require "../Auth/cek_log.php";
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Daftar Anggota -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card shadow h-100 py-2">
@@ -260,10 +259,10 @@ require "../Auth/cek_log.php";
                         $data[] = $count;
                     }
 
-                    if(empty($dates)) {
+                    if (empty($dates)) {
                         echo "document.getElementById('myChart').style.display = 'none';";
                         echo "const noDataDiv = document.createElement('div');";
-                        echo "noDataDiv.style.textAlign = 'center';"; 
+                        echo "noDataDiv.style.textAlign = 'center';";
                         echo "noDataDiv.style.padding = '250px 0';";
                         echo "noDataDiv.style.fontSize = '24px';";
                         echo "noDataDiv.style.fontWeight = 'bold';";
@@ -271,107 +270,107 @@ require "../Auth/cek_log.php";
                         echo "noDataDiv.innerText = 'Tidak ada Buku yang di pinjam';";
                         echo "document.getElementById('myChart').parentNode.appendChild(noDataDiv);";
                     } else {
-                    ?>
+                        ?>
 
-                    new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: <?php echo json_encode($labels) ?>,
-                            datasets: [{
-                                label: 'Buku Dipinjam',
-                                data: <?php echo json_encode($data) ?>,
-                                fill: true,
-                                backgroundColor: 'rgba(54, 162, 235, 0.1)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 3,
-                                pointRadius: 6,
-                                pointBackgroundColor: '#fff',
-                                pointBorderColor: 'rgba(54, 162, 235, 1)',
-                                pointHoverRadius: 8,
-                                tension: 0.3
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: <?php echo json_encode($labels) ?>,
+                                datasets: [{
+                                    label: 'Buku Dipinjam',
+                                    data: <?php echo json_encode($data) ?>,
+                                    fill: true,
+                                    backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 3,
+                                    pointRadius: 6,
+                                    pointBackgroundColor: '#fff',
+                                    pointBorderColor: 'rgba(54, 162, 235, 1)',
+                                    pointHoverRadius: 8,
+                                    tension: 0.3
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            font: {
+                                                family: 'Helvetica',
+                                                size: 14,
+                                                weight: '500'
+                                            },
+                                            padding: 25,
+                                        }
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'BUKU DIPINJAM PER-TANGGAL',
                                         font: {
                                             family: 'Helvetica',
-                                            size: 14,
-                                            weight: '500'
+                                            size: 24,
+                                            weight: 'bold'
                                         },
-                                        padding: 25,
+                                        padding: {
+                                            top: 15,
+                                            bottom: 35
+                                        },
+                                        color: '#333'
                                     }
                                 },
-                                title: {
-                                    display: true,
-                                    text: 'BUKU DIPINJAM PER-TANGGAL',
-                                    font: {
-                                        family: 'Helvetica',
-                                        size: 24,
-                                        weight: 'bold'
+                                scales: {
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        },
+                                        ticks: {
+                                            font: {
+                                                family: 'Helvetica',
+                                                size: 13
+                                            }
+                                        }
                                     },
-                                    padding: {
-                                        top: 15,
-                                        bottom: 35
-                                    },
-                                    color: '#333'
-                                }
-                            },
-                            scales: {
-                                x: {
-                                    grid: {
-                                        display: false
-                                    },
-                                    ticks: {
-                                        font: {
-                                            family: 'Helvetica',
-                                            size: 13
+                                    y: {
+                                        beginAtZero: true,
+                                        grid: {
+                                            color: 'rgba(0,0,0,0.05)',
+                                            drawBorder: false
+                                        },
+                                        ticks: {
+                                            font: {
+                                                family: 'Helvetica',
+                                                size: 13
+                                            },
+                                            callback: function (value) {
+                                                return value.toLocaleString();
+                                            }
                                         }
                                     }
                                 },
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: 'rgba(0,0,0,0.05)',
-                                        drawBorder: false
-                                    },
-                                    ticks: {
-                                        font: {
-                                            family: 'Helvetica',
-                                            size: 13
-                                        },
-                                        callback: function (value) {
-                                            return value.toLocaleString();
-                                        }
+                                animation: {
+                                    duration: 2000,
+                                    easing: 'easeInOutQuart'
+                                },
+                                interaction: {
+                                    intersect: false,
+                                    mode: 'index'
+                                },
+                                elements: {
+                                    line: {
+                                        borderJoinStyle: 'round'
                                     }
-                                }
-                            },
-                            animation: {
-                                duration: 2000,
-                                easing: 'easeInOutQuart'
-                            },
-                            interaction: {
-                                intersect: false,
-                                mode: 'index'
-                            },
-                            elements: {
-                                line: {
-                                    borderJoinStyle: 'round'
                                 }
                             }
-                        }
-                    });
+                        });
 
                     <?php } ?>
                 </script>
 
 
                 <!-- Tabel Buku -->
-                <div class="card mb-4" style="max-width: 100%;">
+                <div class="card mb-4 mt-4" style="max-width: 100%;">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
                         Tabel Buku

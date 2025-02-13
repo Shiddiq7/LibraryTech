@@ -231,6 +231,36 @@ require "../Auth/cek_log.php";
                 </div>
             </form>
 
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const cards = document.querySelectorAll('.card');
+                    cards.forEach(card => {
+                        const img = card.querySelector('img');
+                        if (img) {
+                            const colorThief = new ColorThief();
+                            if (img.complete) {
+                                imgLoaded(card, colorThief.getColor(img));
+                            } else {
+                                img.addEventListener('load', function () {
+                                    imgLoaded(card, colorThief.getColor(img));
+                                });
+                            }
+                        }
+                    });
+
+                    function imgLoaded(card, color) {
+                        const rgbColor = `rgb(${color[0] + 50}, ${color[1] + 50}, ${color[2] + 50})`;
+                        card.addEventListener('mouseover', function () {
+                            card.style.boxShadow = `0 0 50px ${rgbColor}`;
+                        });
+                        card.addEventListener('mouseout', function () {
+                            card.style.boxShadow = '';
+                        });
+                    }
+                });
+            </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+            
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
                 <?php
                 $statusFilter = isset($_GET['status']) ? $_GET['status'] : '';
@@ -291,7 +321,16 @@ require "../Auth/cek_log.php";
                                     <?php endif; ?>
 
                                     <hr class="my-2"><br>
+                                    <style>
+                                        .card {
+                                            transition: all 0.3s;
+                                        }
 
+                                        .card:hover {
+                                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                                            transform: translateY(-5px);
+                                        }
+                                    </style>
                                     <div class="d-flex justify-content-between">
                                         <?php
                                         $currentDate = date('Y-m-d');
