@@ -213,14 +213,14 @@ require "../Auth/cek_log.php";
             <br><br>
 
             <!-- Search and Filter -->
-            <form method="get" class="mb-4 d-flex justify-content-between">
-                <div class="input-group shadow-md" style="width: 400px;">
+            <form method="get" class="mb-4 d-flex flex-column flex-md-row justify-content-between">
+                <div class="input-group shadow-md mb-3 mb-md-0" style="width: 100%; max-width: 400px;">
                     <input class="form-control" type="text" name="search" id="searchInput"
                         value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
                         placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch"
                         onkeyup="filterData()" />
                 </div>
-                <div class="input-group shadow-md" style="width: 200px;">
+                <div class="input-group shadow-md ms-md-2" style="width: 100%; max-width: 200px;">
                     <span class="input-group-text" id="basic-addon2"><i class="fas fa-filter"></i></span>
                     <select class="form-select" name="status" id="statusFilter" onchange="filterData()">
                         <option value="">All Status</option>
@@ -284,7 +284,7 @@ require "../Auth/cek_log.php";
                     foreach ($pinjam as $pj):
                         ?>
                         <div class="col mb-2">
-                            <div class="card h-100 shadow-lg">
+                            <div class="card h-100 shadow-lg" id="cardpinjam">
                                 <div class="card h-100">
                                     <img class="card-img-top" src="<?= $pj['cover']; ?>" alt="Book Cover"
                                         style="object-fit: cover; width: 100%; height: 500px;">
@@ -321,16 +321,7 @@ require "../Auth/cek_log.php";
                                     <?php endif; ?>
 
                                     <hr class="my-2"><br>
-                                    <style>
-                                        .card {
-                                            transition: all 0.3s;
-                                        }
-
-                                        .card:hover {
-                                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-                                            transform: translateY(-5px);
-                                        }
-                                    </style>
+                                   
                                     <div class="d-flex justify-content-between">
                                         <?php
                                         $currentDate = date('Y-m-d');
@@ -359,7 +350,7 @@ require "../Auth/cek_log.php";
                                                                 <img src="<?= $pj['cover'] ?>" alt="Cover Buku"
                                                                     class="img-thumbnail">
                                                             </div>
-                                                            <div class="col-8">
+                                                            <div class="col-8" style="text-align: left;">
                                                                 <p class="card-text"><strong>Judul:</strong> <?= $pj['judul'] ?>
                                                                 </p>
                                                                 <p class="card-text"><strong>Pengarang:</strong>
@@ -367,7 +358,13 @@ require "../Auth/cek_log.php";
                                                                 <p class="card-text"><strong>Tanggal Pinjam:</strong>
                                                                     <?= $pj['tanggal_pinjam'] ?></p>
                                                                 <br>
-                                                                <p>Apakah Anda yakin ingin mengembalikan buku ini?</p>
+                                                                <?php
+                                                                $tanggal_kembali = date_create($pj['tanggal_kembali']);
+                                                                $now = date_create();
+                                                                $diff = date_diff($tanggal_kembali, $now);
+                                                                $daysLeft = $diff->format('%a');
+                                                                ?>
+                                                                <p>Apakah Anda yakin ingin mengembalikan buku ini? <p>Waktu pinjam masih tersisa  <?= $daysLeft ?> hari lagi.</p></p>
                                                             </div>
                                                         </div>
 
@@ -426,7 +423,7 @@ require "../Auth/cek_log.php";
                         <img src="../assets/img/logo1.png" alt="LibraryTech Logo" style="height: 60px;">
                         <span class="ms-2 text-white fs-4">LibraTech</span>
                     </div>
-                    <p class="text-light opacity-75">
+                    <p class="text-light opacity-75 text-start">
                         Transforming the way you access knowledge. Modern library solutions for the digital age.
                     </p>
                 </div>
@@ -447,8 +444,8 @@ require "../Auth/cek_log.php";
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <h6 class="text-white mb-3 fw-bold text-center">Contact</h6>
-                    <div class="text-light opacity-75 text-center">
+                    <h6 class="text-white mb-3 fw-bold text-start">Contact</h6>
+                    <div class="text-light opacity-75 text-start">
                         <p class="mb-2" style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
                             onmouseout="this.style.color='#fff'"><i class="fas fa-envelope me-2"></i> <span
                                 style="margin-left: 8px;">Shiddiqduasatu@gmail.com</span></p>

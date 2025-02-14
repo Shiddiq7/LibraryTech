@@ -280,15 +280,15 @@ require "../Auth/cek_log.php";
             <br><br>
 
             <!-- Search and Filter -->
-            <form method="GET" class="mb-4 d-flex justify-content-between">
-                <div class="input-group shadow" style="width: 400px;">
+            <form method="GET" class="mb-4 d-flex flex-column flex-md-row justify-content-between">
+                <div class="input-group shadow mb-3 mb-md-0" style="max-width: 100%; width: 400px;">
                     <input class="form-control" type="text" name="search" id="searchInput"
                         value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
                         placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch"
                         onkeyup="filterData()" />
                     <!-- Search input untuk mencari buku berdasarkan judul, pengarang, penerbit, atau kategori -->
                 </div>
-                <div class="input-group shadow" style="width: 200px;">
+                <div class="input-group shadow" style="max-width: 100%; width: 200px;">
                     <span class="input-group-text bg-primary text-white" id="basic-addon2"><i class="fas fa-filter"></i></span>
                     <select class="form-select bg-white" name="category" id="categoryFilter" onchange="filterData()">
                         <option value="">All Categories</option>
@@ -360,7 +360,7 @@ require "../Auth/cek_log.php";
                 if (count($buku) > 0) {
                     foreach ($buku as $bk):
                         ?>
-                        <div class="col mb-2">
+                        <div class="col mb-4">
                             <div class="card h-100 shadow-lg">
                                 <div class="card h-100">
                                     <img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Book Cover"
@@ -388,7 +388,7 @@ require "../Auth/cek_log.php";
                     <?php endforeach;
                 } else {
                     ?>
-                    <div class="col mb-4">
+                    <div class="col-md-4 col-lg-3 col-sm-6 mb-4">
                         <div class="card h-100 shadow-md">
                             <div class="card-body">
                                 <h5 class="card-title">Buku Kosong </h5>
@@ -399,6 +399,17 @@ require "../Auth/cek_log.php";
                 }
                 ?>
             </div>
+            <style>
+                @media (max-width: 576px) {
+                    .card {
+                        width: 100%;
+                        height: auto;
+                    }
+                    .card img {
+                        height: 300px;
+                    }
+                }
+            </style>
         </div>
     </section>
 
@@ -416,7 +427,7 @@ require "../Auth/cek_log.php";
                         <img src="../assets/img/logo1.png" alt="LibraryTech Logo" style="height: 60px;">
                         <span class="ms-2 text-white fs-4">LibraTech</span>
                     </div>
-                    <p class="text-light opacity-75">
+                    <p class="text-light opacity-75" style="text-align: left;">
                         Transforming the way you access knowledge. Modern library solutions for the digital age.
                     </p>
                 </div>
@@ -437,8 +448,8 @@ require "../Auth/cek_log.php";
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <h6 class="text-white mb-3 fw-bold text-center">Contact</h6>
-                    <div class="text-light opacity-75 text-center">
+                    <h6 class="text-white mb-3 fw-bold">Contact</h6>
+                    <div class="text-light opacity-75">
                         <p class="mb-2" style="transition: all 0.3s;" onmouseover="this.style.color='#ffd700'"
                             onmouseout="this.style.color='#fff'"><i class="fas fa-envelope me-2"></i> <span
                                 style="margin-left: 8px;">Shiddiqduasatu@gmail.com</span></p>

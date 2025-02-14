@@ -182,41 +182,7 @@ if (isset($_POST['tambahAnggota'])) {
 }
 
 
-// Delete Profile
-if (isset($_POST['deleteProfile'])) {
-    $id_user = $_POST['id_user'];
-    $confirm_password = $_POST['confirm_password'];
 
-    // Get stored password
-    $query = "SELECT password FROM user WHERE id_user = '$id_user'";
-    $result = mysqli_query($conn, $query);
-    $user = mysqli_fetch_assoc($result);
-
-    if (password_verify($confirm_password, $user['password'])) {
-        $delete = "UPDATE user SET if_visible = FALSE, verify = FALSE WHERE id_user = '$id_user'";
-        $result = mysqli_query($conn, $delete);
-
-        if ($result) {
-            session_destroy();
-            echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-            echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
-            echo "<script>
-                $(document).ready(function() {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Profile Deleted Successfully!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(function() {
-                        window.location = '../Auth/login.php';
-                    });
-                });
-            </script>";
-        }
-    } else {
-        echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">Password Salah!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-    }
-}
 
 // Daftar Buku
 // Fungsi query digunakan untuk mengirimkan query ke database dan mengembalikan hasilnya dalam bentuk array associative
@@ -271,7 +237,7 @@ if (isset($_POST['tambahBuku'])) {
     if (!is_dir('../assets/Buku')) {
         mkdir('../assets/Buku', 0777, true);
     }
-    
+
     // cek apakah folder assets/Buku/$kategori sudah ada atau belum
     // jika belum, maka buat folder baru dengan nama $kategori
     // dan set permissionnya menjadi 0777 agar dapat diakses oleh semua user

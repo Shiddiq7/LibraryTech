@@ -232,16 +232,7 @@ foreach ($pinjam as $pj) {
                                 </div>
                             </form>
 
-                            <style>
-                                .card {
-                                    transition: all 0.3s;
-                                }
 
-                                .card:hover {
-                                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-                                    transform: translateY(-5px);
-                                }
-                            </style>
 
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
                                 <?php
