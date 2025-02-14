@@ -220,12 +220,14 @@ if (isset($_GET['id_buku'])) {
                         });
                     </script>';
             } else {
+                $query = "UPDATE Review SET rating = '$rating' WHERE id_buku = '$id_buku' AND username = '$username'";
+                mysqli_query($conn, $query);
                 echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
                 echo '<script>
                         swal({
-                            title: "Gagal!",
-                            text: "Anda sudah memberikan rating sebelumnya!",
-                            icon: "error",
+                            title: "Terima Kasih!",
+                            text: "Rating Anda telah diperbarui!",
+                            icon: "success",
                             button: "Oke",
                         });
                     </script>';
@@ -331,7 +333,40 @@ if (isset($_GET['id_buku'])) {
             Ulasan Buku</h3>
         <?php
         $id_buku = $data['id_buku'];
-        $query = "SELECT username, ulasan, rating FROM Review WHERE id_buku = '$id_buku' AND ulasan IS NOT NULL";
+        $username = $_SESSION['username'];
+
+        $query = "SELECT username, ulasan, rating FROM Review WHERE id_buku = '$id_buku' AND username = '$username' AND ulasan IS NOT NULL";
+        $result = mysqli_query($conn, $query);
+
+        if (mysqli_num_rows($result) > 0):
+            $review = mysqli_fetch_assoc($result);
+            ?>
+            <div class="card mt-3 shadow-sm border-0" style="border-radius: 10px; background-color: #343a40; color: white;">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="me-3">
+                            <i class="fas fa-user-circle" style="font-size: 2rem;"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-0" style="font-weight: bold;">
+                                <?= htmlspecialchars($review['username']); ?>
+                            </h5>
+                            <div class="card-text">
+                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                    <i class="<?= $i <= $review['rating'] ? 'fas' : 'far'; ?> fa-star text-warning"></i>
+                                <?php endfor; ?>
+                            </div>
+                        </div>
+                        <div class="ms-auto">
+                            <p class="text-white" style="font-size: 0.8rem;">Komentarmu</p>
+                        </div>
+                    </div>
+                    <p class="card-text" style="font-style: italic;"><?= htmlspecialchars($review['ulasan']); ?></p>
+                </div>
+            </div>
+        <?php endif;
+
+        $query = "SELECT username, ulasan, rating FROM Review WHERE id_buku = '$id_buku' AND username != '$username' AND ulasan IS NOT NULL";
         $result = mysqli_query($conn, $query);
 
         if (mysqli_num_rows($result) > 0):
@@ -340,7 +375,7 @@ if (isset($_GET['id_buku'])) {
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-2">
                             <div class="me-3">
-                                <i class="fas fa-user-circle" style="font-size: 2rem; color: #007bff;"></i>
+                                <i class="fas fa-user-circle" style="font-size: 2rem;"></i>
                             </div>
                             <div>
                                 <h5 class="card-title mb-0" style="font-weight: bold;">

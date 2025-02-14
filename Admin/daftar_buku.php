@@ -132,8 +132,7 @@ require "../Auth/cek_log.php";
                                 Buku
                             </div>
 
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                data-bs-target="#tambahBuku">Tambah Buku</button>
+
                         </div>
                         <div class="card-body">
                             <!-- Search and Filter -->
@@ -149,10 +148,10 @@ require "../Auth/cek_log.php";
                                         onchange="filterData()">
                                         <option value="">All Categories</option>
                                         <?php
-                                        $categories = query("SELECT DISTINCT kategori FROM buku WHERE if_visible = TRUE");
+                                        $categories = query("SELECT DISTINCT nama_kategori FROM kategori");
                                         foreach ($categories as $category) {
-                                            $selected = isset($_GET['category']) && $_GET['category'] == $category['kategori'] ? 'selected' : '';
-                                            echo "<option value=\"{$category['kategori']}\" $selected>{$category['kategori']}</option>";
+                                            $selected = isset($_GET['category']) && $_GET['category'] == $category['nama_kategori'] ? 'selected' : '';
+                                            echo "<option value=\"{$category['nama_kategori']}\" $selected>{$category['nama_kategori']}</option>";
                                         }
                                         ?>
                                     </select>
@@ -170,6 +169,15 @@ require "../Auth/cek_log.php";
                                 }
                             </style>
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
+                                <div class="col mb-4">
+                                    <div class="card h-100 shadow-md d-flex justify-content-center align-items-center"
+                                        style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#tambahBuku">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title">Tambah Buku</h5>
+                                            <div style="font-size: 48px; color: #007bff;">+</div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <?php
                                 $search = isset($_GET['search']) ? $_GET['search'] : '';
                                 $category = isset($_GET['category']) ? $_GET['category'] : '';
@@ -218,7 +226,7 @@ require "../Auth/cek_log.php";
                                     <div class="col mb-4">
                                         <div class="card h-100 shadow-md">
                                             <div class="card-body">
-                                                <h5 class="card-title">Buku Kosong </h5>
+                                                <h5 class="card-title text-center">Buku Kosong </h5>
                                             </div>
                                         </div>
                                     </div>

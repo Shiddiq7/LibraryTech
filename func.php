@@ -243,13 +243,14 @@ if (isset($_POST['tambahBuku'])) {
     $id_buku = $_POST['id_buku'];
 
     // Mendapatkan nama file yang di upload
+    $kategori = $_POST['kategori'];
     $cover = $_FILES['cover']['name'];
 
     // Mendapatkan lokasi file sementara setelah di upload
     $cover_tmp = $_FILES['cover']['tmp_name'];
 
     // Membuat nama folder dan nama file yang akan di simpan di folder assets
-    $cover_folder = "../assets/Buku/$cover";
+    $cover_folder = "../assets/Buku/$kategori/$cover";
 
     $judul = $_POST['judul'];
     $deskripsi = $_POST['deskripsi'];
@@ -269,6 +270,13 @@ if (isset($_POST['tambahBuku'])) {
     // dan set permissionnya menjadi 0777 agar dapat diakses oleh semua user
     if (!is_dir('../assets/Buku')) {
         mkdir('../assets/Buku', 0777, true);
+    }
+    
+    // cek apakah folder assets/Buku/$kategori sudah ada atau belum
+    // jika belum, maka buat folder baru dengan nama $kategori
+    // dan set permissionnya menjadi 0777 agar dapat diakses oleh semua user
+    if (!is_dir("../assets/Buku/$kategori")) {
+        mkdir("../assets/Buku/$kategori", 0777, true);
     }
 
     // Move the uploaded file to the uploads directory

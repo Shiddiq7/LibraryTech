@@ -205,7 +205,7 @@ require "../Auth/cek_log.php";
     <br><br>
     <section class="hero-section" style="max-height: 500px;">
         <div class="container-fluid px-0">
-            <div id="carouselExampleCaptions" class="carousel slide shadow-lg rounded-5" data-bs-ride="carousel">
+            <div id="carouselExampleCaptions" class="carousel slide shadow-lg rounded-5" data-bs-ride="carousel" data-bs-interval="10000">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
                         aria-current="true" aria-label="Slide 1"></button>
@@ -289,8 +289,8 @@ require "../Auth/cek_log.php";
                     <!-- Search input untuk mencari buku berdasarkan judul, pengarang, penerbit, atau kategori -->
                 </div>
                 <div class="input-group shadow" style="width: 200px;">
-                    <span class="input-group-text" id="basic-addon2"><i class="fas fa-filter"></i></span>
-                    <select class="form-select" name="category" id="categoryFilter" onchange="filterData()">
+                    <span class="input-group-text bg-primary text-white" id="basic-addon2"><i class="fas fa-filter"></i></span>
+                    <select class="form-select bg-white" name="category" id="categoryFilter" onchange="filterData()">
                         <option value="">All Categories</option>
                         <?php
                         $categories = query("SELECT * FROM kategori");
