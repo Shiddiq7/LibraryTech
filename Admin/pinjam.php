@@ -21,8 +21,8 @@ foreach ($pinjam as $pj) {
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
-                $mail->Username = 'shiddiqduasatu@gmail.com';
-                $mail->Password = 'abzqaggnahfewfnr';
+                $mail->Username = 'libratech21@gmail.com';
+                $mail->Password = 'wwxhbkuejyygwrvl'; 
                 $mail->SMTPSecure = 'tls';
                 $mail->Port = 587;
 

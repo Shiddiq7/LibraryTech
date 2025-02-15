@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 12, 2025 at 01:30 AM
+-- Generation Time: Feb 15, 2025 at 06:38 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.12
 
@@ -45,14 +45,13 @@ CREATE TABLE `buku` (
 --
 
 INSERT INTO `buku` (`id_buku`, `cover`, `judul`, `deskripsi`, `pengarang`, `penerbit`, `tahun_terbit`, `halaman`, `kategori`, `if_visible`) VALUES
-('BU10', '../assets/Buku/SNBT.jpeg', 'Buku Pintar SNBT', 'Buku Belajar Persiapan SNBT', 'Shiddiq', 'Firdaus', 2010, '211', 'Pendidikan', 0),
-('BU22', '../assets/Buku/SNBT.jpeg', 'Buku Pintar SNBT', '', 'Shiddiq', 'Firdaus', 2022, '20', 'Pendidikan', 0),
-('ON97', '../assets/Buku/OP.jpeg', 'One Piece', 'One Piece adalah manga Jepang yang ditulis dan diilustrasikan oleh Eiichiro Oda, mengikuti petualangan Monkey D. Luffy dan krunya dalam pencarian harta karun legendaris, One Piece, untuk menjadi Raja Bajak Laut. Cerita ini kaya akan tema persahabatan, petualangan, dan imajinasi.', 'Eiichiro Oda', 'Shueisha', 1997, '220', 'Komik', 1),
-('P01', '../assets/Buku/POM.jpeg', 'Psychology Of Money', '-', 'Shiddiq', 'Eka', 2001, '21', 'Pendidikan', 1),
-('PE17', '../assets/Buku/PKN.jpeg', 'Pendidikan Kewarganegaraan', '', 'Shiddiq', 'Andri', 2017, '320', 'Pendidikan', 1),
-('SE18', '../assets/Buku/senbud.jpeg', 'Seni Budaya', '', 'Asep', 'Shiddiq', 2018, '222', 'Pendidikan', 1),
-('SO19', '../assets/Buku/Solo leveling.jpeg', 'Solo Leveling', 'Solo Leveling adalah sebuah manhwa aksi-fantasi yang mengikuti petualangan Sung Jin-Woo, seorang pemburu terlemah yang secara misterius mendapatkan kemampuan untuk meningkatkan kekuatannya tanpa batas. Setelah mengalami insiden mengerikan dalam sebuah dungeon berbahaya, Jin-Woo menemukan dirinya memiliki sistem leveling yang mirip dengan game RPG, yang memungkinkannya untuk menjadi lebih kuat dan menyelesaikan berbagai misi. Kisah ini menampilkan pertempuran epik, peningkatan kekuatan yang menakjubkan, dan perjalanan Jin-Woo untuk menjadi pemburu terkuat di dunia.', 'Shiddiq', 'Firdaus', 2019, '200', 'Komik', 1),
-('TO22', '../assets/Buku/SNBT.jpeg', 'Top One Buku Pintar SNBT', 'Buku Belajar Persiapan untuk mengikuti SNBT', 'Shiddiq', 'Eka', 2022, '120', 'Pendidikan', 1);
+('BU24', '../assets/Buku/Pendidikan/SNBT.jpeg', 'Buku Pintar SNBT', 'Seleksi Nasional Berdasarkan Tes (SNBT) merupakan seleksi masuk Perquruan Tinggi Negeri yang didasarkan pada hasil tes masuk calon mahasiswa baru.', 'Tim Edukasi Indonesia', 'Bintang Wahyu', 2024, '520', 'Pendidikan', 1),
+('KA21', '../assets/Buku/Non-Fiksi/Kala senja menyapa.jpeg', 'Kala Senja Menyapa', 'mengisahkan perjalanan emosional seorang gadis muda bernama Aira yang jatuh cinta pada sosok pria bernama Muhammad Rivaldo Al-Hussein. Rivaldo adalah pria tampan dan menawan, yang terkenal di sekolahnya karena senyuman manisnya dan ketampanannya yang tak terbantahkan.', 'Halimatus Sakdiyah, Aksara Bercerita, dan LKPP', 'CV Kanaka Media', 2021, '100', 'Non-Fiksi', 1),
+('MO24', '../assets/Buku/Fantasi/MONS MALEFICIORUM.jpeg', 'Mons Maleficiorum', '\"Monstrum Maleficiorum\" menyelidiki dunia sihir dan okultisme, menjelaskan berbagai praktik sihir yang dianggap berbahaya dan terlarang. Buku ini menguraikan karakteristik dan perilaku penyihir, serta makhluk-makhluk jahat yang berhubungan dengan dunia gelap. Dalam konteks sejarah, buku ini sering digunakan sebagai panduan oleh para inkuisitor untuk mengidentifikasi dan menangkap penyihir.', 'Jonas', 'Shiddiq', 2024, '405', 'Fantasi', 1),
+('ON97', '../assets/Buku/Komik/OP.jpeg', 'One Piece', 'bercerita tentang petualangan Monkey D. Luffy, seorang remaja yang bercita-cita menjadi Raja Bajak Laut. Luffy berlayar dari desanya untuk menemukan harta karun legendaris, One Piece. ', 'Eiichiro Oda', 'Weekly Shonen Jump', 1997, '208', 'Komik', 1),
+('PS20', '../assets/Buku/Pendidikan/POM.jpeg', 'Psychology Of Money', 'The Psychology of Money karya Morgan Housel adalah buku yang memadukan psikologi dan keuangan, menggali secara mendalam tentang cara pandang manusia terhadap uang. Tak hanya itu, buku ini juga membahas bagaimana pola pikir ini mempengaruhi keputusan keuangan yang dibuat', 'Morgan Housel ', 'Harriman House Limited', 2020, '262', 'Pendidikan', 1),
+('SO18', '../assets/Buku/Komik/Solo leveling.jpeg', 'Solo Leveling', 'Cerita ini berfokus pada karakter utama, Sung Jin-Woo, seorang Hunter tingkat rendah yang berjuang untuk bertahan hidup di dunia di mana monster dan makhluk supernatural mengancam umat manusia.\r\n\r\nCerita dimulai ketika Jin-Woo melakukan sebuah misi yang sangat berbahaya dan mengalami kejadian yang mengubah hidupnya, setelahnya dia mendapatkan akses ke sistem level-up yang memungkinkan dia untuk meningkatkan kekuatannya secara drastis. Dengan kemampuan ini, Jin-Woo mulai \"menlevel up\" dan mengejar kekuatan, yang membawanya ke dalam berbagai pertarungan melawan monster yang kuat dan menjelajahi dungeon berbahaya.', 'Chugong & Dubu (SIU)', 'Tappytoon & Yen Press', 2018, '520', 'Komik', 1),
+('SP19', '../assets/Buku/Komik/sxf.jpeg', 'Spy X Family', 'kisah tentang seorang agen mata-mata yang membentuk keluarga palsu untuk menjalankan misi. Cerita ini berlatar belakang dunia fiksi yang sedang berperang dingin. ', 'Tatsuya Endo', 'Shueisha ', 2019, '212', 'Komik', 1);
 
 -- --------------------------------------------------------
 
@@ -122,7 +121,25 @@ CREATE TABLE `pinjam` (
 --
 
 INSERT INTO `pinjam` (`id_pinjam`, `id_user`, `id_buku`, `username`, `Email`, `cover`, `judul`, `pengarang`, `penerbit`, `tanggal_pinjam`, `tanggal_kembali`, `status`) VALUES
-(65, 'SH0002', ' ON97 ', 'shiddiq211', 'shiddiqduasatu@gmail.com', '../assets/Buku/OP.jpeg', 'One Piece', 'Eiichiro Oda', 'Shueisha', '2025-02-12', '2025-02-12', 'Dipinjam');
+(71, 'SH0004', ' SO18 ', 'shiddiq211', 'Shiddiqduasatu@gmail.com', '../assets/Buku/Komik/Solo leveling.jpeg', 'Solo Leveling', 'Chugong & Dubu (SIU)', 'Tappytoon & Yen Press', '2025-02-14', '2025-02-16', 'Dipinjam'),
+(72, 'SH0004', ' SP19 ', 'shiddiq211', 'Shiddiqduasatu@gmail.com', '../assets/Buku/Komik/sxf.jpeg', 'Spy X Family', 'Tatsuya Endo', 'Shueisha ', '2025-02-14', '2025-02-15', 'Dipinjam'),
+(73, 'SH0004', ' MO24 ', 'shiddiq211', 'Shiddiqduasatu@gmail.com', '../assets/Buku/Fantasi/MONS MALEFICIORUM.jpeg', 'Mons Maleficiorum', 'Jonas', 'Shiddiq', '2025-03-07', '2025-03-14', 'Dipinjam'),
+(74, 'SH0004', ' PS20 ', 'shiddiq211', 'Shiddiqduasatu@gmail.com', '../assets/Buku/Pendidikan/POM.jpeg', 'Psychology Of Money', 'Morgan Housel ', 'Harriman House Limited', '2025-03-14', '2025-03-21', 'Dipinjam');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `review`
+--
+
+CREATE TABLE `review` (
+  `id` int NOT NULL,
+  `id_buku` varchar(50) NOT NULL,
+  `judul` varchar(50) NOT NULL,
+  `username` varchar(10) NOT NULL,
+  `rating` int DEFAULT NULL,
+  `ulasan` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -146,9 +163,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id_user`, `Email`, `username`, `password`, `role`, `verify`, `if_visible`) VALUES
 ('0', 'admin@gmail.com', 'Admin', '$2y$10$Hv691UPJqS9vEL40f/v2iud7eK8gJENtWvzokm218o79pRhWuXLcS', 'Admin', 1, 0),
-('AZ0003', 'azrianawan@gmail.com', 'azrianhnf1', '$2y$10$aiBJKULVWKlfRStD.bxMDuqpDo5ZygCo9AfOuGoLnt2FLHQT5Ufva', 'Anggota', 1, 1),
-('FR0002', 'firdausarwork88@gmail.com', 'frdausaa88', '$2y$10$Q1wsFrwF9PcAKM2L4WfJmet.2ks/XHnqf3BmUK3AY90o0LmktLYB2', 'Anggota', 1, 1),
-('SH0002', 'shiddiqduasatu@gmail.com', 'Shiddiq211', '$2y$10$PqArFEJsDSBAC8zslsV9se7SJAz4pxsIHoCBY5th5h6iWcdlvIw6W', 'Anggota', 1, 1);
+('LI0002', 'libratech21@gmail.com', 'LibraTech1', '$2y$10$.K65duk4HORbULFuRvtYjuJZS9q6HbOq.2ElFblymkatjta4c43iy', 'Anggota', 1, 1),
+('SH0004', 'Shiddiqduasatu@gmail.com', 'shiddiq211', '$2y$10$dmU4wZ3ltXGtAm8TgFYAx.CP7m8IRyFsjBkzDDvWencxctchWlaAC', 'Anggota', 1, 1);
 
 --
 -- Indexes for dumped tables
@@ -181,6 +197,12 @@ ALTER TABLE `pinjam`
   ADD PRIMARY KEY (`id_pinjam`);
 
 --
+-- Indexes for table `review`
+--
+ALTER TABLE `review`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -208,7 +230,13 @@ ALTER TABLE `kembali`
 -- AUTO_INCREMENT for table `pinjam`
 --
 ALTER TABLE `pinjam`
-  MODIFY `id_pinjam` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id_pinjam` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+
+--
+-- AUTO_INCREMENT for table `review`
+--
+ALTER TABLE `review`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
