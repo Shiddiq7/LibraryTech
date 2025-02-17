@@ -30,19 +30,22 @@ require '../func.php';
         style="background: url('../assets/img/Libr.jpeg') no-repeat center center fixed; background-size: cover;">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col col-xl-14">
+                <div class="col col-xl-7">
                     <div class="card"
                         style="border-radius: 1rem; background-color: rgba(90, 90, 90, 0.3); backdrop-filter: blur(25px);">
                         <div class="row g-0">
-                            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                            <div class="col-md-12 col-lg-12 d-flex align-items-center">
                                 <div class="card-body p-4 p-lg-5 text-black">
                                     <form method="post">
-                                        <div class="d-flex align-items-center mb-3 pb-1">
-                                            <img src="../assets/img/logo1.png" width="100" height="100" class="me-3"
+                                        <div class="d-flex justify-content-center mb-3 pb-1">
+                                            <img src="../assets/img/logo1.png" width="150px" height="120px" class="me-2"
                                                 alt="Logo" />
+                                        </div>
+
+                                        <div class="d-flex justify-content-center mb-3 pb-1">
                                             <span class="h1 fw-bold mb-0" style="color: white;">LibraTech</span>
                                         </div>
-                                        <h4 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px; color: white;">
+                                        <h4 class="fw-normal mb-3 pb-3 text-center" style="letter-spacing: 1px; color: white;">
                                             Register to your account</h4>
                                         <label class="form-label fs-5" for="inputEmail"
                                             style="color: white;">Email</label>
@@ -74,16 +77,12 @@ require '../func.php';
                                         <br><br>
                                         <div class="pt-1 mb-4">
                                             <button class="btn btn-dark btn-lg w-100 fs-5" type="submit" name="register"
-                                                style="color: white;">Register</button>
+                                                style="color: white; border-radius: 20px;">Register</button>
                                         </div>
-                                        <p class="mb-5 pb-lg-2 fs-5" style="color: white;">Already have an account? <a
+                                        <p class="text-center mb-5 pb-lg-2 fs-5" style="color: white;">Already have an account? <a
                                                 href="login.php" style="color: white;">Login here</a></p>
                                     </form>
                                 </div>
-                            </div>
-                            <div class="col-md-6 col-lg-5 d-none d-md-block">
-                                <img src="../assets/img/register.jpg" alt="login form" class="img-fluid"
-                                    style="border-radius: 0 1rem 1rem 0; width: 100%; height: 100%;" />
                             </div>
                         </div>
                     </div>
