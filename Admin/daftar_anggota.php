@@ -138,6 +138,7 @@ require "../Auth/cek_log.php";
                                         <th>ID User</th>
                                         <th>Email</th>
                                         <th>Username</th>
+                                        <th>Nomor HP</th>
                                         <th>Role</th>
 
                                     </tr>
@@ -151,16 +152,26 @@ require "../Auth/cek_log.php";
                                         $id_user = $data['id_user'];
                                         $email = $data['Email'];
                                         $username = $data['username'];
+                                        $nomorhp = $data['nomorhp'];
                                         $role = $data['role'];
+
 
                                         ?>
 
                                         <tr>
                                             <td><?= $no++ ?></td>
                                             <td><?= $id_user ?></td>
-                                            <td><?= $email ?></td>
+                                            <td>
+                                                <?= $email ?>
+                                                <?php if ($data['verify'] == 1): ?>
+                                                    <span style="margin-left: 10px;" class="badge bg-success">Verified</span>
+                                                    
+                                                <?php endif; ?>
+                                            </td>
                                             <td><?= $username ?></td>
+                                            <td><?= ($nomorhp == 0) ? "<i>No Data</i>" : $nomorhp ?></td>
                                             <td><?= $role ?></td>
+
 
 
                                         </tr>
@@ -203,7 +214,12 @@ require "../Auth/cek_log.php";
                         <div class="mb-3">
                             <label class="form-label text-black" for="inputPassword">Password</label>
                             <input type="password" id="inputPassword" name="password" class="form-control" required
-                                minlength="8" maxlength="8" />
+                                minlength="8" maxlength="8" oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('Password must be at least 8 characters')" />
+                            <?php
+                            if (isset($_POST['tambahAnggota'])) {
+                                $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                            }
+                            ?>
 
                             <div class="form-check form-switch mt-2">
                                 <input class="form-check-input" type="checkbox" id="viewPassword"

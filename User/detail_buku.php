@@ -392,9 +392,13 @@ if (isset($_GET['id_buku'])) {
                     </div>
                 </div>
             <?php endwhile;
-        else: ?>
-            <p class="text-center" style="color: #777; font-size: 1.1rem;">Belum ada ulasan untuk buku ini.</p>
-        <?php endif; ?>
+        else:
+            if (mysqli_num_rows(mysqli_query($conn, "SELECT * FROM Review WHERE id_buku = '$id_buku' AND username = '$username' AND ulasan IS NOT NULL")) > 0):
+                // tidak ada yang ditampilkan
+            else: ?>
+                <p class="text-center" style="color: #777; font-size: 1.1rem;">Belum ada ulasan untuk buku ini.</p>
+            <?php endif;
+        endif; ?>
     </div>
     <br><br><br>
 

@@ -138,6 +138,133 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                 <td><?= $_SESSION['username'] ?></td>
             </tr>
 
+            <?php
+            $query = "SELECT nomorhp FROM user WHERE username = '$_SESSION[username]'";
+            $result = mysqli_query($conn, $query);
+            $data = mysqli_fetch_assoc($result);
+            ?>
+            <tr>
+                <th style="font-weight: 400;">Nomor HP</th>
+                <td>
+                    <?php if ($data['nomorhp'] == 0): ?>
+                        <span style="font-style: italic; color: darkred;">Nomor handphonemu belum ada nih</span>
+                        <button style="border: none; background-color: white;" class="text-primary ms-2"
+                            data-bs-toggle="modal" data-bs-target="#nomorhpModal"><i class="fas fa-plus-circle"> Tambah No.
+                                HP</i></button>
+
+                        <div class="modal fade" id="nomorhpModal" tabindex="-1" aria-labelledby="nomorhpModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="nomorhpModalLabel">Tambah Nomor HP</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <form method="post">
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="nomorhp" class="form-label">Nomor HP</label>
+                                                <input type="text" class="form-control" id="nomorhp" name="nomorhp"
+                                                    placeholder="Ex: 0812-3456-7890" aria-describedby="nomorhpHelp"
+                                                    maxlength="14"
+                                                    oninput="this.value = this.value.replace(/[^0-9-]/g, '').replace(/(\d{4})/g, '$1-').replace(/--/g, '-').replace(/-$/, '');">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Functions Add-->
+                        <?php
+                        if (isset($_POST['nomorhp'])) {
+                            $nomorhp = $_POST['nomorhp'];
+                            $username = $_SESSION['username'];
+                            $query = "UPDATE user SET nomorhp = '$nomorhp' WHERE username = '$username'";
+                            mysqli_query($conn, $query);
+                            echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+                            echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+                            echo "<script>
+                                $(document).ready(function() {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil Menambahkan Nomor HP!',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then(function() {
+                                        window.location = 'profile.php';
+                                    });
+                                });
+                            </script>";
+                        }
+                        ?>
+                    <?php else: ?>
+                        <?= $data['nomorhp'] ?>
+                        <button style="border: none; background-color: white;" class="text-primary ms-2"
+                            data-bs-toggle="modal" data-bs-target="#editNomorhpModal"><i class="fas fa-edit"> Edit</i></button>
+
+                        <div class="modal fade" id="editNomorhpModal" tabindex="-1" aria-labelledby="editNomorhpModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editNomorhpModalLabel">Edit Nomor HP</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <form method="post">
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="editNomorhp" class="form-label">Nomor HP</label>
+                                                <input type="text" class="form-control" id="editNomorhp"
+                                                    name="editNomorhp" placeholder="Ex: 0812-3456-7890"
+                                                    aria-describedby="nomorhpHelp" value="<?= $data['nomorhp'] ?>"
+                                                    oninput="this.value = this.value.replace(/[^0-9-]/g, '').replace(/(\d{4})/g, '$1-').replace(/--/g, '-').replace(/-$/, '');">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Functions Edit-->
+                        <?php
+                        if (isset($_POST['editNomorhp'])) {
+                            $editNomorhp = $_POST['editNomorhp'];
+                            $username = $_SESSION['username'];
+                            $query = "UPDATE user SET nomorhp = '$editNomorhp' WHERE username = '$username'";
+                            mysqli_query($conn, $query);
+                            echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+                            echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+                            echo "<script>
+                                $(document).ready(function() {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil Mengedit Nomor HP!',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then(function() {
+                                        window.location = 'profile.php';
+                                    });
+                                });
+                            </script>";
+                        }
+                        ?>
+                    <?php endif; ?>
+                </td>
+            </tr>
+
             <tr>
                 <?php
                 $query = "SELECT role FROM user WHERE username = '$_SESSION[username]'";
@@ -148,7 +275,7 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                 <th style="font-weight: 400;">Role</th>
                 <td><?= $data['role'] ?></td>
             </tr>
-            
+
 
 
         </table>

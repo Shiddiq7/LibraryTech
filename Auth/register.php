@@ -47,27 +47,33 @@ require '../func.php';
                                         </div>
                                         <h4 class="fw-normal mb-3 pb-3 text-center" style="letter-spacing: 1px; color: white;">
                                             Register to your account</h4>
+
                                         <label class="form-label fs-5" for="inputEmail"
                                             style="color: white;">Email</label>
                                         <div class="form-outline mb-4">
-                                            <input type="email" id="inputEmail" name="email"
-                                                class="form-control form-control-lg fs-5" required maxlength="100"
-                                                minlength="10" />
+                                            <input type="text" id="inputEmail" name="email"
+                                                class="form-control form-control-lg fs-5" required maxlength="50"
+                                                minlength="1" placeholder="Example@gmail.com" onblur="if(!this.value.includes('@')) this.value += '@gmail.com';" />
                                         </div>
+
                                         <label class="form-label fs-5" for="inputUsername"
                                             style="color: white;">Username</label>
                                         <div class="form-outline mb-4">
                                             <input type="text" id="inputUsername" name="username"
                                                 class="form-control form-control-lg fs-5" required maxlength="10"
-                                                minlength="10" />
+                                                minlength="10" placeholder="Minimal 10 karakter"
+                                                pattern="[A-Za-z0-9]+" title="Only letters and numbers are allowed" />
                                         </div>
+
                                         <label class="form-label fs-5" for="inputPassword"
                                             style="color: white;">Password</label>
                                         <div class="form-outline mb-4">
                                             <input type="password" id="inputPassword" name="password"
                                                 class="form-control form-control-lg fs-5" required minlength="8"
-                                                maxlength="8" />
+                                                maxlength="8" placeholder="Minimal 8 karakter"
+                                                pattern="[A-Za-z0-9]+" title="Only letters and numbers are allowed" />
                                         </div>
+
                                         <div class="form-check form-switch mt-1" style="margin-left: 10px;">
                                             <input class="form-check-input fs-5" type="checkbox" id="viewPassword"
                                                 onclick="togglePassword()" />

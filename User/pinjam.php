@@ -22,6 +22,7 @@ require "../Auth/cek_log.php";
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/selfstyle.css">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <style>
         body {
@@ -260,7 +261,7 @@ require "../Auth/cek_log.php";
                 });
             </script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
-            
+
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
                 <?php
                 $statusFilter = isset($_GET['status']) ? $_GET['status'] : '';
@@ -321,7 +322,7 @@ require "../Auth/cek_log.php";
                                     <?php endif; ?>
 
                                     <hr class="my-2"><br>
-                                   
+
                                     <div class="d-flex justify-content-between">
                                         <?php
                                         $currentDate = date('Y-m-d');
@@ -364,7 +365,9 @@ require "../Auth/cek_log.php";
                                                                 $diff = date_diff($tanggal_kembali, $now);
                                                                 $daysLeft = $diff->format('%a');
                                                                 ?>
-                                                                <p>Apakah Anda yakin ingin mengembalikan buku ini? <p>Waktu pinjam masih tersisa  <?= $daysLeft ?> hari lagi.</p></p>
+                                                                <p>Apakah Anda yakin ingin mengembalikan buku ini?
+                                                                <p>Waktu pinjam masih tersisa <?= $daysLeft ?> hari lagi.</p>
+                                                                </p>
                                                             </div>
                                                         </div>
 
@@ -412,8 +415,7 @@ require "../Auth/cek_log.php";
 
 
     <!-- Footer -->
-
-    <footer class="footer mt-3"
+    <footer class="footer mt-auto"
         style="background: linear-gradient(129deg, #1a202c 0%, #010035 100%); font-size: 0.8rem; ">
         <div class="container py-3">
             <div class="row g-4 justify-content-center">
@@ -477,7 +479,7 @@ require "../Auth/cek_log.php";
             </div>
         </div>
         <div class="py-2 text-center" style="background: rgba(0,0,0,0.2);">
-            <small class="text-white" style="font-size: 0.8rem;">© 2025 LibraTech | Shiddiq | All rights
+            <small class="text-white" style="font-size: 0.8rem;">&copy; 2025 LibraTech | Shiddiq | All rights
                 reserved</small>
         </div>
     </footer>

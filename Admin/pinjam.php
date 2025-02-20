@@ -13,7 +13,7 @@ $pinjam = query("SELECT * FROM pinjam WHERE id_user = $id_user AND status = 'Dip
 foreach ($pinjam as $pj) {
     if (strtotime($pj['tanggal_kembali']) < time()) {
         $lastSent = isset($_SESSION['pengingat_' . $pj['id_pinjam']]) ? $_SESSION['pengingat_' . $pj['id_pinjam']] : 0;
-        if (time() - $lastSent >= 10) { // 10 seconds
+        if (time() - $lastSent >= 5 * 3600) { // 10 seconds
             $mail = new PHPMailer(true);
 
             try {

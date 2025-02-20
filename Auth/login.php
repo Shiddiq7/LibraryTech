@@ -25,7 +25,7 @@ if (isset($_POST['login'])) {
             }
         } else {
             echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Akun belum diverifikasi atau Username atau Password Salah!
+                    Akun belum diverifikasi atau Username & Password Salah!
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
         }
@@ -93,18 +93,20 @@ if (!isset($_SESSION['log'])) {
                                 <label class="form-label fs-5" for="inputUsername"
                                     style="color: white;">Username</label>
                                 <div class="form-outline mb-4">
+                                    <label class="visually-hidden" for="inputUsername">Username</label>
                                     <input type="text" id="inputUsername" name="username"
-                                        class="form-control form-control-lg fs-5" required maxlength="50" />
+                                        class="form-control form-control-lg fs-5" placeholder="Enter your Username"
+                                        required maxlength="50" />
                                 </div>
 
                                 <label class="form-label fs-5" for="inputPassword"
                                     style="color: white;">Password</label>
                                 <div class="form-outline mb-4">
                                     <input type="password" id="inputPassword" name="password"
-                                        class="form-control form-control-lg fs-5" required minlength="8"
-                                        maxlength="8" />
+                                        class="form-control form-control-lg fs-5" placeholder="Enter your password"
+                                        required minlength="8" maxlength="8" />
                                 </div>
-
+        
                                 <div class="form-check form-switch mt-1" style="margin-left: 10px;">
                                     <input class="form-check-input fs-5" type="checkbox" id="viewPassword"
                                         onclick="togglePassword()" />

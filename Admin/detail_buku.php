@@ -172,7 +172,84 @@ if (isset($_GET['id_buku'])) {
             <a href="daftar_buku.php" class="btn btn-outline-secondary ms-auto">Kembali</a>
         </div>
     </div>
+
     <br>
+
+    <!-- Display Reviews -->
+    <div class="container-fluid" style="max-width: 2000px; border-radius: 10px;">
+        <h3 class="text-center mt-5"
+            style="font-family: 'Lato', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">
+            Ulasan Buku</h3>
+        <?php
+        $id_buku = $data['id_buku'];
+        $username = $_SESSION['username'];
+
+        $query = "SELECT username, ulasan, rating FROM Review WHERE id_buku = '$id_buku' AND username = '$username' AND ulasan IS NOT NULL";
+        $result = mysqli_query($conn, $query);
+
+        if (mysqli_num_rows($result) > 0):
+            $review = mysqli_fetch_assoc($result);
+            ?>
+            <div class="card mt-3 shadow-sm border-0" style="border-radius: 10px; background-color: #343a40; color: white;">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="me-3">
+                            <i class="fas fa-user-circle" style="font-size: 2rem;"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-0" style="font-weight: bold;">
+                                <?= htmlspecialchars($review['username']); ?>
+                            </h5>
+                            <div class="card-text">
+                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                    <i class="<?= $i <= $review['rating'] ? 'fas' : 'far'; ?> fa-star text-warning"></i>
+                                <?php endfor; ?>
+                            </div>
+                        </div>
+                        <div class="ms-auto">
+                            <p class="text-white" style="font-size: 0.8rem;">Komentarmu</p>
+                        </div>
+                    </div>
+                    <p class="card-text" style="font-style: italic;"><?= htmlspecialchars($review['ulasan']); ?></p>
+                </div>
+            </div>
+        <?php endif;
+
+        $query = "SELECT username, ulasan, rating FROM Review WHERE id_buku = '$id_buku' AND username != '$username' AND ulasan IS NOT NULL";
+        $result = mysqli_query($conn, $query);
+
+        if (mysqli_num_rows($result) > 0):
+            while ($review = mysqli_fetch_assoc($result)): ?>
+                <div class="card mt-3 shadow-sm border-0" style="border-radius: 10px;">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="me-3">
+                                <i class="fas fa-user-circle" style="font-size: 2rem;"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title mb-0" style="font-weight: bold;">
+                                    <?= htmlspecialchars($review['username']); ?>
+                                </h5>
+                                <div class="card-text">
+                                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                                        <i class="<?= $i <= $review['rating'] ? 'fas' : 'far'; ?> fa-star text-warning"></i>
+                                    <?php endfor; ?>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="card-text" style="font-style: italic;"><?= htmlspecialchars($review['ulasan']); ?></p>
+                    </div>
+                </div>
+            <?php endwhile;
+        else:
+            if (mysqli_num_rows(mysqli_query($conn, "SELECT * FROM Review WHERE id_buku = '$id_buku' AND username = '$username' AND ulasan IS NOT NULL")) > 0):
+                // tidak ada yang ditampilkan
+            else: ?>
+                <p class="text-center" style="color: #777; font-size: 1.1rem;">Belum ada ulasan untuk buku ini.</p>
+            <?php endif;
+        endif; ?>
+    </div>
+    <br><br>
 
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">

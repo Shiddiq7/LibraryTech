@@ -20,6 +20,7 @@ require "../Auth/cek_log.php";
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/selfstyle.css">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <style>
         body {
