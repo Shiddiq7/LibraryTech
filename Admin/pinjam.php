@@ -13,7 +13,7 @@ $pinjam = query("SELECT * FROM pinjam WHERE id_user = $id_user AND status = 'Dip
 foreach ($pinjam as $pj) {
     if (strtotime($pj['tanggal_kembali']) < time()) {
         $lastSent = isset($_SESSION['pengingat_' . $pj['id_pinjam']]) ? $_SESSION['pengingat_' . $pj['id_pinjam']] : 0;
-        if (time() - $lastSent >= 5 * 3600) { // 10 seconds
+        if (time() - $lastSent >= 5 * 3600) { // 5 hours
             $mail = new PHPMailer(true);
 
             try {
@@ -22,7 +22,7 @@ foreach ($pinjam as $pj) {
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
                 $mail->Username = 'libratech21@gmail.com';
-                $mail->Password = 'wwxhbkuejyygwrvl'; 
+                $mail->Password = 'wwxhbkuejyygwrvl';
                 $mail->SMTPSecure = 'tls';
                 $mail->Port = 587;
 
@@ -232,7 +232,16 @@ foreach ($pinjam as $pj) {
                                 </div>
                             </form>
 
+                            <style>
+                                .card {
+                                    transition: all 0.3s;
+                                }
 
+                                .card:hover {
+                                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+                                    transform: translateY(-5px);
+                                }
+                            </style>
 
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
                                 <?php

@@ -49,6 +49,8 @@ if (!isset($_SESSION['log'])) {
 
 ?>
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -68,6 +70,7 @@ if (!isset($_SESSION['log'])) {
             background-size: cover;
         }
     </style>
+
 </head>
 
 <body>
@@ -106,7 +109,7 @@ if (!isset($_SESSION['log'])) {
                                         class="form-control form-control-lg fs-5" placeholder="Enter your password"
                                         required minlength="8" maxlength="8" />
                                 </div>
-        
+
                                 <div class="form-check form-switch mt-1" style="margin-left: 10px;">
                                     <input class="form-check-input fs-5" type="checkbox" id="viewPassword"
                                         onclick="togglePassword()" />
