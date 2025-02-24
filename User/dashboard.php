@@ -206,7 +206,8 @@ require "../Auth/cek_log.php";
     <br><br>
     <section class="hero-section" style="max-height: 500px;">
         <div class="container-fluid px-0">
-            <div id="carouselExampleCaptions" class="carousel slide shadow-lg rounded-5" data-bs-ride="carousel" data-bs-interval="10000">
+            <div id="carouselExampleCaptions" class="carousel slide shadow-lg rounded-5" data-bs-ride="carousel"
+                data-bs-interval="10000">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
                         aria-current="true" aria-label="Slide 1"></button>
@@ -283,14 +284,15 @@ require "../Auth/cek_log.php";
             <!-- Search and Filter -->
             <form method="GET" class="mb-4 d-flex flex-column flex-md-row justify-content-between">
                 <div class="input-group shadow mb-3 mb-md-0" style="max-width: 100%; width: 400px;">
+                    <span class="input-group-text bg-white" id="basic-addon1"><i class="fas fa-search"></i></span>
                     <input class="form-control" type="text" name="search" id="searchInput"
                         value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
                         placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch"
                         onkeyup="filterData()" />
-                    <!-- Search input untuk mencari buku berdasarkan judul, pengarang, penerbit, atau kategori -->
                 </div>
                 <div class="input-group shadow" style="max-width: 100%; width: 200px;">
-                    <span class="input-group-text bg-primary text-white" id="basic-addon2"><i class="fas fa-filter"></i></span>
+                    <span class="input-group-text bg-primary text-white" id="basic-addon2"><i
+                            class="fas fa-filter"></i></span>
                     <select class="form-select bg-white" name="category" id="categoryFilter" onchange="filterData()">
                         <option value="">All Categories</option>
                         <?php
@@ -314,6 +316,8 @@ require "../Auth/cek_log.php";
                     transform: translateY(-5px);
                 }
             </style>
+
+            <!-- Script untuk mengatur efek hover pada card -->
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
                     const cards = document.querySelectorAll('.card');
@@ -343,6 +347,8 @@ require "../Auth/cek_log.php";
                 });
             </script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+
+            <!-- Tampilan daftar buku -->
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
                 <?php
                 $search = isset($_GET['search']) ? $_GET['search'] : '';
@@ -363,9 +369,45 @@ require "../Auth/cek_log.php";
                         ?>
                         <div class="col mb-4">
                             <div class="card h-100 shadow-lg">
+                                
+                                <!-- Tampilan buku -->
                                 <div class="card h-100">
                                     <img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Book Cover"
                                         style="object-fit: cover; width: 100%; height: 500px;">
+                                </div>
+                                <?php
+                                $id_buku = $bk['id_buku'];
+                                $avgRatingQuery = "SELECT AVG(rating) as avg_rating FROM review WHERE id_buku = '$id_buku'";
+                                $avgRatingResult = query($avgRatingQuery);
+                                $avgRating = $avgRatingResult[0]['avg_rating'] ?? 0;
+                                ?>
+                                <style>
+                                    .card:hover .fa-star {
+                                        animation: star 1.5s ease-in-out infinite alternate;
+                                    }
+
+                                    @keyframes star {
+                                        from {
+                                            transform: scale(1);
+                                        }
+                                        to {
+                                            transform: scale(1.4);
+                                        }
+                                    }
+                                </style>
+                                <!-- Tampilan rating -->
+                                <div class="card-footer text-center">
+                                    <?php
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        if ($i <= $avgRating) {
+                                            echo '<span class="text-warning"><i class="fas fa-star"></i></span>';
+                                        } else {
+                                            echo '<span class="text-muted"><i class="far fa-star"></i></span>';
+                                        }
+                                    }
+                                    ?>
+                                    <small class="text-muted">
+                                        (<?= is_numeric($avgRating) ? number_format($avgRating, 1) : $avgRating; ?>)</small>
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title"><?= $bk['judul']; ?></h5>
@@ -378,10 +420,10 @@ require "../Auth/cek_log.php";
                                         <?= $bk['halaman']; ?></p>
                                     <p class="card-text text-start"><span class="badge bg-secondary">Kategori:</span>
                                         <?= $bk['kategori']; ?></p>
-
+                                    <br>    
                                     <div class="d-flex justify-content-end">
-                                        <a href="detail_buku.php?id_buku=<?= $bk['id_buku']; ?>"
-                                            class="btn btn-outline-primary">Lihat Detail</a>
+                                        <a href="detail_buku.php?id_buku=<?= $bk['id_buku']; ?>" class="btn btn-outline-primary"
+                                            style="width: 100%;">Lihat Detail</a>
                                     </div>
                                 </div>
                             </div>
@@ -406,6 +448,7 @@ require "../Auth/cek_log.php";
                         width: 100%;
                         height: auto;
                     }
+
                     .card img {
                         height: 300px;
                     }

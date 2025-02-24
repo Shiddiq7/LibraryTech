@@ -205,6 +205,25 @@ require "../Auth/cek_log.php";
                                                     <img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Book Cover"
                                                         style="object-fit: cover; width: 100%; height: 100%;">
                                                 </div>
+                                                <?php
+                                                $id_buku = $bk['id_buku'];
+                                                $avgRatingQuery = "SELECT AVG(rating) as avg_rating FROM review WHERE id_buku = '$id_buku'";
+                                                $avgRatingResult = query($avgRatingQuery);
+                                                $avgRating = $avgRatingResult[0]['avg_rating'] ?? 0;
+                                                ?>
+                                                <div class="card-footer text-center">
+                                                    <?php
+                                                    for ($i = 1; $i <= 5; $i++) {
+                                                        if ($i <= $avgRating) {
+                                                            echo '<span class="text-warning"><i class="fas fa-star"></i></span>';
+                                                        } else {
+                                                            echo '<span class="text-muted"><i class="far fa-star"></i></span>';
+                                                        }
+                                                    }
+                                                    ?>
+                                                    <small class="text-muted"> (<?= is_numeric($avgRating) ? number_format($avgRating, 1) : $avgRating; ?>)</small>
+                                                </div>
+
                                                 <div class="card-body">
                                                     <h5 class="card-title"><?= $bk['judul']; ?></h5>
                                                     <p class="card-text"><?= $bk['pengarang']; ?></p>
