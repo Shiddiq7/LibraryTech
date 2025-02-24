@@ -176,7 +176,7 @@ require "../Auth/cek_log.php";
                                             <!-- Modal edit-->
                                             <div class="modal fade" id="edit<?= $id_kat ?>" tabindex="-1"
                                                 aria-labelledby="edit<?= $id_kat ?>Label" aria-hidden="true">
-                                                <div class="modal-dialog">
+                                                <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="edit<?= $id_kat ?>Label">Edit Data
@@ -203,9 +203,11 @@ require "../Auth/cek_log.php";
                                                                         name="deskripsi"
                                                                         rows="3"><?= $deskripsi ?></textarea>
                                                                 </div>
-
-                                                                <button type="submit" name="editKategori"
-                                                                    class="btn btn-primary">Edit</button>
+                                                                <br>    
+                                                                <div class="d-flex justify-content-end">
+                                                                    <button type="submit" name="editKategori"
+                                                                        class="btn btn-outline-primary px-4">Edit</button>
+                                                                </div>
                                                             </form>
                                                         </div>
                                                     </div>
@@ -216,8 +218,8 @@ require "../Auth/cek_log.php";
                                             <!-- Modal delete-->
                                             <div class="modal fade" id="delete<?= $id_kat ?>" tabindex="-1"
                                                 aria-labelledby="delete<?= $id_kat ?>Label" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content ">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="delete<?= $id_kat ?>Label">Delete
                                                                 Data</h5>
@@ -225,16 +227,19 @@ require "../Auth/cek_log.php";
                                                                 aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p>Kamu yakin ingin menghapus data <?= $nama_kategori ?>
+                                                            <p>Kamu yakin ingin menghapus Kategori <?= $nama_kategori ?>
                                                                 <?= "[", $id_kat, "]" ?> ?
                                                             </p>
+                                                            <br>
                                                             <form method="post">
                                                                 <input type="hidden" name="id_kat" value="<?= $id_kat ?>">
                                                                 <input type="hidden" name="if_visible">
-                                                                <button type="submit" name="deleteKategori"
-                                                                    class="btn btn-danger">Iya</button>
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">Tidak</button>
+                                                                <div class="d-flex justify-content-end">
+                                                                    <button type="submit" name="deleteKategori"
+                                                                        class="btn btn-outline-danger px-4 me-2">Iya</button>
+                                                                    <button type="button" class="btn btn-outline-secondary px-4"
+                                                                        data-bs-dismiss="modal">Tidak</button>
+                                                                </div>
                                                             </form>
                                                         </div>
                                                     </div>
@@ -257,7 +262,7 @@ require "../Auth/cek_log.php";
 
     <!-- Modal Tambah Kategori-->
     <div class="modal fade" id="tambahKategori" tabindex="-1" aria-labelledby="tambahKategoriLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="tambahKategoriLabel">Tambah Kategori</h5>
@@ -276,8 +281,8 @@ require "../Auth/cek_log.php";
                             <label for="deskripsi" class="form-label">Deskripsi</label>
                             <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" required></textarea>
                         </div>
-
-                        <button type="submit" name="tambahKategori" class="btn btn-primary">Submit</button>
+                        <br>
+                        <button type="submit" name="tambahKategori" class="btn btn-outline-primary w-100 rounded-pill">Submit</button>
                     </form>
                 </div>
             </div>

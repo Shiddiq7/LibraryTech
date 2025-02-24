@@ -192,9 +192,10 @@ foreach ($pinjam as $pj) {
 
                         </div>
                         <div class="card-body">
-                            <!-- Search -->
-                            <form method="get" class="mb-4 d-flex justify-content-between">
-                                <div class="input-group shadow" style="width: 400px;">
+
+                            <form method="get" class="mb-4 d-flex justify-content-end">
+                                <!-- Search -->
+                                <div class="input-group shadow" style="width: 400px; position: absolute; left: 3px; margin-left: 15px;">
                                     <input class="form-control" type="text" name="search" id="searchInput"
                                         value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
                                         placeholder="Search for..." aria-label="Search for..."
@@ -202,33 +203,34 @@ foreach ($pinjam as $pj) {
                                 </div>
 
                                 <!-- Status -->
-                                <div class="input-group shadow rounded d-flex justify-content-end"
-                                    style="width: 200px;">
-                                    <span class="input-group-text bg-light border-0" id="basic-addon1"><i
-                                            class="fas fa-filter text-primary"></i></span>
-                                    <select class="form-select border-0" name="status" id="statusFilter"
-                                        onchange="filterData()">
-                                        <option value="">All Status</option>
-                                        <option value="Menunggu Konfirmasi" <?= isset($_GET['status']) && $_GET['status'] == 'Menunggu Konfirmasi' ? 'selected' : ''; ?>>Menunggu
-                                            Konfirmasi</option>
-                                        <option value="Dipinjam" <?= isset($_GET['status']) && $_GET['status'] == 'Dipinjam' ? 'selected' : ''; ?>>Dipinjam</option>
-                                        <option value="Dikembalikan" <?= isset($_GET['status']) && $_GET['status'] == 'Dikembalikan' ? 'selected' : ''; ?>>Dikembalikan</option>
-                                    </select>
-                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <div class="input-group shadow rounded" style="width: 200px; margin-right: 10px;">
+                                        <span class="input-group-text bg-light border-0" id="basic-addon1"><i
+                                                class="fas fa-filter text-primary"></i></span>
+                                        <select class="form-select border-0" name="status" id="statusFilter"
+                                            onchange="filterData()">
+                                            <option value="">All Status</option>
+                                            <option value="Menunggu Konfirmasi" <?= isset($_GET['status']) && $_GET['status'] == 'Menunggu Konfirmasi' ? 'selected' : ''; ?>>Menunggu
+                                                Konfirmasi</option>
+                                            <option value="Dipinjam" <?= isset($_GET['status']) && $_GET['status'] == 'Dipinjam' ? 'selected' : ''; ?>>Dipinjam</option>
+                                            <option value="Dikembalikan" <?= isset($_GET['status']) && $_GET['status'] == 'Dikembalikan' ? 'selected' : ''; ?>>Dikembalikan</option>
+                                        </select>
+                                    </div>
 
-                                <!-- Filter month -->
-                                <div class="input-group shadow rounded" style="width: 220px; overflow: hidden;">
-                                    <span class="input-group-text bg-light border-0" id="basic-addon1"><i
-                                            class="fas fa-calendar text-primary"></i></span>
-                                    <select class="form-select border-0" name="month" id="monthFilter"
-                                        onchange="filterData()">
-                                        <option value="" class="text-muted">All Months</option>
-                                        <?php for ($m = 1; $m <= 12; $m++): ?>
-                                            <option value="<?= $m ?>" <?= isset($_GET['month']) && $_GET['month'] == $m ? 'selected' : ''; ?>>
-                                                <?= date('F', mktime(0, 0, 0, $m, 1)) ?>
-                                            </option>
-                                        <?php endfor; ?>
-                                    </select>
+                                    <!-- Filter month -->
+                                    <div class="input-group shadow rounded" style="width: 220px; overflow: hidden;">
+                                        <span class="input-group-text bg-light border-0" id="basic-addon1"><i
+                                                class="fas fa-calendar text-primary"></i></span>
+                                        <select class="form-select border-0" name="month" id="monthFilter"
+                                            onchange="filterData()">
+                                            <option value="" class="text-muted">All Months</option>
+                                            <?php for ($m = 1; $m <= 12; $m++): ?>
+                                                <option value="<?= $m ?>" <?= isset($_GET['month']) && $_GET['month'] == $m ? 'selected' : ''; ?>>
+                                                    <?= date('F', mktime(0, 0, 0, $m, 1)) ?>
+                                                </option>
+                                            <?php endfor; ?>
+                                        </select>
+                                    </div>
                                 </div>
                             </form>
 
@@ -274,7 +276,7 @@ foreach ($pinjam as $pj) {
                                             <div class="card h-100 shadow-lg">
                                                 <div class="card h-100">
                                                     <img class="card-img-top" src="<?= $pj['cover']; ?>" alt="Book Cover"
-                                                        style="object-fit: cover; width: 100%; height: 500px;">
+                                                        style="object-fit: cover; width: 100%; height: 100%;">
                                                 </div>
                                                 <div class="card-body">
                                                     <h5 class="card-title"><?= $pj['judul']; ?> [<?= $pj['id_buku']; ?>]</h5>

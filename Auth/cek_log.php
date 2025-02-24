@@ -1,6 +1,6 @@
 <?php
 if (!isset($_SESSION['log'])) {
-    header('Location: http://localhost/librarytech/Auth/login.php') || header('Location: ../Auth/login.php');
+    header('Location: https://localhost/librarytech/Auth/login.php') || header('Location:Auth\login.php');
     exit();
 }
 

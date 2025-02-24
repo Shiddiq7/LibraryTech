@@ -240,7 +240,7 @@ require "../Auth/cek_log.php";
 
                 <!-- Grafik -->
                 <div
-                    style="width: 100%; max-width: 1800px; margin: 0 auto; height: 600px; background: linear-gradient(to bottom right, #ffffff, #f8f9fa); padding: 35px; border-radius: 15px; box-shadow: 0 6px 12px rgba(0,0,0,0.08);">
+                    style="width:  margin: 0 auto; height: 600px; background: linear-gradient(to bottom right, #ffffff, #f8f9fa); padding: 35px; border-radius: 15px; box-shadow: 0 6px 12px rgba(0,0,0,0.08);">
                     <canvas id="myChart" style="height: 100%;"></canvas>
                 </div>
 

@@ -165,7 +165,120 @@ require "../Auth/cek_log.php";
                                                 <?= $email ?>
                                                 <?php if ($data['verify'] == 1): ?>
                                                     <span style="margin-left: 10px;" class="badge bg-success">Verified</span>
-                                                    
+                                                <?php else: ?>
+                                                    <span class="badge bg-warning text-dark">Not Verified</span>
+                                                    <div style="float: right;" class="btn-group" role="group"
+                                                        aria-label="Basic example">
+                                                        <button type="button" class="btn btn-sm btn-outline-success me-2"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#verifyEmail<?= $id_user ?>">Verify</button>
+                                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteEmail<?= $id_user ?>">Delete</button>
+                                                    </div>
+
+                                                    <!-- Modal Verify Email -->
+                                                    <div class="modal fade" id="verifyEmail<?= $id_user ?>" tabindex="-1"
+                                                        aria-labelledby="verifyEmailLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="verifyEmailLabel">Kamu yakin
+                                                                        ingin verifikasi email ini? </h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form method="post"
+                                                                        style="display: flex; justify-content: center; width: 100%;">
+                                                                        <input type="hidden" name="id_user"
+                                                                            value="<?= $id_user ?>">
+                                                                        <input type="hidden" name="email" value="<?= $email ?>">
+                                                                        <button type="submit"
+                                                                            class="btn btn-outline-success w-100"
+                                                                            name="verifyEmail">Verify</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Modal Delete Email -->
+                                                    <div class="modal fade" id="deleteEmail<?= $id_user ?>" tabindex="-1"
+                                                        aria-labelledby="deleteEmailLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="deleteEmailLabel">Delete Email
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div style="display: flex; justify-content: center;">
+                                                                        <form method="post" style="width: 100%;">
+                                                                            <input type="hidden" name="id_user"
+                                                                                value="<?= $id_user ?>">
+                                                                            <input type="hidden" name="email"
+                                                                                value="<?= $email ?>">
+                                                                            <button type="submit"
+                                                                                class="btn btn-outline-danger w-100"
+                                                                                name="deleteEmail">Delete</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <?php
+                                                    if (isset($_POST['verifyEmail'])) {
+                                                        $id_user = $_POST['id_user'];
+                                                        $email = $_POST['email'];
+
+                                                        $query = "UPDATE user SET verify=1 WHERE id_user='$id_user' AND Email='$email'";
+                                                        mysqli_query($conn, $query);
+
+                                                        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+                                                        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+                                                        echo "<script>
+                                                            $(document).ready(function() {
+                                                                Swal.fire({
+                                                                    icon: 'success',
+                                                                    title: 'Email berhasil di verifikasi!',
+                                                                    showConfirmButton: false,
+                                                                    timer: 1500
+                                                                }).then(function() {
+                                                                    window.location.href = 'daftar_anggota.php';
+                                                                });
+                                                            });
+                                                        </script>";
+                                                    }
+
+                                                    if (isset($_POST['deleteEmail'])) {
+                                                        $id_user = $_POST['id_user'];
+                                                        $email = $_POST['email'];
+
+                                                        $query = "UPDATE user SET if_visible=FALSE WHERE id_user='$id_user' AND Email='$email'";
+                                                        mysqli_query($conn, $query);
+
+                                                        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
+                                                        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+                                                        echo "<script>
+                                                            $(document).ready(function() {
+                                                                Swal.fire({
+                                                                    icon: 'success',
+                                                                    title: 'Email berhasil di hapus!',
+                                                                    showConfirmButton: false,
+                                                                    timer: 1500
+                                                                }).then(function() {
+                                                                    window.location.href = 'daftar_anggota.php';
+                                                                });
+                                                            });
+                                                        </script>";
+                                                    }
+                                                    ?>
+
                                                 <?php endif; ?>
                                             </td>
                                             <td><?= $username ?></td>
@@ -190,7 +303,7 @@ require "../Auth/cek_log.php";
 
     <!-- Modal Tambah Anggota -->
     <div class="modal fade" id="tambahAnggota" tabindex="-1" aria-labelledby="tambahAnggotaLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="tambahAnggotaLabel">Tambah Anggota</h5>
@@ -199,10 +312,16 @@ require "../Auth/cek_log.php";
                 <div class="modal-body">
                     <form method="post">
                         <input type="hidden" id="id_user" name="id_user" value="">
-
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email" required maxlength="100">
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input class="form-check-input" type="checkbox" value="1" id="verify" name="verify">
+                            <label class="form-check-label" for="verify">
+                                Email Verified
+                            </label>
                         </div>
 
                         <div class="mb-3">
@@ -214,7 +333,8 @@ require "../Auth/cek_log.php";
                         <div class="mb-3">
                             <label class="form-label text-black" for="inputPassword">Password</label>
                             <input type="password" id="inputPassword" name="password" class="form-control" required
-                                minlength="8" maxlength="8" oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('Password must be at least 8 characters')" />
+                                minlength="8" maxlength="8" oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Password must be at least 8 characters')" />
                             <?php
                             if (isset($_POST['tambahAnggota'])) {
                                 $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -227,8 +347,9 @@ require "../Auth/cek_log.php";
                                 <label class="form-check-label text-black" for="viewPassword">Show Password</label>
                             </div>
                         </div>
-
-                        <button type="submit" name="tambahAnggota" class="btn btn-primary">Submit</button>
+                        <br>
+                        <button type="submit" name="tambahAnggota"
+                            class="btn btn-outline-primary w-100 rounded-pill">Submit</button>
                     </form>
                 </div>
             </div>

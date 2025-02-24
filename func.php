@@ -135,6 +135,7 @@ if (isset($_POST['resendOTP'])) {
 if (isset($_POST['tambahAnggota'])) {
     $id_user = $_POST['id_user'];
     $email = $_POST['email'];
+    $verify = isset($_POST['verify']) ? $_POST['verify'] : 0; // Set default value for verify if not set    
     $username = $_POST['username'];
     $password = $_POST['password'];
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
@@ -148,7 +149,7 @@ if (isset($_POST['tambahAnggota'])) {
     $id_user = $initials . str_pad($count, 4, '0', STR_PAD_LEFT); // Combine initials and padded number
 
 
-    $query = "INSERT INTO user (id_user, Email , username, password) VALUES ('$id_user',  '$email', '$username', '$hashed_password')";
+    $query = "INSERT INTO user (id_user, Email, verify , username, password) VALUES ('$id_user',  '$email', '$verify' ,'$username', '$hashed_password')";
     $result = mysqli_query($conn, $query);
 
     if ($result) {

@@ -147,6 +147,7 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                 <th style="font-weight: 400;">Nomor HP</th>
                 <td>
                     <?php if ($data['nomorhp'] == 0): ?>
+                        <!-- Jika nomor HP belum ada -->
                         <span style="font-style: italic; color: darkred;">Nomor handphonemu belum ada nih</span>
                         <button style="border: none; background-color: white;" class="text-primary ms-2"
                             data-bs-toggle="modal" data-bs-target="#nomorhpModal"><i class="fas fa-plus-circle"> Tambah No.
@@ -167,7 +168,7 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                                                 <label for="nomorhp" class="form-label">Nomor HP</label>
                                                 <input type="text" class="form-control" id="nomorhp" name="nomorhp"
                                                     placeholder="Ex: 0812-3456-7890" aria-describedby="nomorhpHelp"
-                                                    maxlength="14"
+                                                    minlength="14" maxlength="14" required
                                                     oninput="this.value = this.value.replace(/[^0-9-]/g, '').replace(/(\d{4})/g, '$1-').replace(/--/g, '-').replace(/-$/, '');">
                                             </div>
                                         </div>
@@ -206,6 +207,7 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                         ?>
                     <?php else: ?>
                         <?= $data['nomorhp'] ?>
+                        <!-- Jika nomor HP sudah ada -->
                         <button style="border: none; background-color: white;" class="text-primary ms-2"
                             data-bs-toggle="modal" data-bs-target="#editNomorhpModal"><i class="fas fa-edit"> Edit</i></button>
 
@@ -225,6 +227,7 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                                                 <input type="text" class="form-control" id="editNomorhp"
                                                     name="editNomorhp" placeholder="Ex: 0812-3456-7890"
                                                     aria-describedby="nomorhpHelp" value="<?= $data['nomorhp'] ?>"
+                                                    minlength="14" maxlength="14" required
                                                     oninput="this.value = this.value.replace(/[^0-9-]/g, '').replace(/(\d{4})/g, '$1-').replace(/--/g, '-').replace(/-$/, '');">
                                             </div>
                                         </div>

@@ -1,18 +1,20 @@
- // Generate id_user
-    $initials = strtoupper(substr($username, 0, 2)); // Get first two characters of username
-    $query = "SELECT COUNT(*) as count FROM user";
-    $result = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($result);
-    $count = $row['count'] + 1; // Get the next user number
-    $id_user = $initials . str_pad($count, 4, '0', STR_PAD_LEFT); // Combine initials and padded number
+// Generate id_user
+$initials = strtoupper(substr($username, 0, 2)); // Get first two characters of username
+$query = "SELECT COUNT(*) as count FROM user";
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_assoc($result);
+$count = $row['count'] + 1; // Get the next user number
+$id_user = $initials . str_pad($count, 4, '0', STR_PAD_LEFT); // Combine initials and padded number
 
-    aku ingin agar id user ini dapat mengenerate otomatis dengan mengambil Inisial dari Username yang ada dan urutan dari data keberapa user yang register ini 
+aku ingin agar id user ini dapat mengenerate otomatis dengan mengambil Inisial dari Username yang ada dan urutan dari
+data keberapa user yang register ini
 //
 
 
-<img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Card image cap" style="max-height: 200px; object-fit: cover;"> 
+<img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Card image cap" style="max-height: 200px; object-fit: cover;">
 
-<img class="card-img-top" src="../assets/img/Buku/<?= $bk['cover']; ?> "alt="Card image cap" style="max-height: 200px; object-fit: cover;">
+<img class="card-img-top" src="../assets/img/Buku/<?= $bk['cover']; ?> " alt="Card image cap"
+    style="max-height: 200px; object-fit: cover;">
 
 
 <!-- Data Buku -->
@@ -48,47 +50,49 @@
 
 // session
 if (isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+$username = $_POST['username'];
+$password = $_POST['password'];
 
-    $query = "SELECT * FROM user WHERE username='$username'";
-    $result = mysqli_query($conn, $query);
+$query = "SELECT * FROM user WHERE username='$username'";
+$result = mysqli_query($conn, $query);
 
-    $hitung = mysqli_num_rows($result);
-    if ($hitung > 0) {
-        $row = mysqli_fetch_assoc($result);
-        if (password_verify($password, $row['password'])) {
-            $_SESSION['log'] = true;
-            $_SESSION['username'] = $username;
-            $_SESSION['role'] = $row['role'];
+$hitung = mysqli_num_rows($result);
+if ($hitung > 0) {
+$row = mysqli_fetch_assoc($result);
+if (password_verify($password, $row['password'])) {
+$_SESSION['log'] = true;
+$_SESSION['username'] = $username;
+$_SESSION['role'] = $row['role'];
 
-            if ($row['role'] == 'Admin') {
-                header("location:../Admin/dashboard.php");
-            } else {
-                header("location:../User/dashboard.php");
-            }
-        } else {
-            echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Username atau Password Salah!
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-        }
-    } else {
-        echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
-                Username atau Password Salah!
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>';
-    }
+if ($row['role'] == 'Admin') {
+header("location:../Admin/dashboard.php");
+} else {
+header("location:../User/dashboard.php");
+}
+} else {
+echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;"
+    class="alert alert-danger alert-dismissible fade show" role="alert">
+    Username atau Password Salah!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>';
+}
+} else {
+echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;"
+    class="alert alert-danger alert-dismissible fade show" role="alert">
+    Username atau Password Salah!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>';
+}
 }
 
 if (!isset($_SESSION['log'])) {
 
 } else {
-    if ($_SESSION['role'] == 'Admin') {
-        header('location: ../Admin/dashboard.php');
-    } else {
-        header('location: ../User/dashboard.php');
-    }
+if ($_SESSION['role'] == 'Admin') {
+header('location: ../Admin/dashboard.php');
+} else {
+header('location: ../User/dashboard.php');
+}
 }
 
 ?>
@@ -97,37 +101,39 @@ if (!isset($_SESSION['log'])) {
 
 // session
 if (isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+$username = $_POST['username'];
+$password = $_POST['password'];
 
-    $query = "SELECT * FROM user WHERE username='$username'";
-    $result = mysqli_query($conn, $query);
+$query = "SELECT * FROM user WHERE username='$username'";
+$result = mysqli_query($conn, $query);
 
-    $hitung = mysqli_num_rows($result);
-    if ($hitung > 0) {
-        $row = mysqli_fetch_assoc($result);
-        if (password_verify($password, $row['password'])) {
-            $_SESSION['log'] = true;
-            $_SESSION['username'] = $username;
-            $_SESSION['role'] = $row['role'];
+$hitung = mysqli_num_rows($result);
+if ($hitung > 0) {
+$row = mysqli_fetch_assoc($result);
+if (password_verify($password, $row['password'])) {
+$_SESSION['log'] = true;
+$_SESSION['username'] = $username;
+$_SESSION['role'] = $row['role'];
 
-            if ($row['role'] == 'Admin') {
-                header("location:../Admin/dashboard.php");
-            } else {
-                header("location:../User/dashboard.php");
-            }
-        } else {
-            echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Username atau Password Salah!
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-        }
-    } else {
-        echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
-                Username atau Password Salah!
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>';
-    }
+if ($row['role'] == 'Admin') {
+header("location:../Admin/dashboard.php");
+} else {
+header("location:../User/dashboard.php");
+}
+} else {
+echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;"
+    class="alert alert-danger alert-dismissible fade show" role="alert">
+    Username atau Password Salah!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>';
+}
+} else {
+echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;"
+    class="alert alert-danger alert-dismissible fade show" role="alert">
+    Username atau Password Salah!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>';
+}
 }
 
 
@@ -136,50 +142,93 @@ if (isset($_POST['login'])) {
 
 // session
 if (isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+$username = $_POST['username'];
+$password = $_POST['password'];
 
-    $query = "SELECT * FROM user WHERE username='$username'";
-    $result = mysqli_query($conn, $query);
+$query = "SELECT * FROM user WHERE username='$username'";
+$result = mysqli_query($conn, $query);
 
-    $hitung = mysqli_num_rows($result);
-    if ($hitung > 0) {
-        $row = mysqli_fetch_assoc($result);
-        if (password_verify($password, $row['password'])) {
-            if ($row['role'] == 'Admin') {
-                $_SESSION['admin_log'] = true;
-                $_SESSION['admin_username'] = $username;
-                header("location:../Admin/dashboard.php");
-            } else {
-                $_SESSION['user_log'] = true;
-                $_SESSION['user_username'] = $username;
-                header("location:../User/dashboard.php");
-            }
-        } else {
-            echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Username atau Password Salah!
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-        }
-    } else {
-        echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
-                Username atau Password Salah!
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>';
-    }
+$hitung = mysqli_num_rows($result);
+if ($hitung > 0) {
+$row = mysqli_fetch_assoc($result);
+if (password_verify($password, $row['password'])) {
+if ($row['role'] == 'Admin') {
+$_SESSION['admin_log'] = true;
+$_SESSION['admin_username'] = $username;
+header("location:../Admin/dashboard.php");
+} else {
+$_SESSION['user_log'] = true;
+$_SESSION['user_username'] = $username;
+header("location:../User/dashboard.php");
+}
+} else {
+echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;"
+    class="alert alert-danger alert-dismissible fade show" role="alert">
+    Username atau Password Salah!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>';
+}
+} else {
+echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;"
+    class="alert alert-danger alert-dismissible fade show" role="alert">
+    Username atau Password Salah!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>';
+}
 }
 
 if (!isset($_SESSION['admin_log']) && !isset($_SESSION['user_log'])) {
-    // User is not logged in
+// User is not logged in
 } else {
-    if (isset($_SESSION['admin_log']) && $_SESSION['admin_log'] == true) {
-        header("location:../Admin/dashboard.php");
-    } elseif (isset($_SESSION['user_log']) && $_SESSION['user_log'] == true) {
-        header("location:../User/dashboard.php");
-    }
+if (isset($_SESSION['admin_log']) && $_SESSION['admin_log'] == true) {
+header("location:../Admin/dashboard.php");
+} elseif (isset($_SESSION['user_log']) && $_SESSION['user_log'] == true) {
+header("location:../User/dashboard.php");
+}
 }
 
 
-aku ingin membuat fitur jika user terlambat mengembalikan buku maka user akan mendapat sebuah pesan ke email user bahwa mereka terlambat mengembalikan buku dengan menggunakan library PHPMailer
+aku ingin membuat fitur jika user terlambat mengembalikan buku maka user akan mendapat sebuah pesan ke email user bahwa
+mereka terlambat mengembalikan buku dengan menggunakan library PHPMailer
 
-ubah warna shadow menjadi sesuai dengan warna dari img cover , contohnya jika terdeteksi warna  img adalah biru maka shadow akan berwarna biru dan lain sebagainya
+ubah warna shadow menjadi sesuai dengan warna dari img cover , contohnya jika terdeteksi warna img adalah biru maka
+shadow akan berwarna biru dan lain sebagainya
+
+qrCodeUrl
+
+<?php
+require_once '../assets/phpqrcode/qrlib.php';
+
+$query = "SELECT * FROM buku WHERE if_visible = TRUE";
+$result = mysqli_query($conn, $query);
+while ($data = mysqli_fetch_assoc($result)) {
+    // Create QR code data
+    $qrData = $data['id_buku'] . ', ' . $data['judul'] . ', ' . $data['pengarang'] . ', ' . $data['penerbit'] . ', ' . $data['tahun_terbit'] . ', ' . $data['halaman'];
+
+    // Generate unique filename for this QR code
+    $tempDir = "../temp/";
+    if (!file_exists($tempDir)) {
+        mkdir($tempDir);
+    }
+    $fileName = $tempDir . 'QR_' . $data['id_buku'] . '.png';
+
+    // Generate QR code
+    QRcode::png($qrData, $fileName, QR_ECLEVEL_L, 3);
+    ?>
+    <tr>
+        <td style="overflow: hidden;">
+            <a href="<?= $fileName ?>" target="_blank">
+                <img src="<?= $fileName ?>" alt="QR Code" style="transition: all 0.3s ease-in-out;"
+                    onmouseover="this.style.transform='scale(1.2)';" onmouseout="this.style.transform='scale(1)';" />
+            </a>
+        </td>
+        <td><?= $data['id_buku'] ?></td>
+        <td><?= $data['judul'] ?></td>
+        <td><?= $data['pengarang'] ?></td>
+        <td><?= $data['penerbit'] ?></td>
+        <td><?= $data['tahun_terbit'] ?></td>
+        <td><?= $data['halaman'] ?></td>
+    </tr>
+    <?php
+}
+?>

@@ -143,7 +143,11 @@ require "../Auth/cek_log.php";
                                         placeholder="Search for..." aria-label="Search for..."
                                         aria-describedby="btnNavbarSearch" onkeyup="filterData()" />
                                 </div>
+
+                                <!-- Category Filter -->
                                 <div class="input-group shadow-md" style="width: 200px;">
+                                    <span class="input-group-text bg-light border-0" id="basic-addon1"><i
+                                            class="fas fa-filter text-primary"></i></span>
                                     <select class="form-select" name="category" id="categoryFilter"
                                         onchange="filterData()">
                                         <option value="">All Categories</option>
@@ -199,7 +203,7 @@ require "../Auth/cek_log.php";
                                             <div class="card h-100 shadow-lg">
                                                 <div class="card h-100">
                                                     <img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Book Cover"
-                                                        style="object-fit: cover; width: 100%; height: 500px;">
+                                                        style="object-fit: cover; width: 100%; height: 100%;">
                                                 </div>
                                                 <div class="card-body">
                                                     <h5 class="card-title"><?= $bk['judul']; ?></h5>
@@ -212,10 +216,11 @@ require "../Auth/cek_log.php";
                                                         <?= $bk['halaman']; ?></p>
                                                     <p class="card-text"><span class="badge bg-secondary">Kategori:</span>
                                                         <?= $bk['kategori']; ?></p>
-
+                                                    <br>
                                                     <div class="d-flex justify-content-end">
                                                         <a href="detail_buku.php?id_buku=<?= $bk['id_buku']; ?>"
-                                                            class="btn btn-outline-primary">Lihat Detail</a>
+                                                            class="btn btn-outline-primary"
+                                                            style="width: 100%; height: 100%;">Lihat Detail</a>
                                                     </div>
                                                 </div>
                                             </div>
