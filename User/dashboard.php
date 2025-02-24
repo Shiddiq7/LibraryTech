@@ -381,20 +381,7 @@ require "../Auth/cek_log.php";
                                 $avgRatingResult = query($avgRatingQuery);
                                 $avgRating = $avgRatingResult[0]['avg_rating'] ?? 0;
                                 ?>
-                                <style>
-                                    .card:hover .fa-star {
-                                        animation: star 1.5s ease-in-out infinite alternate;
-                                    }
-
-                                    @keyframes star {
-                                        from {
-                                            transform: scale(1);
-                                        }
-                                        to {
-                                            transform: scale(1.4);
-                                        }
-                                    }
-                                </style>
+                                
                                 <!-- Tampilan rating -->
                                 <div class="card-footer text-center">
                                     <?php

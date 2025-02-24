@@ -164,7 +164,7 @@ require "../Auth/cek_log.php";
                                             <td>
                                                 <?= $email ?>
                                                 <?php if ($data['verify'] == 1): ?>
-                                                    <span style="margin-left: 10px;" class="badge bg-success">Verified</span>
+                                                    <span style="margin-left: 10px;" class="badge bg-success" >Verified</span>
                                                 <?php else: ?>
                                                     <span class="badge bg-warning text-dark">Not Verified</span>
                                                     <div style="float: right;" class="btn-group" role="group"
