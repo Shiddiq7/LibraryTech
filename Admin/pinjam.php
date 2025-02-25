@@ -239,10 +239,7 @@ foreach ($pinjam as $pj) {
                                     transition: all 0.3s;
                                 }
 
-                                .card:hover {
-                                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-                                    transform: translateY(-5px);
-                                }
+                              
                             </style>
 
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
@@ -271,6 +268,50 @@ foreach ($pinjam as $pj) {
 
                                 if (count($pinjam) > 0) {
                                     foreach ($pinjam as $pj):
+                                        // jika tanggal_kembali sudah lewat 7 hari maka status akan berubah otomatis menjadi Dikembalikan
+                                        if (strtotime($pj['tanggal_kembali']) < time() - 7 * 24 * 60 * 60 && $pj['status'] != 'Dikembalikan') {
+                                            $query = "UPDATE pinjam SET status = 'Dikembalikan' WHERE id_pinjam = " . $pj['id_pinjam'];
+                                            mysqli_query($conn, $query);
+
+                                            // kirim pesan pengembalian otomatis ini ke email user
+                                            $email_user = query("SELECT Email FROM pinjam WHERE id_pinjam = " . $pj['id_pinjam'] . " LIMIT 1");
+                                            if (isset($email_user[0]['Email'])) {
+                                                $mail = new PHPMailer(true);
+
+                                                try {
+                                                    //Server settings
+                                                    $mail->isSMTP();
+                                                    $mail->Host = 'smtp.gmail.com';
+                                                    $mail->SMTPAuth = true;
+                                                    $mail->Username = 'libratech21@gmail.com';
+                                                    $mail->Password = 'wwxhbkuejyygwrvl';
+                                                    $mail->SMTPSecure = 'tls';
+                                                    $mail->Port = 587;
+
+                                                    // pengirim
+                                                    $mail->setFrom('no-reply@librarytech.com', 'LibraTech');
+
+                                                    // penerima
+                                                    $mail->addAddress($email_user[0]['Email']);
+
+                                                    // Content
+                                                    $mail->isHTML(true);
+                                                    $mail->Subject = 'Pengembalian Buku Otomatis';
+                                                    $mail->Body = '<p>Yth. ' . $pj['username'] . ',</p>
+                                                    <p>Buku yang Anda pinjam dengan judul "' . $pj['judul'] . '" telah dikembalikan secara otomatis oleh sistem karena telah terlambat selama 7 hari.</p>
+                                                    <p>Mohon diperhatikan untuk pengembalian buku tepat waktu di masa mendatang.</p>
+                                                    <p>Terima kasih atas perhatian dan kerja sama Anda.</p>
+                                                    <p>Salam hormat,</p>
+                                                    <p><strong>Tim LibraTech</strong></p>';
+
+                                                    $mail->send();
+                                                } catch (Exception $e) {
+                                                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                                                }
+                                            }
+
+                                            echo '<meta http-equiv="refresh" content="0;url=pinjam.php" />';
+                                        }
                                         ?>
                                         <div class="col mb-2">
                                             <div class="card h-100 shadow-lg">
@@ -314,6 +355,7 @@ foreach ($pinjam as $pj) {
                                                             <?= $pj['status'] == 'Dipinjam' || $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>>Confirm</button>
                                                     </div>
 
+                                                    
                                                     <!-- Modal Pinjam -->
                                                     <div class="modal fade" id="confirmModal<?= $pj['id_pinjam'] ?>"
                                                         tabindex="-1" aria-labelledby="confirmModalLabel<?= $pj['id_pinjam'] ?>"
