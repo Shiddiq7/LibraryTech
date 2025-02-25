@@ -16,7 +16,7 @@ function generateOTP($length = 6)
     $characters = '0123456789';
     $otp = '';
     for ($i = 0; $i < $length; $i++) {
-        $otp .= $characters[rand(0, strlen($characters) - 1)];
+        $otp .= $characters[random_int(0, strlen($characters) - 1)];
     }
     return $otp;
 }
@@ -30,8 +30,8 @@ function sendOTP($email, $otp, $username)
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com'; // Set the SMTP server to send through
         $mail->SMTPAuth = true;
-        $mail->Username = 'shiddiqduasatu@gmail.com'; // SMTP username
-        $mail->Password = 'abzqaggnahfewfnr'; // SMTP password
+        $mail->Username = 'libratech21@gmail.com'; // SMTP username
+        $mail->Password = 'wwxhbkuejyygwrvl'; // SMTP password
         $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 

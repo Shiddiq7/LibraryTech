@@ -1,3 +1,10 @@
+<?php
+if (!isset($_SESSION['email'])) {
+    header('Location: register.php');
+    exit;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
