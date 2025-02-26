@@ -338,42 +338,58 @@ require "../Auth/cek_log.php";
                                         <!-- Modal Kembali -->
                                         <div class="modal fade" id="kembaliModal<?= $pj['id_pinjam'] ?>" tabindex="-1"
                                             aria-labelledby="kembaliModalLabel<?= $pj['id_pinjam'] ?>" aria-hidden="true">
-                                            <div class="modal-dialog">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg">
                                                 <div class="modal-content">
-                                                    <div class="modal-header">
+                                                    <div class="modal-header" style="background: linear-gradient(to right, #6a11cb, #2575fc); color: white;">
                                                         <h5 class="modal-title" id="kembaliModalLabel<?= $pj['id_pinjam'] ?>">
-                                                            Konfirmasi Pengembalian
+                                                            <i class="fas fa-book me-2"></i> Konfirmasi Pengembalian
                                                         </h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <div class="row">
+                                                        <div class="row g-3">
                                                             <div class="col-4">
                                                                 <img src="<?= $pj['cover'] ?>" alt="Cover Buku"
-                                                                    class="img-thumbnail">
+                                                                    class="img-thumbnail rounded-3">
                                                             </div>
                                                             <div class="col-8" style="text-align: left;">
-                                                                <p class="card-text"><strong>Judul:</strong> <?= $pj['judul'] ?>
-                                                                </p>
-                                                                <p class="card-text"><strong>Pengarang:</strong>
-                                                                    <?= $pj['pengarang'] ?></p>
-                                                                <p class="card-text"><strong>Tanggal Pinjam:</strong>
-                                                                    <?= $pj['tanggal_pinjam'] ?></p>
-                                                                <br>
+                                                                <h4 class="mb-3 ms-3" style="font-weight: bold; color: #007bff;">
+                                                                    Detail Buku
+                                                                </h4>
+                                                                <ul class="list-group list-group-flush mb-4">
+                                                                    <li class="list-group-item">
+                                                                        <strong>Judul:</strong> <?= $pj['judul'] ?>
+                                                                    </li>
+                                                                    <li class="list-group-item">
+                                                                        <strong>Pengarang:</strong> <?= $pj['pengarang'] ?>
+                                                                    </li>
+                                                                    <li class="list-group-item">
+                                                                        <strong>Penerbit:</strong> <?= $pj['penerbit'] ?>
+                                                                    </li>
+                                                                    <li class="list-group-item">
+                                                                        <strong>Tanggal Pinjam:</strong> <?= $pj['tanggal_pinjam'] ?>
+                                                                    </li>
+                                                                    <li class="list-group-item">
+                                                                        <strong>Tanggal Kembali:</strong> <?= $pj['tanggal_kembali'] ?>
+                                                                    </li>
+                                                                </ul>
                                                                 <?php
                                                                 $tanggal_kembali = date_create($pj['tanggal_kembali']);
                                                                 $now = date_create();
                                                                 $diff = date_diff($tanggal_kembali, $now);
                                                                 $daysLeft = $diff->format('%a');
                                                                 ?>
-                                                                <p>Apakah Anda yakin ingin mengembalikan buku ini?
-                                                                <p>Waktu pinjam masih tersisa <?= $daysLeft ?> hari lagi.</p>
-                                                                </p>
+                                                                <div class="alert alert-info" role="alert">
+                                                                    <i class="fas fa-info-circle"></i> Apakah Anda yakin ingin mengembalikan buku ini?
+                                                                    <br> Waktu pinjam masih tersisa <strong><?= $daysLeft ?></strong> hari lagi.
+                                                                </div>
                                                             </div>
                                                         </div>
 
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
+                                                        <button type="button" class="btn btn-outline-secondary"
                                                             data-bs-dismiss="modal">Batal</button>
                                                         <form method="POST">
                                                             <input type="hidden" name="id_pinjam"

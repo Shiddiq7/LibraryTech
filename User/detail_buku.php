@@ -300,7 +300,7 @@ if (isset($_GET['id_buku'])) {
     <form method="post">
         <div class="mb-3 ms-3 me-3">
             <label for="ulasan" class="form-label">Komentar/Ulasan</label>
-            <div style="position: relative;">
+            <div style="position: relative; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                 <textarea class="form-control" id="ulasan" name="ulasan" rows="7" placeholder="Tulis ulasan Anda di sini..."
                     style="border-radius: 20px;" maxlength="250" required></textarea>
                 <small class="text-muted" style="position: absolute; bottom: 5px; left: 10px;">Karakter tersisa: <span id="charCount">250</span></small>
@@ -403,15 +403,13 @@ if (isset($_GET['id_buku'])) {
     <br><br><br>
 
 
-    <!-- Modal Pinjam -->
+    <!-- Pinjam Confirmation Modal -->
     <div class="modal fade" id="pinjamModal" tabindex="-1" aria-labelledby="pinjamModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="pinjamModalLabel">Pinjam Buku</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-body text-center p-4">
+                    <i class="fas fa-book-reader text-primary" style="font-size: 3rem; margin-bottom: 1rem; "></i>
+                    <h3 style="font-family: 'Lato', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #4a4a4a;">Pinjam Buku</h3>
                     <form method="POST">
                         <input type="hidden" name="cover" value="<?= $data['cover'] ?>">
                         <input type="hidden" name="username" value="<?= $_SESSION['username'] ?>">
@@ -421,10 +419,9 @@ if (isset($_GET['id_buku'])) {
                         <input type="hidden" name="judul" value="<?= $data['judul'] ?>">
                         <input type="hidden" name="pengarang" value="<?= $data['pengarang'] ?>">
                         <input type="hidden" name="penerbit" value="<?= $data['penerbit'] ?>">
-
-                        <div class="mb-3">
+                        <div class="mb-3 mt-4 text-start">
                             <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
-                            <input type="date" class="form-control" id="tanggal_pinjam" name="tanggal_pinjam" required
+                            <input type="date" class="form-control" style="text-align: start;" id="tanggal_pinjam" name="tanggal_pinjam" required
                                 min="<?= date('Y-m-d') ?>" onchange="
                                     var date = new Date(this.value);
                                     date.setDate(date.getDate() + 7);
@@ -433,19 +430,19 @@ if (isset($_GET['id_buku'])) {
                                 ">
                             <small class="text-muted">Maksimal Pinjam Buku adalah 7 Hari</small>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 mt-4 text-start">
                             <label for="tanggal_kembali" class="form-label">Tanggal Kembali</label>
                             <input type="date" class="form-control" id="tanggal_kembali" name="tanggal_kembali"
                                 required>
                         </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-outline-primary" name="pinjam">Pinjam</button>
+                        <div class="d-flex justify-content-center gap-3 mt-5">
+                            <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-outline-primary px-4" name="pinjam">Pinjam</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-
     </div>
 
 

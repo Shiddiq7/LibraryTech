@@ -268,8 +268,8 @@ foreach ($pinjam as $pj) {
 
                                 if (count($pinjam) > 0) {
                                     foreach ($pinjam as $pj):
-                                        // jika tanggal_kembali sudah lewat 7 hari maka status akan berubah otomatis menjadi Dikembalikan
-                                        if (strtotime($pj['tanggal_kembali']) < time() - 7 * 24 * 60 * 60 && $pj['status'] != 'Dikembalikan') {
+                                        // jika tanggal_kembali sudah lewat 3 hari maka status akan berubah otomatis menjadi Dikembalikan
+                                        if (strtotime($pj['tanggal_kembali']) < time() - 3 * 24 * 60 * 60 && $pj['status'] != 'Dikembalikan') {
                                             $query = "UPDATE pinjam SET status = 'Dikembalikan' WHERE id_pinjam = " . $pj['id_pinjam'];
                                             mysqli_query($conn, $query);
 
@@ -296,10 +296,12 @@ foreach ($pinjam as $pj) {
 
                                                     // Content
                                                     $mail->isHTML(true);
-                                                    $mail->Subject = 'Pengembalian Buku Otomatis';
+                                                    $mail->Subject = 'Pengembalian Buku Otomatis - ' . $pj['judul'];
                                                     $mail->Body = '<p>Yth. ' . $pj['username'] . ',</p>
-                                                    <p>Buku yang Anda pinjam dengan judul "' . $pj['judul'] . '" telah dikembalikan secara otomatis oleh sistem karena telah terlambat selama 7 hari.</p>
-                                                    <p>Mohon diperhatikan untuk pengembalian buku tepat waktu di masa mendatang.</p>
+                                                    <p>Kami sampaikan bahwa buku yang Anda pinjam dengan judul "<b>' . $pj['judul'] . '</b>" dan ID Buku "<b>' . $pj['id_buku'] . '</b>" telah dikembalikan secara otomatis oleh sistem karena telah terlambat dikembalikan selama 3 hari.</p>
+                                                    <p>Tanggal peminjaman Buku         :' . date('d F Y', strtotime($pj['tanggal_pinjam'])) . '</p>
+                                                    <p>Tanggal pengembalian seharusnya : ' . date('d F Y', strtotime($pj['tanggal_kembali'])) . '</p>
+                                                    <p>Mohon diperhatikan untuk pengembalian buku tepat waktu di masa mendatang</p>
                                                     <p>Terima kasih atas perhatian dan kerja sama Anda.</p>
                                                     <p>Salam hormat,</p>
                                                     <p><strong>Tim LibraTech</strong></p>';
