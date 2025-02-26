@@ -1,7 +1,13 @@
 <?php
-if (!isset($_SESSION['email'])) {
-    header('Location: register.php');
-    exit;
+session_start();
+if (isset($_SESSION['username'])) {
+    $username = $_SESSION['username'];
+    $query = "SELECT verify FROM user WHERE username = '$username'";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    if ($row['verify'] != 1) {
+        header('Location: register.php');
+    }
 }
 
 ?>

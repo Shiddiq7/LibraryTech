@@ -210,27 +210,11 @@ if (isset($_GET['id_buku'])) {
             if (mysqli_num_rows($result) == 0) {
                 $query = "INSERT INTO Review (id_buku, judul, username, rating) VALUES ('$id_buku', '$judul', '$username', '$rating')";
                 mysqli_query($conn, $query);
-                echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
-                echo '<script>
-                        swal({
-                            title: "Terima Kasih!",
-                            text: "Komentar Anda telah diterima!",
-                            icon: "success",
-                            button: "Oke",
-                        });
-                    </script>';
+                echo "<meta http-equiv='refresh' content='0'>";
             } else {
                 $query = "UPDATE Review SET rating = '$rating' WHERE id_buku = '$id_buku' AND username = '$username'";
                 mysqli_query($conn, $query);
-                echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
-                echo '<script>
-                        swal({
-                            title: "Terima Kasih!",
-                            text: "Rating Anda telah diperbarui!",
-                            icon: "success",
-                            button: "Oke",
-                        });
-                    </script>';
+                echo "<meta http-equiv='refresh' content='0'>";
             }
         }
         ?>
@@ -243,35 +227,63 @@ if (isset($_GET['id_buku'])) {
             $username = $_SESSION['username'];
             $komentar = $_POST['ulasan'];
 
-            $query = "UPDATE review SET ulasan = '$komentar' WHERE id_buku = '$id_buku' AND username = '$username'";
-            if (mysqli_query($conn, $query)) {
-                echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
-                echo '<script>
-                        swal({
-                            title: "Terima Kasih!",
-                            text: "Ulasan Anda telah diterima!",
-                            icon: "success",
-                            button: "Oke",
-                        });
-                      </script>';
+            $query = "SELECT * FROM review WHERE id_buku = '$id_buku' AND username = '$username'";
+            $result = mysqli_query($conn, $query);
+
+            if (mysqli_num_rows($result) == 0) {
+                $query = "INSERT INTO review (id_buku, judul, username, ulasan) VALUES ('$id_buku', '$judul', '$username', '$komentar')";
+                if (mysqli_query($conn, $query)) {
+                    echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
+                    echo '<script>
+                            swal({
+                                title: "Terima Kasih!",
+                                text: "Ulasan Anda telah diterima!",
+                                icon: "success",
+                                button: "Oke",
+                            });
+                          </script>';
+                } else {
+                    echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
+                    echo '<script>
+                            swal({
+                                title: "Gagal!",
+                                text: "Terjadi kesalahan saat menyimpan ulasan Anda!",
+                                icon: "error",
+                                button: "Oke",
+                            });
+                          </script>';
+                }
             } else {
-                echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
-                echo '<script>
-                        swal({
-                            title: "Gagal!",
-                            text: "Terjadi kesalahan saat menyimpan ulasan Anda!",
-                            icon: "error",
-                            button: "Oke",
-                        });
-                      </script>';
+                $query = "UPDATE review SET ulasan = '$komentar' WHERE id_buku = '$id_buku' AND username = '$username'";
+                if (mysqli_query($conn, $query)) {
+                    echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
+                    echo '<script>
+                            swal({
+                                title: "Terima Kasih!",
+                                text: "Ulasan Anda telah diperbarui!",
+                                icon: "success",
+                                button: "Oke",
+                            });
+                          </script>';
+                } else {
+                    echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
+                    echo '<script>
+                            swal({
+                                title: "Gagal!",
+                                text: "Terjadi kesalahan saat memperbarui ulasan Anda!",
+                                icon: "error",
+                                button: "Oke",
+                            });
+                          </script>';
+                }
             }
             ?>
         <?php endif; ?>
 
         <!-- Rating input -->
-        <form method="post">
+        <form method="post" id="rating-form">
             <div class="mb-3 text-center">
-                <label for="rating" class="form-label">Rating</label>
+                <label for="rating" class="form-label">Beri Rating</label>
                 <div id="star-rating" style="font-size: 24px; color: #ffc107; display: flex; justify-content: center;">
                     <?php for ($i = 1; $i <= 5; $i++): ?>
                         <i class="far fa-star" data-value="<?= $i ?>"></i>
@@ -286,6 +298,21 @@ if (isset($_GET['id_buku'])) {
                 </button>
             </div>
         </form>
+        
+        <!-- Script Rating  -->
+        <script>
+            document.querySelectorAll('#star-rating i').forEach(star => {
+                star.addEventListener('click', function () {
+                    const ratingValue = this.getAttribute('data-value');
+                    document.getElementById('rating').value = ratingValue;
+                    document.querySelectorAll('#star-rating i').forEach((s, index) => {
+                        s.className = index < ratingValue ? 'fas fa-star' : 'far fa-star';
+                    });
+                });
+            });
+        </script>
+
+
 
         <div class="d-flex justify-content-center gap-2 mt-4">
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
@@ -345,7 +372,11 @@ if (isset($_GET['id_buku'])) {
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
                         <div class="me-3">
-                            <i class="fas fa-user-circle" style="font-size: 2rem;"></i>
+                            <?php if(isset($_SESSION['profile_picture']) && file_exists("../assets/profile_picture/" . $_SESSION['profile_picture'])): ?>
+                            <img src="../assets/profile_picture/<?php echo $_SESSION['profile_picture']; ?>" style="width: 60px; height: 50px; border-radius: 50%; object-fit: cover;">
+                            <?php else: ?>
+                            <i class="fas fa-user-circle" style="font-size: 4rem;"></i>
+                            <?php endif; ?>
                         </div>
                         <div>
                             <h5 class="card-title mb-0" style="font-weight: bold;">
@@ -471,21 +502,19 @@ if (isset($_GET['id_buku'])) {
     </script>
     <script>
         document.querySelectorAll('#star-rating i').forEach(star => {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+            }
+        }
+    </script>
+    <script>
+        document.querySelectorAll('#star-rating i').forEach(star => {
             star.addEventListener('click', function () {
                 const ratingValue = this.getAttribute('data-value');
                 document.getElementById('rating').value = ratingValue;
                 document.querySelectorAll('#star-rating i').forEach((s, index) => {
                     if (index < ratingValue) {
-                        s.classList.remove('far');
-                        s.classList.add('fas');
-                    } else {
-                        s.classList.remove('fas');
-                        s.classList.add('far');
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>

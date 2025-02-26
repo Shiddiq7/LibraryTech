@@ -107,7 +107,7 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
         if(isset($_POST['cropped_image'])) {
             $target_dir = "../assets/profile_picture/";
             if (!file_exists($target_dir)) {
-            mkdir($target_dir, 0777, true);
+                mkdir($target_dir, 0777, true);
             }
             
             $image_parts = explode(";base64,", $_POST['cropped_image']);
@@ -116,8 +116,8 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
             $target_file = $target_dir . $new_filename;
             
             if (file_put_contents($target_file, $image_base64)) {
-            $_SESSION['profile_picture'] = $new_filename;
-            echo "<script>window.location.href='profile.php';</script>";
+                $_SESSION['profile_picture'] = $new_filename;
+                echo "<script>window.location.href='profile.php';</script>";
             }
         }
 
@@ -125,9 +125,9 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
         if (isset($_GET['delete'])) {
             $target_file = "../assets/profile_picture/" . $_SESSION['profile_picture'];
             if (file_exists($target_file)) {
-            unlink($target_file);
-            unset($_SESSION['profile_picture']);
-            echo "<script>window.location.href='profile.php';</script>";
+                unlink($target_file);
+                unset($_SESSION['profile_picture']);
+                echo "<script>window.location.href='profile.php';</script>";
             }
         }
         ?>
@@ -153,6 +153,7 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
             <button type="button" class="btn btn-outline-danger btn-sm rounded mt-2" data-bs-toggle="modal" data-bs-target="#deletePhotoModal">
                 <i class="fas fa-trash-alt"></i> Delete
             </button>
+        
 
             <!-- Delete Confirmation Modal -->
             <div class="modal fade" id="deletePhotoModal" tabindex="-1" aria-labelledby="deletePhotoModalLabel" aria-hidden="true">
