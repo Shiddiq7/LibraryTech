@@ -298,7 +298,7 @@ if (isset($_GET['id_buku'])) {
                 </button>
             </div>
         </form>
-        
+
         <!-- Script Rating  -->
         <script>
             document.querySelectorAll('#star-rating i').forEach(star => {
@@ -328,16 +328,18 @@ if (isset($_GET['id_buku'])) {
         <div class="mb-3 ms-3 me-3">
             <label for="ulasan" class="form-label">Komentar/Ulasan</label>
             <div style="position: relative; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                <textarea class="form-control" id="ulasan" name="ulasan" rows="7" placeholder="Tulis ulasan Anda di sini..."
-                    style="border-radius: 20px;" maxlength="250" required></textarea>
-                <small class="text-muted" style="position: absolute; bottom: 5px; left: 10px;">Karakter tersisa: <span id="charCount">250</span></small>
+                <textarea class="form-control" id="ulasan" name="ulasan" rows="7"
+                    placeholder="Tulis ulasan Anda di sini..." style="border-radius: 20px;" maxlength="250"
+                    required></textarea>
+                <small class="text-muted" style="position: absolute; bottom: 5px; left: 10px;">Karakter tersisa: <span
+                        id="charCount">250</span></small>
             </div>
             <input type="hidden" name="id_buku" value="<?= $data['id_buku'] ?>">
             <input type="hidden" name="username" value="<?= $_SESSION['username'] ?>">
             <button type="submit" name="komentar" class="btn btn-outline-info mt-3">
                 <i class="fas fa-paper-plane"></i> Kirim Ulasan
             </button>
-           
+
             <!-- Script untuk menghitung karakter tersisa -->
             <script>
                 const ulasanInput = document.getElementById('ulasan');
@@ -372,10 +374,13 @@ if (isset($_GET['id_buku'])) {
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
                         <div class="me-3">
-                            <?php if(isset($_SESSION['profile_picture']) && file_exists("../assets/profile_picture/" . $_SESSION['profile_picture'])): ?>
-                            <img src="../assets/profile_picture/<?php echo $_SESSION['profile_picture']; ?>" style="width: 60px; height: 50px; border-radius: 50%; object-fit: cover;">
+                            <?php
+                            $username = $_SESSION['username'];
+                            if (file_exists("../assets/profile_picture/$username.png")): ?>
+                                <img src="../assets/profile_picture/<?php echo $username; ?>.png"
+                                    style="width: 60px; height: 50px; border-radius: 50%; object-fit: cover;">
                             <?php else: ?>
-                            <i class="fas fa-user-circle" style="font-size: 4rem;"></i>
+                                <i class="fas fa-user-circle" style="font-size: 4rem;"></i>
                             <?php endif; ?>
                         </div>
                         <div>
@@ -406,7 +411,13 @@ if (isset($_GET['id_buku'])) {
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-2">
                             <div class="me-3">
-                                <i class="fas fa-user-circle" style="font-size: 2rem;"></i>
+                                <?php
+                                if (file_exists("../assets/profile_picture/$review[username].png")): ?>
+                                    <img src="../assets/profile_picture/<?php echo $review['username']; ?>.png"
+                                        style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                                <?php else: ?>
+                                    <i class="fas fa-user-circle" style="font-size: 4rem;"></i>
+                                <?php endif; ?>
                             </div>
                             <div>
                                 <h5 class="card-title mb-0" style="font-weight: bold;">
@@ -440,7 +451,9 @@ if (isset($_GET['id_buku'])) {
             <div class="modal-content border-0 shadow">
                 <div class="modal-body text-center p-4">
                     <i class="fas fa-book-reader text-primary" style="font-size: 3rem; margin-bottom: 1rem; "></i>
-                    <h3 style="font-family: 'Lato', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #4a4a4a;">Pinjam Buku</h3>
+                    <h3
+                        style="font-family: 'Lato', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #4a4a4a;">
+                        Pinjam Buku</h3>
                     <form method="POST">
                         <input type="hidden" name="cover" value="<?= $data['cover'] ?>">
                         <input type="hidden" name="username" value="<?= $_SESSION['username'] ?>">
@@ -452,8 +465,8 @@ if (isset($_GET['id_buku'])) {
                         <input type="hidden" name="penerbit" value="<?= $data['penerbit'] ?>">
                         <div class="mb-3 mt-4 text-start">
                             <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
-                            <input type="date" class="form-control" style="text-align: start;" id="tanggal_pinjam" name="tanggal_pinjam" required
-                                min="<?= date('Y-m-d') ?>" onchange="
+                            <input type="date" class="form-control" style="text-align: start;" id="tanggal_pinjam"
+                                name="tanggal_pinjam" required min="<?= date('Y-m-d') ?>" onchange="
                                     var date = new Date(this.value);
                                     date.setDate(date.getDate() + 7);
                                     document.getElementById('tanggal_kembali').min = this.value;
@@ -467,7 +480,8 @@ if (isset($_GET['id_buku'])) {
                                 required>
                         </div>
                         <div class="d-flex justify-content-center gap-3 mt-5">
-                            <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Batal</button>
+                            <button type="button" class="btn btn-outline-secondary px-4"
+                                data-bs-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-outline-primary px-4" name="pinjam">Pinjam</button>
                         </div>
                     </form>
@@ -500,21 +514,8 @@ if (isset($_GET['id_buku'])) {
             }
         }
     </script>
-    <script>
-        document.querySelectorAll('#star-rating i').forEach(star => {
-                reader.readAsDataURL(file);
-            } else {
-                preview.src = "";
-            }
-        }
-    </script>
-    <script>
-        document.querySelectorAll('#star-rating i').forEach(star => {
-            star.addEventListener('click', function () {
-                const ratingValue = this.getAttribute('data-value');
-                document.getElementById('rating').value = ratingValue;
-                document.querySelectorAll('#star-rating i').forEach((s, index) => {
-                    if (index < ratingValue) {
+
+    
 </body>
 
 </html>

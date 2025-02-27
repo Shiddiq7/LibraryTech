@@ -95,40 +95,41 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
 </head>
 
 <body>
+    
+
     <div class="container">
         <h1
             style="font-family: 'Lato', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #4a4a4a;">
             Profile</h1>
         <hr>
-
         <!-- Profile Picture -->
         <?php
         // Handle file upload
-        if(isset($_POST['cropped_image'])) {
-            $target_dir = "../assets/profile_picture/";
-            if (!file_exists($target_dir)) {
-                mkdir($target_dir, 0777, true);
-            }
-            
+        if (isset($_POST['cropped_image'])) {
             $image_parts = explode(";base64,", $_POST['cropped_image']);
             $image_base64 = base64_decode($image_parts[1]);
             $new_filename = $_SESSION['username'] . '.png';
-            $target_file = $target_dir . $new_filename;
-            
-            if (file_put_contents($target_file, $image_base64)) {
-                $_SESSION['profile_picture'] = $new_filename;
-                echo "<script>window.location.href='profile.php';</script>";
+
+            // Check if profile_picture folder exists
+            if (!is_dir('../assets/profile_picture')) {
+            mkdir('../assets/profile_picture', 0777, true);
             }
+
+            // Set target file path
+            $target_file = "../assets/profile_picture/" . $new_filename;
+
+            // Save file
+            file_put_contents($target_file, $image_base64);
+            echo "<script>window.location.href='profile.php';</script>";
         }
 
         // Handle delete profile picture
         if (isset($_GET['delete'])) {
-            $target_file = "../assets/profile_picture/" . $_SESSION['profile_picture'];
-            if (file_exists($target_file)) {
-                unlink($target_file);
-                unset($_SESSION['profile_picture']);
-                echo "<script>window.location.href='profile.php';</script>";
+            $file_path = "../assets/profile_picture/" . $_SESSION['username'] . '.png';
+            if (file_exists($file_path)) {
+            unlink($file_path);
             }
+            echo "<script>window.location.href='profile.php';</script>";
         }
         ?>
         <!-- Add Cropper.js CSS and JS -->
@@ -137,21 +138,27 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
 
         <!-- Profile Picture -->
         <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 10px;">
-            <?php if(isset($_SESSION['profile_picture']) && file_exists("../assets/profile_picture/" . $_SESSION['profile_picture'])): ?>
-            <img src="../assets/profile_picture/<?php echo $_SESSION['profile_picture']; ?>" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover;">
+            <?php
+            $profile_picture = "../assets/profile_picture/" . $_SESSION['username'] . '.png';
+            if (file_exists($profile_picture)):
+            ?>
+            <img src="<?php echo $profile_picture . '?v=' . time(); ?>" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover;" decoding="async" loading="lazy">
             <?php else: ?>
             <i class="fas fa-user-circle fa-10x" style="color: #4a4a4a;"></i>
             <?php endif; ?>
             
-            <label for="profile_input" class="btn btn-outline-primary btn-sm rounded">
+            <form id="profileForm" method="POST" enctype="multipart/form-data">
+                <label for="profile_input" class="btn btn-outline-primary btn-sm rounded">
                 <i class="fas fa-camera"></i>
-                <?php echo isset($_SESSION['profile_picture']) ? 'Change Picture' : 'Upload Picture'; ?>
-            </label>
+                <?php echo file_exists($profile_picture) ? 'Change Picture' : 'Upload Picture'; ?>
+                </label>
 
-            <input type="file" accept="image/*" style="display: none;" id="profile_input" onchange="showCropper(this)">
-            <?php if(isset($_SESSION['profile_picture']) && file_exists("../assets/profile_picture/" . $_SESSION['profile_picture'])): ?>
+                <input type="file" accept="image/*" style="display: none;" id="profile_input" name="profile_image" onchange="showCropper(this)">
+                <input type="hidden" name="cropped_image" id="cropped_image">
+            </form>
+            <?php if(file_exists($profile_picture)): ?>
             <button type="button" class="btn btn-outline-danger btn-sm rounded mt-2" data-bs-toggle="modal" data-bs-target="#deletePhotoModal">
-                <i class="fas fa-trash-alt"></i> Delete
+            <i class="fas fa-trash-alt"></i> Delete
             </button>
         
 
@@ -413,12 +420,24 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
 
     function cropAndUpload() {
         const canvas = cropper.getCroppedCanvas({ width: 400, height: 400 });
+        
+        canvas.toBlob(function(blob) {
+            const formData = new FormData();
+            formData.append('cropped_image', canvas.toDataURL('image/png'));
 
-        const formData = new FormData();
-        formData.append('cropped_image', canvas.toDataURL());
-
-        fetch('profile.php', { method: 'POST', body: formData })
-            .then(() => window.location.reload());
+            fetch('profile.php', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(() => {
+                window.location.reload();
+            })
+            .catch(error => console.error('Error:', error));
+        }, 'image/png');
     }
 </script>
 
