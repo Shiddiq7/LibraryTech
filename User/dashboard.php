@@ -187,10 +187,20 @@ require "../Auth/cek_log.php";
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"
-                                style="font-size: 1.5rem;"></i></a>
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="../assets/profile_picture/<?php echo $_SESSION['username'] . '.png'; ?>"
+                                onerror="this.src='../assets/img/default_profile_picture.png';"
+                                style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"
+                                decoding="async" loading="lazy" />
+                        </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item text-muted"
+                            <li>
+                                <img src="../assets/profile_picture/<?php echo $_SESSION['username'] . '.png'; ?>"
+                                    onerror="this.src='../assets/img/default_profile_picture.png';"
+                                    style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto; display: block;"
+                                    decoding="async" loading="lazy" />
+                            </li>
+                            <li><a class="dropdown-item text-muted mt-3"
                                     href="#"><b><?php echo $_SESSION['username'] ?></b></a></li>
                             <li><a class="dropdown-item" href="profile.php">Profile</a></li>
                             <li>
@@ -369,7 +379,7 @@ require "../Auth/cek_log.php";
                         ?>
                         <div class="col mb-4">
                             <div class="card h-100 shadow-lg">
-                                
+
                                 <!-- Tampilan buku -->
                                 <div class="card h-100">
                                     <img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Book Cover"
@@ -381,7 +391,7 @@ require "../Auth/cek_log.php";
                                 $avgRatingResult = query($avgRatingQuery);
                                 $avgRating = $avgRatingResult[0]['avg_rating'] ?? 0;
                                 ?>
-                                
+
                                 <!-- Tampilan rating -->
                                 <div class="card-footer text-center">
                                     <?php
@@ -407,7 +417,7 @@ require "../Auth/cek_log.php";
                                         <?= $bk['halaman']; ?></p>
                                     <p class="card-text text-start"><span class="badge bg-secondary">Kategori:</span>
                                         <?= $bk['kategori']; ?></p>
-                                    <br>    
+                                    <br>
                                     <div class="d-flex justify-content-end">
                                         <a href="detail_buku.php?id_buku=<?= $bk['id_buku']; ?>" class="btn btn-outline-primary"
                                             style="width: 100%;">Lihat Detail</a>

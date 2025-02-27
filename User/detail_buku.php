@@ -111,10 +111,20 @@ if (isset($_GET['id_buku'])) {
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"
-                                style="font-size: 1.5rem;"></i></a>
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="../assets/profile_picture/<?php echo $_SESSION['username'] . '.png'; ?>"
+                                onerror="this.src='../assets/img/default_profile_picture.png';"
+                                style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"
+                                decoding="async" loading="lazy" />
+                        </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item text-muted"
+                            <li>
+                                <img src="../assets/profile_picture/<?php echo $_SESSION['username'] . '.png'; ?>"
+                                    onerror="this.src='../assets/img/default_profile_picture.png';"
+                                    style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto; display: block;"
+                                    decoding="async" loading="lazy" />
+                            </li>
+                            <li><a class="dropdown-item text-muted mt-3"
                                     href="#"><b><?php echo $_SESSION['username'] ?></b></a></li>
                             <li><a class="dropdown-item" href="profile.php">Profile</a></li>
                             <li>
@@ -515,7 +525,7 @@ if (isset($_GET['id_buku'])) {
         }
     </script>
 
-    
+
 </body>
 
 </html>
