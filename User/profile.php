@@ -95,9 +95,61 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
 </head>
 
 <body>
-    
+     <!-- Navbar -->
+     <nav class="navbar navbar-expand-lg shadow-sm bg-white">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img style="height: 40px;" alt="LibraryTech Logo" src="../assets/img/logo1.png" />
+                <span class="ms-2 fw-bold" style="color:rgb(1, 17, 255);">LibraTech</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>"
+                            href="dashboard.php"><b>Dashboard</b></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pinjam.php' ? 'active' : ''; ?>"
+                            href="pinjam.php"><b>Peminjaman</b></a>
+                    </li>
 
-    <div class="container">
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="../assets/profile_picture/<?php echo $_SESSION['username'] . '.png'; ?>"
+                                onerror="this.src='../assets/img/default_profile_picture.png';"
+                                style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"
+                                decoding="async" loading="lazy" />
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li>
+                                <img src="../assets/profile_picture/<?php echo $_SESSION['username'] . '.png'; ?>"
+                                    onerror="this.src='../assets/img/default_profile_picture.png';"
+                                    style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto; display: block;"
+                                    decoding="async" loading="lazy" />
+                            </li>
+                            <li><a class="dropdown-item text-muted mt-3"
+                                    href="#"><b><?php echo $_SESSION['username'] ?></b></a></li>
+                            <li><a class="dropdown-item <?php echo basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'bg-secondary bg-opacity-25 text-dark' : ''; ?>" href="#">Profile</a></li>
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="../Auth/logout.php"><b>Logout</b></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container d-flex flex-column align-items-center">
         <h1
             style="font-family: 'Lato', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #4a4a4a;">
             Profile</h1>
@@ -170,12 +222,12 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                 });
             </script>
             <?php if(file_exists($profile_picture)): ?>
-            <button type="button" class="btn btn-light btn-sm mt-2" onclick="document.getElementById('profile_input').click();" style="border-radius: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+            <button type="button" class="btn btn-light btn-sm mt-2 d-block d-md-none" onclick="document.getElementById('profile_input').click();" style="border-radius: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
                 <i class="fas fa-edit"></i> Change Picture
             </button>
 
             <button type="button" class="btn btn-danger btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#deletePhotoModal" style="border-radius: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                <i class="fas fa-trash-alt"></i> Delete
+                <i class="fas fa-trash-alt"></i> Delete Picture
             </button>
             
           
@@ -202,20 +254,22 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
 
         <!-- Cropper Modal -->
         <div class="modal fade" id="cropperModal" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Crop Image</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <img id="cropperImage" src="" style="max-width: 100%; max-height: 70vh;">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" onclick="cropAndUpload()">Save</button>
-                    </div>
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title">Crop Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
+                <div class="modal-body p-0">
+                <div class="cropper-container" style="width: 100%; max-height: calc(100vh - 200px); overflow: hidden;">
+                    <img id="cropperImage" src="" class="img-fluid w-100" style="max-height: none;">
+                </div>
+                </div>
+                <div class="modal-footer flex-wrap gap-2 justify-content-center">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary px-4" onclick="cropAndUpload()">Save</button>
+                </div>
+            </div>
             </div>
         </div>
 
@@ -430,6 +484,14 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                         viewMode: 2,
                         dragMode: 'move',
                         autoCropArea: 1,
+                        responsive: true, // make cropper responsive
+                        restore: true,
+                        guides: true,
+                        center: true,
+                        highlight: true,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        toggleDragModeOnDblclick: false
                     });
                 });
             };
@@ -438,7 +500,10 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
     }
 
     function cropAndUpload() {
-        const canvas = cropper.getCroppedCanvas({ width: 400, height: 400 });
+        const canvas = cropper.getCroppedCanvas({
+            width: window.innerWidth > 400 ? 400 : window.innerWidth, // adapt canvas width to screen size
+            height: window.innerWidth > 400 ? 400 : window.innerWidth // adapt canvas height to screen size
+        });
         
         canvas.toBlob(function(blob) {
             const formData = new FormData();
