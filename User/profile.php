@@ -141,40 +141,41 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
             <?php
             $profile_picture = "../assets/profile_picture/" . $_SESSION['username'] . '.png';
             ?>
-            <div style="position: relative; width: 200px; height: 200px;">
+            <div class="profile-container" style="position: relative; width: 200px; height: 200px; display: flex; justify-content: center; align-items: center; background-color: #f4f4f4; border-radius: 50%; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                 <?php if (file_exists($profile_picture)): ?>
-                <img src="<?php echo $profile_picture . '?v=' . time(); ?>" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; transition: filter 0.3s;" decoding="async" loading="lazy">
+                <img src="<?php echo $profile_picture . '?v=' . time(); ?>" style="width: 100%; height: 100%; object-fit: cover; transition: filter 0.3s;" decoding="async" loading="lazy">
                 <?php else: ?>
-                <i class="fas fa-user-circle fa-10x" style="color: #4a4a4a; width: 100%; height: 100%;"></i>
+                <i class="fas fa-user-circle" style="font-size: 8rem; color: #b0b0b0;"></i>
                 <?php endif; ?>
-                
-                <form id="profileForm" method="POST" enctype="multipart/form-data" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s;">
-                    <label for="profile_input" class="btn btn-outline-primary btn-sm rounded" style="background-color: rgba(255, 255, 255, 0.7);">
-                    <i class="fas fa-camera"></i>
-                    <?php echo file_exists($profile_picture) ? 'Change Picture' : 'Upload Picture'; ?>
-                    </label>
 
+                <form id="profileForm" method="POST" enctype="multipart/form-data" style="position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.5); opacity: 0; transition: opacity 0.3s;">
+                    <label for="profile_input" class="btn btn-light btn-sm" style="background-color: rgba(255, 255, 255, 0.8); border-radius: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                        <i class="fas fa-camera"></i> <?php echo file_exists($profile_picture) ? 'Change' : 'Upload'; ?>
+                    </label>
                     <input type="file" accept="image/*" style="display: none;" id="profile_input" name="profile_image" onchange="showCropper(this)">
                     <input type="hidden" name="cropped_image" id="cropped_image">
                 </form>
             </div>
             <script>
-                document.querySelector('div[style*="position: relative"]').addEventListener('mouseover', function() {
+                const profileContainer = document.querySelector('.profile-container');
+                profileContainer.addEventListener('mouseenter', function() {
                     this.querySelector('form').style.opacity = 1;
-                    this.querySelector('img').style.filter = 'brightness(50%)';
+                    const img = this.querySelector('img');
+                    if (img) img.style.filter = 'brightness(50%)';
                 });
-                document.querySelector('div[style*="position: relative"]').addEventListener('mouseout', function() {
+                profileContainer.addEventListener('mouseleave', function() {
                     this.querySelector('form').style.opacity = 0;
-                    this.querySelector('img').style.filter = 'brightness(100%)';
+                    const img = this.querySelector('img');
+                    if (img) img.style.filter = 'brightness(100%)';
                 });
             </script>
             <?php if(file_exists($profile_picture)): ?>
-            <button type="button" class="btn btn-outline-primary btn-sm rounded mt-2" onclick="document.getElementById('profile_input').click();">
-                <i class="fas fa-edit"></i> Change Profile
+            <button type="button" class="btn btn-light btn-sm mt-2" onclick="document.getElementById('profile_input').click();" style="border-radius: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                <i class="fas fa-edit"></i> Change Picture
             </button>
 
-            <button type="button" class="btn btn-outline-danger btn-sm rounded mt-2" data-bs-toggle="modal" data-bs-target="#deletePhotoModal">
-            <i class="fas fa-trash-alt"></i> Delete
+            <button type="button" class="btn btn-danger btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#deletePhotoModal" style="border-radius: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                <i class="fas fa-trash-alt"></i> Delete
             </button>
             
           
