@@ -119,18 +119,18 @@ if (isset($_SESSION['username'])) {
 
         <form method="post" action="../func.php">
             <div class="otp-input-container">
-                <input type="number" name="otp[]" class="otp-input" maxlength="1" required onkeyup="moveToNext(this, event)"
-                    onpaste="handlePaste(event)">
-                <input type="number" name="otp[]" class="otp-input" maxlength="1" required onkeyup="moveToNext(this, event)"
-                    onpaste="handlePaste(event)">
-                <input type="number" name="otp[]" class="otp-input" maxlength="1" required onkeyup="moveToNext(this, event)"
-                    onpaste="handlePaste(event)">
-                <input type="number" name="otp[]" class="otp-input" maxlength="1" required onkeyup="moveToNext(this, event)"
-                    onpaste="handlePaste(event)">
-                <input type="number" name="otp[]" class="otp-input" maxlength="1" required onkeyup="moveToNext(this, event)"
-                    onpaste="handlePaste(event)">
-                <input type="number" name="otp[]" class="otp-input" maxlength="1" required onkeyup="moveToNext(this, event)"
-                    onpaste="handlePaste(event)">
+                <input type="number" name="otp[]" class="otp-input" maxlength="1" required
+                    onkeyup="moveToNext(this, event)" onpaste="handlePaste(event)">
+                <input type="number" name="otp[]" class="otp-input" maxlength="1" required
+                    onkeyup="moveToNext(this, event)" onpaste="handlePaste(event)">
+                <input type="number" name="otp[]" class="otp-input" maxlength="1" required
+                    onkeyup="moveToNext(this, event)" onpaste="handlePaste(event)">
+                <input type="number" name="otp[]" class="otp-input" maxlength="1" required
+                    onkeyup="moveToNext(this, event)" onpaste="handlePaste(event)">
+                <input type="number" name="otp[]" class="otp-input" maxlength="1" required
+                    onkeyup="moveToNext(this, event)" onpaste="handlePaste(event)">
+                <input type="number" name="otp[]" class="otp-input" maxlength="1" required
+                    onkeyup="moveToNext(this, event)" onpaste="handlePaste(event)">
             </div>
             <br>
             <button class="btn btn-verify" type="submit" name="verifyOTP">Verifikasi Email</button>

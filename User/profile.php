@@ -454,8 +454,8 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
 
 
         </table>
-        <div class="d-flex justify-content-center gap-2 mt-4">
-            <a href="dashboard.php" class="btn btn-outline-secondary ms-auto">Kembali</a>
+        <div style="width: 100%;" class="d-flex justify-content-center gap-2 mt-4">
+            <a href="dashboard.php" class="btn btn-outline-secondary ms-auto" style="width: 150px;">Kembali</a>
         </div>
     </div>
 

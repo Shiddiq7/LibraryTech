@@ -29,11 +29,11 @@ function sendOTP($email, $otp, $username)
         //Server settings
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com'; // Set the SMTP server to send through
-        $mail->SMTPAuth = true;
+        $mail->SMTPAuth = true; 
         $mail->Username = 'libratech21@gmail.com'; // SMTP username
         $mail->Password = 'wwxhbkuejyygwrvl'; // SMTP password
         $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+        $mail->Port = 587; 
 
         //Recipients
         $mail->setFrom('no-reply@librarytech.com', 'LibraTech');
@@ -41,7 +41,7 @@ function sendOTP($email, $otp, $username)
 
         // Content
         $mail->isHTML(true);
-        $mail->Subject = 'Kode OTP Anda';
+        $mail->Subject = 'Kode OTP ';
         $mail->Body = "<p>Hai $username, <br><br> Kode OTP Anda adalah:</p> 
         <h2> <b>$otp</b> </h2>
         <p><br> Silakan gunakan kode OTP ini untuk verifikasi akun Anda.<br><br>Terima kasih,<br>Tim LibraTech</p>";
@@ -54,52 +54,6 @@ function sendOTP($email, $otp, $username)
     }
 }
 
-// Register User
-if (isset($_POST['register'])) {
-    // Ensure $id_user is properly set
-    $email = $_POST['email'];
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-    // Check for duplicate email or username
-    $checkQuery = "SELECT * FROM user WHERE Email='$email' OR username='$username'";
-    $checkResult = mysqli_query($conn, $checkQuery);
-
-    if (mysqli_num_rows($checkResult) > 0) {
-        echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
-                Email atau username sudah terdaftar!
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>';
-    } else {
-        // Generate id_user
-        $initials = strtoupper(substr($username, 0, 2)); // Get first two characters of username
-        $query = "SELECT COUNT(*) as count FROM user WHERE if_visible = TRUE";
-        $result = mysqli_query($conn, $query);
-        $row = mysqli_fetch_assoc($result);
-        $count = $row['count'] + 1; // Get the next user number
-        $id_user = $initials . str_pad($count, 4, '0', STR_PAD_LEFT); // Combine initials and padded number
-
-        // Generate OTP and store it in the session
-        $otp = generateOTP();
-        $_SESSION['otp'] = $otp;
-        $_SESSION['email'] = $email;
-
-        $query = "INSERT INTO user (id_user, Email, username, password, verify) VALUES ('$id_user', '$email', '$username', '$hashed_password', 0)";
-        $result = mysqli_query($conn, $query);
-
-        if ($result) {
-            sendOTP($email, $otp, $username);
-            echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-success alert-dismissible fade show" role="alert">
-                    Registrasi berhasil! Silakan cek email Anda untuk kode OTP.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-            header("location: verify_otp.php");
-        } else {
-            echo "<script>alert('Registrasi gagal!')</script>";
-        }
-    }
-}
 
 // Verify OTP
 if (isset($_POST['verifyOTP'])) {
