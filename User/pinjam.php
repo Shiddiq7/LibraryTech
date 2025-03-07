@@ -167,7 +167,6 @@ require "../Auth/cek_log.php";
     <nav class="navbar navbar-expand-lg shadow-sm bg-white">
         <div class="container-fluid">
             <a class="navbar-brand d-flex align-items-center" href="#">
-                <img style="height: 40px;" alt="LibraryTech Logo" src="../assets/img/logo1.png" />
                 <span class="ms-2 fw-bold" style="color:rgb(1, 17, 255);">LibraTech</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"

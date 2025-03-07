@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 15, 2025 at 06:38 AM
+-- Generation Time: Mar 07, 2025 at 12:05 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.12
 
@@ -121,10 +121,10 @@ CREATE TABLE `pinjam` (
 --
 
 INSERT INTO `pinjam` (`id_pinjam`, `id_user`, `id_buku`, `username`, `Email`, `cover`, `judul`, `pengarang`, `penerbit`, `tanggal_pinjam`, `tanggal_kembali`, `status`) VALUES
-(71, 'SH0004', ' SO18 ', 'shiddiq211', 'Shiddiqduasatu@gmail.com', '../assets/Buku/Komik/Solo leveling.jpeg', 'Solo Leveling', 'Chugong & Dubu (SIU)', 'Tappytoon & Yen Press', '2025-02-14', '2025-02-16', 'Dipinjam'),
-(72, 'SH0004', ' SP19 ', 'shiddiq211', 'Shiddiqduasatu@gmail.com', '../assets/Buku/Komik/sxf.jpeg', 'Spy X Family', 'Tatsuya Endo', 'Shueisha ', '2025-02-14', '2025-02-15', 'Dipinjam'),
-(73, 'SH0004', ' MO24 ', 'shiddiq211', 'Shiddiqduasatu@gmail.com', '../assets/Buku/Fantasi/MONS MALEFICIORUM.jpeg', 'Mons Maleficiorum', 'Jonas', 'Shiddiq', '2025-03-07', '2025-03-14', 'Dipinjam'),
-(74, 'SH0004', ' PS20 ', 'shiddiq211', 'Shiddiqduasatu@gmail.com', '../assets/Buku/Pendidikan/POM.jpeg', 'Psychology Of Money', 'Morgan Housel ', 'Harriman House Limited', '2025-03-14', '2025-03-21', 'Dipinjam');
+(71, 'SH0004', ' SO18 ', 'shiddiq211', 'Shiddiqduasatu@gmail.com', '../assets/Buku/Komik/Solo leveling.jpeg', 'Solo Leveling', 'Chugong & Dubu (SIU)', 'Tappytoon & Yen Press', '2025-02-14', '2025-02-16', 'Dikembalikan'),
+(72, 'SH0004', ' SP19 ', 'shiddiq211', 'Shiddiqduasatu@gmail.com', '../assets/Buku/Komik/sxf.jpeg', 'Spy X Family', 'Tatsuya Endo', 'Shueisha ', '2025-02-14', '2025-02-15', 'Dikembalikan'),
+(79, 'SH0004', ' KA21 ', 'shiddiq211', 'Shiddiqduasatu@gmail.com', '../assets/Buku/Non-Fiksi/Kala senja menyapa.jpeg', 'Kala Senja Menyapa', 'Halimatus Sakdiyah, Aksara Bercerita, dan LKPP', 'CV Kanaka Media', '2025-02-26', '2025-02-28', 'Dikembalikan'),
+(80, 'LE0002', ' MO24 ', 'LebahGans', 'libratech21@gmail.com', '../assets/Buku/Fantasi/MONS MALEFICIORUM.jpeg', 'Mons Maleficiorum', 'Jonas', 'Shiddiq', '2025-02-27', '2025-02-27', 'Dikembalikan');
 
 -- --------------------------------------------------------
 
@@ -137,9 +137,20 @@ CREATE TABLE `review` (
   `id_buku` varchar(50) NOT NULL,
   `judul` varchar(50) NOT NULL,
   `username` varchar(10) NOT NULL,
-  `rating` int DEFAULT NULL,
+  `rating` int DEFAULT '0',
   `ulasan` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `review`
+--
+
+INSERT INTO `review` (`id`, `id_buku`, `judul`, `username`, `rating`, `ulasan`) VALUES
+(2, 'KA21', 'Kala Senja Menyapa', 'People', 4, 'WAAAAA SO SWEET'),
+(18, 'SO18', 'Solo Leveling', 'Shiddiq211', 3, 'KEREEEEN'),
+(22, 'KA21', 'Kala Senja Menyapa', 'shiddiq211', 5, 'Romantis Banget'),
+(23, 'KA21', 'Kala Senja Menyapa', 'LebahGans', 1, 'APANSIH\r\n'),
+(24, 'MO24', 'Mons Maleficiorum', 'LebahGans', 3, 'Lumayan lah');
 
 -- --------------------------------------------------------
 
@@ -152,8 +163,10 @@ CREATE TABLE `user` (
   `Email` varchar(250) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `nomorhp` varchar(15) NOT NULL DEFAULT '0',
   `role` enum('Admin','Anggota') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'Anggota',
   `verify` tinyint NOT NULL DEFAULT '0',
+  `verify_nohp` tinyint NOT NULL DEFAULT '0',
   `if_visible` tinyint NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -161,10 +174,10 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id_user`, `Email`, `username`, `password`, `role`, `verify`, `if_visible`) VALUES
-('0', 'admin@gmail.com', 'Admin', '$2y$10$Hv691UPJqS9vEL40f/v2iud7eK8gJENtWvzokm218o79pRhWuXLcS', 'Admin', 1, 0),
-('LI0002', 'libratech21@gmail.com', 'LibraTech1', '$2y$10$.K65duk4HORbULFuRvtYjuJZS9q6HbOq.2ElFblymkatjta4c43iy', 'Anggota', 1, 1),
-('SH0004', 'Shiddiqduasatu@gmail.com', 'shiddiq211', '$2y$10$dmU4wZ3ltXGtAm8TgFYAx.CP7m8IRyFsjBkzDDvWencxctchWlaAC', 'Anggota', 1, 1);
+INSERT INTO `user` (`id_user`, `Email`, `username`, `password`, `nomorhp`, `role`, `verify`, `verify_nohp`, `if_visible`) VALUES
+('0', 'admin@gmail.com', 'Admin', '$2y$10$Hv691UPJqS9vEL40f/v2iud7eK8gJENtWvzokm218o79pRhWuXLcS', '0', 'Admin', 1, 0, 0),
+('LE0002', 'libratech21@gmail.com', 'LebahGans', '$2y$10$7SYwanfsrthZ11/7gkAPwuPolf31yWRIcTUnI4aoyksdzGpxW8psm', '0', 'Anggota', 1, 0, 1),
+('SH0004', 'Shiddiqduasatu@gmail.com', 'shiddiq211', '$2y$10$dmU4wZ3ltXGtAm8TgFYAx.CP7m8IRyFsjBkzDDvWencxctchWlaAC', '0853-2060-2504', 'Anggota', 1, 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -230,13 +243,13 @@ ALTER TABLE `kembali`
 -- AUTO_INCREMENT for table `pinjam`
 --
 ALTER TABLE `pinjam`
-  MODIFY `id_pinjam` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `id_pinjam` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT for table `review`
 --
 ALTER TABLE `review`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
