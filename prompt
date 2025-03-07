@@ -196,39 +196,5 @@ shadow akan berwarna biru dan lain sebagainya
 
 qrCodeUrl
 
-<?php
-require_once '../assets/phpqrcode/qrlib.php';
 
-$query = "SELECT * FROM buku WHERE if_visible = TRUE";
-$result = mysqli_query($conn, $query);
-while ($data = mysqli_fetch_assoc($result)) {
-    // Create QR code data
-    $qrData = $data['id_buku'] . ', ' . $data['judul'] . ', ' . $data['pengarang'] . ', ' . $data['penerbit'] . ', ' . $data['tahun_terbit'] . ', ' . $data['halaman'];
-
-    // Generate unique filename for this QR code
-    $tempDir = "../temp/";
-    if (!file_exists($tempDir)) {
-        mkdir($tempDir);
-    }
-    $fileName = $tempDir . 'QR_' . $data['id_buku'] . '.png';
-
-    // Generate QR code
-    QRcode::png($qrData, $fileName, QR_ECLEVEL_L, 3);
-    ?>
-    <tr>
-        <td style="overflow: hidden;">
-            <a href="<?= $fileName ?>" target="_blank">
-                <img src="<?= $fileName ?>" alt="QR Code" style="transition: all 0.3s ease-in-out;"
-                    onmouseover="this.style.transform='scale(1.2)';" onmouseout="this.style.transform='scale(1)';" />
-            </a>
-        </td>
-        <td><?= $data['id_buku'] ?></td>
-        <td><?= $data['judul'] ?></td>
-        <td><?= $data['pengarang'] ?></td>
-        <td><?= $data['penerbit'] ?></td>
-        <td><?= $data['tahun_terbit'] ?></td>
-        <td><?= $data['halaman'] ?></td>
-    </tr>
-    <?php
-}
-?>
+aku ingin agar warna dari teks ini menjadi sesuai dengan warna dari profile picturenya dari folder ../assets/profile_picture/$session username
