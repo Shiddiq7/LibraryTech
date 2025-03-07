@@ -143,7 +143,8 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                             </li>
                             <li><a class="dropdown-item text-muted mt-3"
                                     href="#"><b><?php echo $_SESSION['username'] ?></b></a></li>
-                            <li><a class="dropdown-item <?php echo basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'bg-secondary bg-opacity-25 text-dark' : ''; ?>" href="#">Profile</a></li>
+                            <li>
+                                <a class="dropdown-item <?php echo basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'bg-secondary bg-opacity-25 text-dark' : ''; ?>" href="#">Profile</a></li>
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
@@ -200,6 +201,9 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
             <?php
             $profile_picture = "../assets/profile_picture/" . $_SESSION['username'] . '.png';
             ?>
+            <?php if (!file_exists($profile_picture)): ?>
+            <p style="text-align: center; font-size: 1rem; color: #b0b0b0;">Klik icon ini untuk upload photo</p>
+            <?php endif; ?>
             <div class="profile-container" style="position: relative; width: 200px; height: 200px; display: flex; justify-content: center; align-items: center; background-color: #f4f4f4; border-radius: 50%; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                 <?php if (file_exists($profile_picture)): ?>
                 <img src="<?php echo $profile_picture . '?v=' . time(); ?>" style="width: 100%; height: 100%; object-fit: cover; transition: filter 0.3s;" decoding="async" loading="lazy">
@@ -228,8 +232,9 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                     if (img) img.style.filter = 'brightness(100%)';
                 });
             </script>
-            <?php if(file_exists($profile_picture)): ?>
             
+            <?php if(file_exists($profile_picture)): ?>
+           
             <button type="button" class="btn btn-light btn-sm mt-2 d-block d-md-none" onclick="document.getElementById('profile_input').click();" style="border-radius: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
                 <i class="fas fa-edit"></i> Change Picture
             </button>

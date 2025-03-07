@@ -135,8 +135,10 @@ if (isset($_GET['id_buku'])) {
                             </li>
                             <li><a class="dropdown-item text-muted mt-3"
                                     href="#"><b><?php echo $_SESSION['username'] ?></b></a></li>
-                            <li><a class="dropdown-item <?php echo basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'bg-secondary bg-opacity-25 text-dark' : ''; ?>"
-                                    href="profile.php">Profile</a></li>
+                            <li>
+                                <a class="dropdown-item <?php echo basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'bg-secondary bg-opacity-25 text-dark' : ''; ?>"
+                                    href="#">Profile</a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
