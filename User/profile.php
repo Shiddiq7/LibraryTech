@@ -121,17 +121,25 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="../assets/profile_picture/<?php echo $_SESSION['username'] . '.png'; ?>"
+                            <?php if (file_exists('../assets/profile_picture/' . $_SESSION['username'] . '.png')): ?>
+                            <img src="../assets/profile_picture/<?php echo $_SESSION['username'] . '.png?v=' . time(); ?>"
                                 onerror="this.src='../assets/img/default_profile_picture.png';"
                                 style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"
                                 decoding="async" loading="lazy" />
+                            <?php else: ?>
+                            <i class="fas fa-user" style="font-size: 1.5rem;"></i>
+                            <?php endif; ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li>
-                                <img src="../assets/profile_picture/<?php echo $_SESSION['username'] . '.png'; ?>"
+                                <?php if (file_exists('../assets/profile_picture/' . $_SESSION['username'] . '.png')): ?>
+                                <img src="../assets/profile_picture/<?php echo $_SESSION['username'] . '.png?v=' . time(); ?>"
                                     onerror="this.src='../assets/img/default_profile_picture.png';"
                                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto; display: block;"
                                     decoding="async" loading="lazy" />
+                                <?php else: ?>
+                                <i class="fas fa-user-circle" style="font-size: 8rem; color: #b0b0b0; margin: 0 auto; display: block; text-align: center;"></i>
+                                <?php endif; ?>
                             </li>
                             <li><a class="dropdown-item text-muted mt-3"
                                     href="#"><b><?php echo $_SESSION['username'] ?></b></a></li>
@@ -221,6 +229,7 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                 });
             </script>
             <?php if(file_exists($profile_picture)): ?>
+            
             <button type="button" class="btn btn-light btn-sm mt-2 d-block d-md-none" onclick="document.getElementById('profile_input').click();" style="border-radius: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
                 <i class="fas fa-edit"></i> Change Picture
             </button>
