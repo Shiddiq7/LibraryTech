@@ -198,3 +198,5 @@ qrCodeUrl
 
 
 aku ingin agar warna dari teks ini menjadi sesuai dengan warna dari profile picturenya dari folder ../assets/profile_picture/$session username
+
+tambahkan juga button switch agar dapat melihat daftar buku dengan bentuk list ataupun card , dan jika dalam bentuk list maka image cover akan berukuran kecil

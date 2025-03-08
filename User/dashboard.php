@@ -326,8 +326,8 @@ require "../Auth/cek_log.php";
                 DAFTAR BUKU</h2>
             <br><br>
 
-            <!-- Search and Filter -->
-            <form method="GET" class="mb-4 d-flex flex-column flex-md-row justify-content-between">
+            <!-- Search, Filter and View Toggle -->
+            <form method="GET" class="mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center">
                 <div class="input-group shadow mb-3 mb-md-0" style="max-width: 100%; width: 400px;">
                     <span class="input-group-text bg-white" id="basic-addon1"><i class="fas fa-search"></i></span>
                     <input class="form-control" type="text" name="search" id="searchInput"
@@ -335,27 +335,42 @@ require "../Auth/cek_log.php";
                         placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch"
                         onkeyup="filterData()" />
                 </div>
-                <!-- Filter untuk memilih kategori buku -->
-                <div class="input-group shadow" style="max-width: 100%; width: 200px;">
-                    <span class="input-group-text bg-primary text-white" id="basic-addon2"><i
-                            class="fas fa-filter"></i></span>
-                    <select class="form-select bg-white" name="category" id="categoryFilter" onchange="filterData()">
-                        <option value="">All Categories</option>
-                        <?php
-                        $categories = query("SELECT * FROM kategori");
-                        foreach ($categories as $category) {
-                            $selected = isset($_GET['category']) && $_GET['category'] == $category['nama_kategori'] ? 'selected' : '';
-                            echo "<option value=\"{$category['nama_kategori']}\" $selected>{$category['nama_kategori']}</option>";
-                        }
-                        ?>
-                    </select>
-                    <!-- Filter untuk memilih kategori buku -->
+
+                <div class="d-flex gap-2">
+                    <!-- View Toggle Button -->
+                    <div class="btn-group shadow" role="group" aria-label="View Toggle"
+                        style="margin-right: 10px; gap: 5px;">
+                        <button type="button" class="btn btn-outline-primary active" id="cardView" title="Card View">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" id="listView" title="List View">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+
+                    <!-- Category Filter -->
+                    <div class="input-group shadow" style="max-width: 100%; width: 200px;">
+                        <span class="input-group-text bg-primary text-white" id="basic-addon2"><i
+                                class="fas fa-filter"></i></span>
+                        <select class="form-select bg-white" name="category" id="categoryFilter"
+                            onchange="filterData()">
+                            <option value="" style="color: blue;">All Categories</option>
+                            <?php
+                            $categories = query("SELECT * FROM kategori");
+                            foreach ($categories as $category) {
+                                $selected = isset($_GET['category']) && $_GET['category'] == $category['nama_kategori'] ? 'selected' : '';
+                                echo "<option value=\"{$category['nama_kategori']}\" $selected>{$category['nama_kategori']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
                 </div>
             </form>
+
             <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
 
-            <!-- Tampilan daftar buku -->
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
+            <!-- Book List Container -->
+            <div id="bookContainer" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap ">
                 <?php
                 $search = isset($_GET['search']) ? $_GET['search'] : '';
                 $category = isset($_GET['category']) ? $_GET['category'] : '';
@@ -373,13 +388,11 @@ require "../Auth/cek_log.php";
                 if (count($buku) > 0) {
                     foreach ($buku as $bk):
                         ?>
-                        <div class="col mb-4">
-                            <div class="card h-100 shadow-lg">
-
-                                <!-- Tampilan buku -->
-                                <div class="card h-100">
-                                    <img class="card-img-top" src="<?= $bk['cover']; ?>" alt="Book Cover"
-                                        style="object-fit: cover; width: 100%; height: 500px;" loading="lazy">
+                        <div class="col mb-4 book-item ">
+                            <div class="card h-100 shadow-lg rounded-4">
+                                <div class="card h-100 rounded-4">
+                                    <img class="card-img-top book-cover rounded-3" src="<?= $bk['cover']; ?>" alt="Book Cover"
+                                        style="object-fit: cover; width: 100%; height: 500px; " loading="lazy">
                                 </div>
                                 <?php
                                 $id_buku = $bk['id_buku'];
@@ -388,8 +401,7 @@ require "../Auth/cek_log.php";
                                 $avgRating = $avgRatingResult[0]['avg_rating'] ?? 0;
                                 ?>
 
-                                <!-- Tampilan rating -->
-                                <div class="card-footer text-center">
+                                <div class="card-footer text-center rating-container">
                                     <?php
                                     for ($i = 1; $i <= 5; $i++) {
                                         if ($i <= $avgRating) {
@@ -402,9 +414,11 @@ require "../Auth/cek_log.php";
                                     <small class="text-muted">
                                         (<?= is_numeric($avgRating) ? number_format($avgRating, 1) : $avgRating; ?>)</small>
                                 </div>
+
+
                                 <div class="card-body">
                                     <h5 class="card-title"><?= $bk['judul']; ?></h5>
-                                    <p class="card-text text-small "><?= $bk['pengarang']; ?></p>
+                                    <p class="card-text text-small"><?= $bk['pengarang']; ?></p>
                                     <p class="card-text text-start"><span class="badge bg-secondary">Penerbit:</span>
                                         <?= $bk['penerbit']; ?></p>
                                     <p class="card-text text-start"><span class="badge bg-secondary">Tahun Terbit:</span>
@@ -424,32 +438,121 @@ require "../Auth/cek_log.php";
                     <?php endforeach;
                 } else {
                     ?>
-                    <div class="col-md-4 col-lg-3 col-sm-6 mb-4">
-                        <div class="card h-100 shadow-md">
-                            <div class="card-body">
-                                <h5 class="card-title">Buku Kosong </h5>
-                            </div>
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            Tidak ada buku yang ditemukan.
                         </div>
                     </div>
                     <?php
                 }
                 ?>
             </div>
-            <style>
-                @media (max-width: 576px) {
-                    .card {
-                        width: 100%;
-                        height: auto;
-                    }
 
-                    .card img {
-                        height: 300px;
+            <style>
+                /* Card View Styles */
+                .card-view .book-item {
+                    width: calc(25% - 1rem);
+                    transition: all 0.7s ease;
+                }
+
+                .card-view .book-cover {
+                    height: 500px;
+                }
+
+                .card-view .rating-container {
+                    position: relative;
+                    text-align: center;
+                }
+
+                /* List View Styles */
+                .list-view {
+                    flex-direction: column !important;
+                }
+
+                .list-view .book-item {
+                    width: 100% !important;
+                    border: 1px solid #e0e0e0;
+                    border-radius: 5px;
+                    margin-bottom: 1rem;
+                    overflow: hidden;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    transition: all 0.7s ease;
+                }
+
+                .list-view .book-item:hover {
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                }
+
+                .list-view .card {
+                    flex-direction: row !important;
+                    padding: 10px;
+                }
+
+                .list-view .book-cover {
+                    width: 200px !important;
+                    height: 300px !important;
+                    border-radius: 5px;
+                }
+
+                .list-view .card-body {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
+
+                .list-view .card-footer {
+                    background: none;
+                    border-top: none;
+                    padding-top: 10px;
+                }
+
+                @media (max-width: 768px) {
+                    .card-view .book-item {
+                        width: calc(50% - 1rem);
                     }
                 }
-            </style>
-        </div>
-    </section>
 
+                @media (max-width: 576px) {
+                    .card-view .book-item {
+                        width: 100%;
+                    }
+
+                    .list-view .card {
+                        flex-direction: column !important;
+                    }
+
+                    .list-view .book-cover {
+                        width: 100% !important;
+                        height: 300px !important;
+                    }
+                }
+
+                .list-view .rating-container {
+                    position: absolute;
+                    right: 20px;
+                    top: 20px;
+                    background: none;
+                    border: none;
+                }
+            </style>
+
+            <script>
+                // View Toggle functionality
+                document.getElementById('cardView').addEventListener('click', function () {
+                    document.getElementById('bookContainer').classList.remove('list-view');
+                    document.getElementById('cardView').classList.add('active');
+                    document.getElementById('listView').classList.remove('active');
+                });
+
+                document.getElementById('listView').addEventListener('click', function () {
+                    document.getElementById('bookContainer').classList.add('list-view');
+                    document.getElementById('listView').classList.add('active');
+                    document.getElementById('cardView').classList.remove('active');
+                });
+            </script>
+    </section>
 
 
     <!-- Footer -->
