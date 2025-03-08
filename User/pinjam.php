@@ -210,8 +210,25 @@ require "../Auth/cek_log.php";
                                         style="font-size: 8rem; color: #b0b0b0; margin: 0 auto; display: block; text-align: center;"></i>
                                 <?php endif; ?>
                             </li>
-                            <li><a class="dropdown-item text-muted mt-3"
-                                    href="#"><b><?php echo $_SESSION['username'] ?></b></a></li>
+                            <li> <?php
+                            $profile_picture_path = "../assets/profile_picture/" . $_SESSION['username'] . '.png';
+                            $dominant_color = '#333'; // Default color
+                            // Get dominant color from profile picture
+                            if (file_exists($profile_picture_path)) {
+                                $image = imagecreatefrompng($profile_picture_path);
+                                $thumb = imagecreatetruecolor(1, 1);
+                                imagecopyresampled($thumb, $image, 0, 0, 0, 0, 1, 1, imagesx($image), imagesy($image));
+                                $main_color = imagecolorat($thumb, 0, 0);
+                                $rgb = imagecolorsforindex($thumb, $main_color);
+                                $dominant_color = sprintf("#%02x%02x%02x", $rgb['red'], $rgb['green'], $rgb['blue']);
+                                imagedestroy($image);
+                                imagedestroy($thumb);
+                            }
+                            ?>
+                                <a class="dropdown-item mt-3" href="#" style="color: <?php echo $dominant_color; ?>;">
+                                    <b><?php echo $_SESSION['username'] ?></b>
+                                </a>
+                            </li>
                             <li>
                                 <a class="dropdown-item <?php echo basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'bg-secondary bg-opacity-25 text-dark' : ''; ?>"
                                     href="profile.php">Profile</a>
