@@ -157,6 +157,15 @@ require "../Auth/cek_log.php";
                 opacity: 1;
             }
         }
+
+        .card {
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
     </style>
 </head>
 
@@ -326,6 +335,7 @@ require "../Auth/cek_log.php";
                         placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch"
                         onkeyup="filterData()" />
                 </div>
+                <!-- Filter untuk memilih kategori buku -->
                 <div class="input-group shadow" style="max-width: 100%; width: 200px;">
                     <span class="input-group-text bg-primary text-white" id="basic-addon2"><i
                             class="fas fa-filter"></i></span>
@@ -342,46 +352,6 @@ require "../Auth/cek_log.php";
                     <!-- Filter untuk memilih kategori buku -->
                 </div>
             </form>
-            <style>
-                .card {
-                    transition: all 0.3s;
-                }
-
-                .card:hover {
-                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-                    transform: translateY(-5px);
-                }
-            </style>
-
-            <!-- Script untuk mengatur efek hover pada card -->
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const cards = document.querySelectorAll('.card');
-                    cards.forEach(card => {
-                        const img = card.querySelector('img');
-                        if (img) {
-                            const colorThief = new ColorThief();
-                            if (img.complete) {
-                                imgLoaded(card, colorThief.getColor(img));
-                            } else {
-                                img.addEventListener('load', function () {
-                                    imgLoaded(card, colorThief.getColor(img));
-                                });
-                            }
-                        }
-                    });
-
-                    function imgLoaded(card, color) {
-                        const rgbColor = `rgb(${color[0] + 50}, ${color[1] + 50}, ${color[2] + 50})`;
-                        card.addEventListener('mouseover', function () {
-                            card.style.boxShadow = `0 0 50px ${rgbColor}`;
-                        });
-                        card.addEventListener('mouseout', function () {
-                            card.style.boxShadow = '';
-                        });
-                    }
-                });
-            </script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
 
             <!-- Tampilan daftar buku -->
@@ -598,6 +568,36 @@ require "../Auth/cek_log.php";
             }
         }
         typewriter();
+    </script>
+
+    <!-- Script untuk mengatur efek hover pada card -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const img = card.querySelector('img');
+                if (img) {
+                    const colorThief = new ColorThief();
+                    if (img.complete) {
+                        imgLoaded(card, colorThief.getColor(img));
+                    } else {
+                        img.addEventListener('load', function () {
+                            imgLoaded(card, colorThief.getColor(img));
+                        });
+                    }
+                }
+            });
+
+            function imgLoaded(card, color) {
+                const rgbColor = `rgb(${color[0] + 50}, ${color[1] + 50}, ${color[2] + 50})`;
+                card.addEventListener('mouseover', function () {
+                    card.style.boxShadow = `0 0 50px ${rgbColor}`;
+                });
+                card.addEventListener('mouseout', function () {
+                    card.style.boxShadow = '';
+                });
+            }
+        });
     </script>
 </body>
 
