@@ -11,7 +11,7 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
     <title><?php echo $_SESSION['username'] ?> - LibraTech</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../css/styles.css">
-    <link rel="icon" href="logo/logo.png" type="image/png">
+    <link rel="icon" href="../assets/img/logo1.png" type="image/png">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -470,7 +470,7 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                 </td>
             </tr>
 
-            <tr>
+           
                 <?php
                 $query = "SELECT role FROM user WHERE username = '$_SESSION[username]'";
                 $result = mysqli_query($conn, $query);
@@ -481,8 +481,17 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                 <td><?= $data['role'] ?></td>
             </tr>
 
-
-
+                <?php
+                $query = "SELECT COUNT(*) AS total_pinjam FROM pinjam WHERE status IN ('Dipinjam', 'Dikembalikan') AND username = '$_SESSION[username]'";
+                $result = mysqli_query($conn, $query);
+                $data = mysqli_fetch_assoc($result);
+                $total_pinjam = $data['total_pinjam'];
+                ?>
+            <tr>
+                <th style="font-weight: 400;">Total Pinjam</th>
+                <td><?= $total_pinjam ?></td>
+            </tr>
+          
         </table>
         <div style="width: 100%;" class="d-flex justify-content-center gap-2 mt-4">
             <a href="dashboard.php" class="btn btn-outline-secondary ms-auto" style="width: 150px;">Kembali</a>
