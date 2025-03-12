@@ -100,7 +100,7 @@ foreach ($pinjam as $pj) {
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="../Auth/logout.php">Logout</a></li>
+                    <li><a class="dropdown-item text-danger" href="../Auth/logout.php">Logout</a></li>
                 </ul>
             </li>
         </ul>

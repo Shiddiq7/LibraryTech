@@ -194,8 +194,15 @@ if (isset($_GET['id_buku'])) {
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
                         <div class="me-3">
-                            <i class="fas fa-user-circle" style="font-size: 2rem;"></i>
-                        </div>
+                            <?php
+                            $username = $review['username'];
+                            $profile_picture = "../assets/profile_picture/$username.png";
+                            if (file_exists($profile_picture)) {
+                                echo "<img src='$profile_picture' alt='Profile Picture' class='rounded-circle' style='width: 2rem; height: 2rem;'>";
+                            } else {
+                                echo "<i class='fas fa-user-circle' style='font-size: 2rem;'></i>";
+                            }
+                            ?>
                         <div>
                             <h5 class="card-title mb-0" style="font-weight: bold;">
                                 <?= htmlspecialchars($review['username']); ?>
@@ -224,7 +231,15 @@ if (isset($_GET['id_buku'])) {
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-2">
                             <div class="me-3">
-                                <i class="fas fa-user-circle" style="font-size: 2rem;"></i>
+                                <?php
+                                $username = $review['username'];
+                                $profile_picture = "../assets/profile_picture/$username.png";
+                                if (file_exists($profile_picture)) {
+                                    echo "<img src='$profile_picture' alt='Profile Picture' class='rounded-circle' style='width: 2rem; height: 2rem;'>";
+                                } else {
+                                    echo "<i class='fas fa-user-circle' style='font-size: 2rem;'></i>";
+                                }
+                                ?>
                             </div>
                             <div>
                                 <h5 class="card-title mb-0" style="font-weight: bold;">
