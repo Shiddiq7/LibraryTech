@@ -127,8 +127,13 @@ require "../Auth/cek_log.php";
                                 <i class="fas fa-table me-1"></i>
                                 Member
                             </div>
-                            <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#tambahAnggota">Tambah Anggota</button>
+                            <div class="d-flex justify-content-between">
+                                <a href="export_table/export_anggota.php" class="btn btn-outline-primary btn-sm me-4">
+                                    <i class="fas fa-file-export me-2"></i>Export Table
+                                </a>
+                                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#tambahAnggota">Tambah Anggota</button>
+                            </div>
                         </div>
                         <div class="card-body">
                             <table id="datatablesSimple">
@@ -164,7 +169,7 @@ require "../Auth/cek_log.php";
                                             <td>
                                                 <?= $email ?>
                                                 <?php if ($data['verify'] == 1): ?>
-                                                    <span style="margin-left: 10px;" class="badge bg-success" >Verified</span>
+                                                    <span style="margin-left: 10px;" class="badge bg-success">Verified</span>
                                                 <?php else: ?>
                                                     <span class="badge bg-warning text-dark">Not Verified</span>
                                                     <div style="float: right;" class="btn-group" role="group"

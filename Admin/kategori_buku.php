@@ -131,8 +131,15 @@ require "../Auth/cek_log.php";
                                 <i class="fas fa-table me-1"></i>
                                 Kategori Buku
                             </div>
-                            <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#tambahKategori">Tambah Kategori</button>
+                            <div class="d-flex justify-content-between">
+
+                                <a href="export_table/export_kategori.php" class="btn btn-outline-primary btn-sm me-4">
+                                    <i class="fas fa-file-export me-2"></i>Export Table
+                                </a>
+                                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#tambahKategori">Tambah Kategori</button>
+
+                            </div>
                         </div>
                         <div class="card-body">
                             <table id="datatablesSimple">
@@ -203,7 +210,7 @@ require "../Auth/cek_log.php";
                                                                         name="deskripsi"
                                                                         rows="3"><?= $deskripsi ?></textarea>
                                                                 </div>
-                                                                <br>    
+                                                                <br>
                                                                 <div class="d-flex justify-content-end">
                                                                     <button type="submit" name="editKategori"
                                                                         class="btn btn-outline-primary px-4">Edit</button>
@@ -237,7 +244,8 @@ require "../Auth/cek_log.php";
                                                                 <div class="d-flex justify-content-end">
                                                                     <button type="submit" name="deleteKategori"
                                                                         class="btn btn-outline-danger px-4 me-2">Iya</button>
-                                                                    <button type="button" class="btn btn-outline-secondary px-4"
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-secondary px-4"
                                                                         data-bs-dismiss="modal">Tidak</button>
                                                                 </div>
                                                             </form>
@@ -282,7 +290,8 @@ require "../Auth/cek_log.php";
                             <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" required></textarea>
                         </div>
                         <br>
-                        <button type="submit" name="tambahKategori" class="btn btn-outline-primary w-100 rounded-pill">Submit</button>
+                        <button type="submit" name="tambahKategori"
+                            class="btn btn-outline-primary w-100 rounded-pill">Submit</button>
                     </form>
                 </div>
             </div>

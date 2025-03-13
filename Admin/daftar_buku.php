@@ -131,8 +131,9 @@ require "../Auth/cek_log.php";
                                 <i class="fas fa-table me-1"></i>
                                 Buku
                             </div>
-
-
+                            <a href="export_table/export_buku.php" class="btn btn-outline-primary btn-sm me-4">
+                                <i class="fas fa-file-export me-2"></i>Export Table
+                            </a>
                         </div>
                         <div class="card-body">
                             <!-- Search and Filter -->
@@ -144,8 +145,9 @@ require "../Auth/cek_log.php";
                                         aria-describedby="btnNavbarSearch" onkeyup="filterData()" />
                                 </div>
 
+
                                 <!-- Category Filter -->
-                                <div class="input-group shadow-md" style="width: 200px;">
+                                <div class="input-group shadow-md" style="width: 200px; ">
                                     <span class="input-group-text bg-light border-0" id="basic-addon1"><i
                                             class="fas fa-filter text-primary"></i></span>
                                     <select class="form-select" name="category" id="categoryFilter"
@@ -221,7 +223,8 @@ require "../Auth/cek_log.php";
                                                         }
                                                     }
                                                     ?>
-                                                    <small class="text-muted"> (<?= is_numeric($avgRating) ? number_format($avgRating, 1) : $avgRating; ?>)</small>
+                                                    <small class="text-muted">
+                                                        (<?= is_numeric($avgRating) ? number_format($avgRating, 1) : $avgRating; ?>)</small>
                                                 </div>
 
                                                 <div class="card-body">

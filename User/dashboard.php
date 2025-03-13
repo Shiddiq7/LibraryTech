@@ -478,10 +478,10 @@ require "../Auth/cek_log.php";
                     foreach ($buku as $bk):
                         if ($currentCategory != $bk['kategori']) {
                             if ($currentCategory != '') {
-                                echo '</div><br> <br>'; // Close previous category div and add spacing
+                                echo '</div><hr style="border: 2px solid #666;" class="my-5"><br>'; // Close previous category div and add spacing
                             }
                             $currentCategory = $bk['kategori'];
-                            echo "<div class='category-group'><h2 class='text-center fw-bold mb-4' style='color: darkblue; font-size: 1.5rem; letter-spacing: 2px;'>{$currentCategory}</h2><div class='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap'>";
+                            echo "<div class='category-group'><h2 class='text-center fw-bold mb-5' style='color: darkblue; font-size: 1.5rem; letter-spacing: 2px;'>{$currentCategory}</h2><div class='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap'>";
                         }
                         ?>
                         <div class="col mb-4 book-item mt-4">
