@@ -166,6 +166,94 @@ require "../Auth/cek_log.php";
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
             transform: translateY(-5px);
         }
+
+        /* Card View Styles */
+        .card-view .book-item {
+            width: calc(25% - 1rem);
+            transition: all 0.7s ease;
+        }
+
+        .card-view .book-cover {
+            height: 500px;
+        }
+
+        .card-view .rating-container {
+            position: relative;
+            text-align: center;
+        }
+
+        /* List View Styles */
+        .list-view {
+            flex-direction: column !important;
+        }
+
+        .list-view .book-item {
+            width: 100% !important;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.7s ease;
+        }
+
+        .list-view .book-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .list-view .card {
+            flex-direction: row !important;
+            padding: 10px;
+        }
+
+        .list-view .book-cover {
+            width: 200px !important;
+            height: 300px !important;
+            border-radius: 5px;
+        }
+
+        .list-view .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .list-view .card-footer {
+            background: none;
+            border-top: none;
+            padding-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .card-view .book-item {
+                width: calc(50% - 1rem);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card-view .book-item {
+                width: 100%;
+            }
+
+            .list-view .card {
+                flex-direction: column !important;
+            }
+
+            .list-view .book-cover {
+                width: 100% !important;
+                height: 300px !important;
+            }
+        }
+
+        .list-view .rating-container {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background: none;
+            border: none;
+        }
     </style>
 </head>
 
@@ -321,7 +409,7 @@ require "../Auth/cek_log.php";
 
     <section class="features">
         <div class="container">
-            <h2 class="text-center mt-"
+            <h2 class="text-center mt-3"
                 style="font-family: 'Lato', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #4a4a4a;">
                 DAFTAR BUKU</h2>
             <br><br>
@@ -448,95 +536,6 @@ require "../Auth/cek_log.php";
                 ?>
             </div>
 
-            <style>
-                /* Card View Styles */
-                .card-view .book-item {
-                    width: calc(25% - 1rem);
-                    transition: all 0.7s ease;
-                }
-
-                .card-view .book-cover {
-                    height: 500px;
-                }
-
-                .card-view .rating-container {
-                    position: relative;
-                    text-align: center;
-                }
-
-                /* List View Styles */
-                .list-view {
-                    flex-direction: column !important;
-                }
-
-                .list-view .book-item {
-                    width: 100% !important;
-                    border: 1px solid #e0e0e0;
-                    border-radius: 5px;
-                    margin-bottom: 1rem;
-                    overflow: hidden;
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                    transition: all 0.7s ease;
-                }
-
-                .list-view .book-item:hover {
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                }
-
-                .list-view .card {
-                    flex-direction: row !important;
-                    padding: 10px;
-                }
-
-                .list-view .book-cover {
-                    width: 200px !important;
-                    height: 300px !important;
-                    border-radius: 5px;
-                }
-
-                .list-view .card-body {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                    padding-left: 20px;
-                    padding-right: 20px;
-                }
-
-                .list-view .card-footer {
-                    background: none;
-                    border-top: none;
-                    padding-top: 10px;
-                }
-
-                @media (max-width: 768px) {
-                    .card-view .book-item {
-                        width: calc(50% - 1rem);
-                    }
-                }
-
-                @media (max-width: 576px) {
-                    .card-view .book-item {
-                        width: 100%;
-                    }
-
-                    .list-view .card {
-                        flex-direction: column !important;
-                    }
-
-                    .list-view .book-cover {
-                        width: 100% !important;
-                        height: 300px !important;
-                    }
-                }
-
-                .list-view .rating-container {
-                    position: absolute;
-                    right: 20px;
-                    top: 20px;
-                    background: none;
-                    border: none;
-                }
-            </style>
 
             <script>
                 // View Toggle functionality

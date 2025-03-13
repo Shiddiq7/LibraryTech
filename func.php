@@ -173,8 +173,8 @@ if (isset($_POST['tambahBuku'])) {
     // Membuat nama folder dan nama file yang akan di simpan di folder assets
     $cover_folder = "../assets/Buku/$kategori/$cover";
 
-    $judul = $_POST['judul'];
-    $deskripsi = $_POST['deskripsi'];
+    $judul = mysqli_real_escape_string($conn, $_POST['judul']);
+    $deskripsi = mysqli_real_escape_string($conn, $_POST['deskripsi']);
     $pengarang = $_POST['pengarang'];
     $penerbit = $_POST['penerbit'];
     $tahun_terbit = $_POST['tahun_terbit'];
