@@ -13,6 +13,7 @@ $pinjam = query("SELECT * FROM pinjam WHERE id_user = $id_user AND status = 'Dip
 foreach ($pinjam as $pj) {
     if (strtotime($pj['tanggal_kembali']) < time()) {
         $lastSent = isset($_SESSION['pengingat_' . $pj['id_pinjam']]) ? $_SESSION['pengingat_' . $pj['id_pinjam']] : 0;
+        // limit pengiriman email pengingat 5 jam sekali
         if (time() - $lastSent >= 5 * 3600) { // 5 hours
             $mail = new PHPMailer(true);
 

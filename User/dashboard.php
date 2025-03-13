@@ -458,7 +458,7 @@ require "../Auth/cek_log.php";
             <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
 
             <!-- Book List Container -->
-            <div id="bookContainer" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap ">
+            <div id="bookContainer" class="d-flex flex-wrap flex-column gap-4">
                 <?php
                 $search = isset($_GET['search']) ? $_GET['search'] : '';
                 $category = isset($_GET['category']) ? $_GET['category'] : '';
@@ -470,17 +470,25 @@ require "../Auth/cek_log.php";
                 if ($category) {
                     $query .= " AND kategori = '$category'";
                 }
-                $query .= " ORDER BY tahun_terbit DESC";
+                $query .= " ORDER BY kategori, tahun_terbit DESC";
 
                 $buku = query($query);
+                $currentCategory = '';
                 if (count($buku) > 0) {
                     foreach ($buku as $bk):
+                        if ($currentCategory != $bk['kategori']) {
+                            if ($currentCategory != '') {
+                                echo '</div><br> <br>'; // Close previous category div and add spacing
+                            }
+                            $currentCategory = $bk['kategori'];
+                            echo "<div class='category-group'><h2 class='text-center fw-bold mb-4' style='color: darkblue; font-size: 1.5rem; letter-spacing: 2px;'>{$currentCategory}</h2><div class='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap'>";
+                        }
                         ?>
-                        <div class="col mb-4 book-item ">
+                        <div class="col mb-4 book-item mt-4">
                             <div class="card h-100 shadow-lg rounded-4">
                                 <div class="card h-100 rounded-4">
                                     <img class="card-img-top book-cover rounded-3" src="<?= $bk['cover']; ?>" alt="Book Cover"
-                                        style="object-fit: cover; width: 100%; height: 500px; " loading="lazy">
+                                        style="object-fit: cover; width: 100%; height: 500px;" loading="lazy">
                                 </div>
                                 <?php
                                 $id_buku = $bk['id_buku'];
@@ -503,7 +511,6 @@ require "../Auth/cek_log.php";
                                         (<?= is_numeric($avgRating) ? number_format($avgRating, 1) : $avgRating; ?>)</small>
                                 </div>
 
-
                                 <div class="card-body">
                                     <h5 class="card-title"><?= $bk['judul']; ?></h5>
                                     <p class="card-text text-small"><?= $bk['pengarang']; ?></p>
@@ -524,18 +531,18 @@ require "../Auth/cek_log.php";
                             </div>
                         </div>
                     <?php endforeach;
+                    echo '</div>'; // Close last category div
                 } else {
                     ?>
                     <div class="col-12">
                         <div class="alert alert-info">
-                            Tidak ada buku yang ditemukan.
+                            Tidak ada Buku tersebut.
                         </div>
                     </div>
                     <?php
                 }
                 ?>
             </div>
-
 
             <script>
                 // View Toggle functionality
@@ -639,13 +646,13 @@ require "../Auth/cek_log.php";
         function filterData() {
             const searchQuery = document.getElementById('searchInput').value;
             const category = document.getElementById('categoryFilter').value;
-            fetch(`?search=${encodeURIComponent(searchQuery)}&category=${encodeURIComponent(category)}`)
+            fetch(`dashboard.php?search=${encodeURIComponent(searchQuery)}&category=${encodeURIComponent(category)}`)
                 .then(response => response.text())
                 .then(data => {
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(data, 'text/html');
-                    const newContent = doc.querySelector('.row');
-                    document.querySelector('.row').innerHTML = newContent.innerHTML;
+                    const newContent = doc.querySelector('#bookContainer').innerHTML;
+                    document.querySelector('#bookContainer').innerHTML = newContent;
                 });
         }
     </script>

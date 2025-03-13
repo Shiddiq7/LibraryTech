@@ -488,7 +488,7 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
                 $total_pinjam = $data['total_pinjam'];
                 ?>
             <tr>
-                <th style="font-weight: 400;">Total Pinjam</th>
+                <th style="font-weight: 400;">Total Buku DiPinjam</th>
                 <td><?= $total_pinjam ?></td>
             </tr>
           

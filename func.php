@@ -493,8 +493,8 @@ if (isset($_POST['pinjam'])) {
     $email = $_POST['email'];
 
     $cover = $_POST['cover'];
-    $judul = $_POST['judul'];
-    $pengarang = $_POST['pengarang'];
+    $judul = mysqli_real_escape_string($conn, $_POST['judul']);
+    $pengarang = mysqli_real_escape_string($conn, $_POST['pengarang']);
     $penerbit = $_POST['penerbit'];
     $tanggal_pinjam = $_POST['tanggal_pinjam'];
     $tanggal_kembali = $_POST['tanggal_kembali'];
