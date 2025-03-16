@@ -186,13 +186,34 @@ if (isset($_GET['id_buku'])) {
                 <th style="font-weight: 400;">Judul Buku</th>
                 <td><?= $data['judul'] ?></td>
             </tr>
-            <tr>
+
             <tr>
                 <th style="font-weight: 400;">Deskripsi</th>
-                <td><?= (empty($data['deskripsi']) ? '<span style="font-size: larger;"> - </span>' : $data['deskripsi']) ?>
+                <td>
+                    <?php
+                    $deskripsi = $data['deskripsi'];
+                    $limit = 400;
+                    if (strlen($deskripsi) > $limit) {
+                        $deskripsi = substr($deskripsi, 0, $limit) . '... <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#deskripsiModal">Baca Selengkapnya</a>';
+                    }
+                    echo $deskripsi;
+                    ?>
                 </td>
             </tr>
-            </tr>
+            <div class="modal fade" id="deskripsiModal" tabindex="-1" aria-labelledby="deskripsiModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content" style="border-radius: 15px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                        <div class="modal-header" style="background-color: #343a40; color: #fff;">
+                            <h5 class="modal-title" id="deskripsiModalLabel">Deskripsi Buku</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="color: #fff; background-color: #fff; border-color: #fff;"></button>
+                        </div>
+                        <div class="modal-body" style="padding: 2rem; background-color: #f8f9fa;">
+                            <p style="font-size: 1.1rem; color: #333;"><?= $data['deskripsi'] ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <tr>
                 <th style="font-weight: 400;">Penulis</th>
                 <td><?= $data['pengarang'] ?></td>

@@ -131,9 +131,7 @@ require "../Auth/cek_log.php";
                                 <i class="fas fa-table me-1"></i>
                                 Buku
                             </div>
-                            <a href="export_table/export_buku.php" class="btn btn-outline-primary btn-sm me-4">
-                                <i class="fas fa-file-export me-2"></i>Export Table
-                            </a>
+
                         </div>
                         <div class="card-body">
                             <!-- Search and Filter -->
@@ -146,21 +144,30 @@ require "../Auth/cek_log.php";
                                 </div>
 
 
-                                <!-- Category Filter -->
-                                <div class="input-group shadow-md" style="width: 200px; ">
-                                    <span class="input-group-text bg-light border-0" id="basic-addon1"><i
-                                            class="fas fa-filter text-primary"></i></span>
-                                    <select class="form-select" name="category" id="categoryFilter"
-                                        onchange="filterData()">
-                                        <option value="">All Categories</option>
-                                        <?php
-                                        $categories = query("SELECT DISTINCT nama_kategori FROM kategori");
-                                        foreach ($categories as $category) {
-                                            $selected = isset($_GET['category']) && $_GET['category'] == $category['nama_kategori'] ? 'selected' : '';
-                                            echo "<option value=\"{$category['nama_kategori']}\" $selected>{$category['nama_kategori']}</option>";
-                                        }
-                                        ?>
-                                    </select>
+                                <div class="d-flex justify-content-end">
+
+                                    <!-- export -->
+                                    <a href="export_table/export_buku.php" class="btn btn-outline-primary btn-sm me-4 d-flex align-items-center" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 10px rgba(0, 0, 0, 0.15)';" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
+                                        <i class="fas fa-file-export me-2"></i>
+                                        <span>Export Table</span>
+                                    </a>
+
+                                    <!-- Category Filter -->
+                                    <div class="input-group shadow-md" style="width: 200px; ">
+                                        <span class="input-group-text bg-light border-0" id="basic-addon1"><i
+                                                class="fas fa-filter text-primary"></i></span>
+                                        <select class="form-select" name="category" id="categoryFilter"
+                                            onchange="filterData()">
+                                            <option value="">All Categories</option>
+                                            <?php
+                                            $categories = query("SELECT DISTINCT nama_kategori FROM kategori");
+                                            foreach ($categories as $category) {
+                                                $selected = isset($_GET['category']) && $_GET['category'] == $category['nama_kategori'] ? 'selected' : '';
+                                                echo "<option value=\"{$category['nama_kategori']}\" $selected>{$category['nama_kategori']}</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
                                 </div>
                             </form>
 
@@ -296,7 +303,7 @@ require "../Auth/cek_log.php";
 
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label">Deskripsi</label>
-                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea>
+                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="5"></textarea>
                         </div>
 
                         <div class="mb-3">

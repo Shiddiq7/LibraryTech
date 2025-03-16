@@ -202,9 +202,28 @@ foreach ($pinjam as $pj) {
                                         placeholder="Search for..." aria-label="Search for..."
                                         aria-describedby="btnNavbarSearch" onkeyup="filterData()" />
                                 </div>
+                                
 
                                 <!-- Status -->
                                 <div class="d-flex justify-content-end">
+                                    
+                                      <!-- export -->
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-primary btn-sm dropdown-toggle me-4" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-file-export me-2"></i> Export Table
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                                            <li>
+                                                <h6 class="dropdown-header">Export By Status</h6>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="export_table/export_pinjam.php?status=Menunggu+Konfirmasi"><i class="fas fa-circle text-warning me-2"></i> Menunggu Konfirmasi</a></li>
+                                            <li><a class="dropdown-item" href="export_table/export_pinjam.php?status=Dipinjam"><i class="fas fa-circle text-success me-2"></i> Dipinjam</a></li>
+                                            <li><a class="dropdown-item" href="export_table/export_pinjam.php?status=Dikembalikan"><i class="fas fa-circle text-secondary me-2"></i> Dikembalikan</a></li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <!-- Filter Status -->
                                     <div class="input-group shadow rounded" style="width: 200px; margin-right: 10px;">
                                         <span class="input-group-text bg-light border-0" id="basic-addon1"><i
                                                 class="fas fa-filter text-primary"></i></span>
@@ -216,8 +235,9 @@ foreach ($pinjam as $pj) {
                                             <option value="Dipinjam" <?= isset($_GET['status']) && $_GET['status'] == 'Dipinjam' ? 'selected' : ''; ?>>Dipinjam</option>
                                             <option value="Dikembalikan" <?= isset($_GET['status']) && $_GET['status'] == 'Dikembalikan' ? 'selected' : ''; ?>>Dikembalikan</option>
                                         </select>
-                                    </div>
+                                    </div>  
 
+                            
                                     <!-- Filter month -->
                                     <div class="input-group shadow rounded" style="width: 220px; overflow: hidden;">
                                         <span class="input-group-text bg-light border-0" id="basic-addon1"><i

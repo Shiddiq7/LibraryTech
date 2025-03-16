@@ -133,10 +133,12 @@ require "../Auth/cek_log.php";
                             </div>
                             <div class="d-flex justify-content-between">
 
-                                <a href="export_table/export_kategori.php" class="btn btn-outline-primary btn-sm me-4">
-                                    <i class="fas fa-file-export me-2"></i>Export Table
+                                <!-- export -->
+                                <a href="export_table/export_kategori.php" class="btn btn-outline-primary btn-sm me-4 d-flex align-items-center" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 10px rgba(0, 0, 0, 0.15)';" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
+                                    <i class="fas fa-file-export me-2"></i>
+                                    <span>Export Table</span>
                                 </a>
-                                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#tambahKategori">Tambah Kategori</button>
 
                             </div>

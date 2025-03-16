@@ -1,6 +1,6 @@
 # LibraTech
 
-LibraTech adalah sebuah platform yang dirancang untuk memudahkan pengguna dalam menemukan buku yang tersedia di perpustakaan. Website ini dibangun dengan bahasa pemrograman PHP dan menggunakan framework Bootstrap.
+LibraTech adalah sebuah platform yang dirancang untuk memudahkan pengguna dalam menemukan buku yang tersedia di perpustakaan. Website ini dibangun dengan bahasa pemrograman PHP dan menggunakan Bootstrap.
 
 ## Fitur
 

@@ -29,11 +29,11 @@ function sendOTP($email, $otp, $username)
         //Server settings
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com'; // Set the SMTP server to send through
-        $mail->SMTPAuth = true; 
+        $mail->SMTPAuth = true;
         $mail->Username = 'libratech21@gmail.com'; // SMTP username
         $mail->Password = 'wwxhbkuejyygwrvl'; // SMTP password
         $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587; 
+        $mail->Port = 587;
 
         //Recipients
         $mail->setFrom('no-reply@librarytech.com', 'LibraTech');
@@ -184,7 +184,8 @@ if (isset($_POST['tambahBuku'])) {
     // Generate id_buku
     $inisial_judul = strtoupper(substr($judul, 0, 2));
     $tahun_terbit = substr($tahun_terbit, 2);
-    $id_buku = "$inisial_judul$tahun_terbit";
+    $halaman = str_pad($halaman, 3, '0', STR_PAD_LEFT);
+    $id_buku = "$inisial_judul-$tahun_terbit-$halaman";
 
     // cek apakah folder assets/Buku sudah ada atau belum
     // jika belum, maka buat folder baru dengan nama Buku
@@ -481,7 +482,7 @@ if (isset($_POST['pinjam'])) {
     $username = $_SESSION['username'];
     $query = "SELECT id_user FROM user WHERE username = '$username'";
     $result = mysqli_query($conn, $query);
-
+    // Get id_user
     if ($result) {
         $data = mysqli_fetch_assoc($result);
         $id_user = $data['id_user'];

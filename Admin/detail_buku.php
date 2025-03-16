@@ -119,9 +119,34 @@ if (isset($_GET['id_buku'])) {
 
             <tr>
                 <th style="font-weight: 400;">Deskripsi</th>
-                <td><?= (empty($data['deskripsi']) ? '<span style="font-size: larger;"> - </span>' : $data['deskripsi']) ?>
+                <td>
+                    <?php
+                    $deskripsi = $data['deskripsi'];
+                    $limit = 400;
+                    if (strlen($deskripsi) > $limit) {
+                        $deskripsi = substr($deskripsi, 0, $limit) . '... <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#deskripsiModal">Baca Selengkapnya</a>';
+                    }
+                    echo $deskripsi;
+                    ?>
                 </td>
             </tr>
+            <!-- Modal Baca Selengkapnya -->
+            <div class="modal fade" id="deskripsiModal" tabindex="-1" aria-labelledby="deskripsiModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content"
+                        style="border-radius: 15px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                        <div class="modal-header" style="background-color: #343a40; color: #fff;">
+                            <h5 class="modal-title" id="deskripsiModalLabel">Deskripsi Buku</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                style="color: #fff; background-color: #fff; border-color: #fff;"></button>
+                        </div>
+                        <div class="modal-body" style="padding: 2rem; background-color: #f8f9fa;">
+                            <p style="font-size: 1.1rem; color: #333;"><?= $data['deskripsi'] ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <tr>
                 <th style="font-weight: 400;">Penulis</th>
@@ -203,44 +228,6 @@ if (isset($_GET['id_buku'])) {
                                 echo "<i class='fas fa-user-circle' style='font-size: 2rem;'></i>";
                             }
                             ?>
-                        <div>
-                            <h5 class="card-title mb-0" style="font-weight: bold;">
-                                <?= htmlspecialchars($review['username']); ?>
-                            </h5>
-                            <div class="card-text">
-                                <?php for ($i = 1; $i <= 5; $i++): ?>
-                                    <i class="<?= $i <= $review['rating'] ? 'fas' : 'far'; ?> fa-star text-warning"></i>
-                                <?php endfor; ?>
-                            </div>
-                        </div>
-                        <div class="ms-auto">
-                            <p class="text-white" style="font-size: 0.8rem;">Komentarmu</p>
-                        </div>
-                    </div>
-                    <p class="card-text" style="font-style: italic;"><?= htmlspecialchars($review['ulasan']); ?></p>
-                </div>
-            </div>
-        <?php endif;
-
-        $query = "SELECT username, ulasan, rating FROM Review WHERE id_buku = '$id_buku' AND username != '$username' AND ulasan IS NOT NULL";
-        $result = mysqli_query($conn, $query);
-
-        if (mysqli_num_rows($result) > 0):
-            while ($review = mysqli_fetch_assoc($result)): ?>
-                <div class="card mt-3 shadow-sm border-0" style="border-radius: 10px;">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-2">
-                            <div class="me-3">
-                                <?php
-                                $username = $review['username'];
-                                $profile_picture = "../assets/profile_picture/$username.png";
-                                if (file_exists($profile_picture)) {
-                                    echo "<img src='$profile_picture' alt='Profile Picture' class='rounded-circle' style='width: 2rem; height: 2rem;'>";
-                                } else {
-                                    echo "<i class='fas fa-user-circle' style='font-size: 2rem;'></i>";
-                                }
-                                ?>
-                            </div>
                             <div>
                                 <h5 class="card-title mb-0" style="font-weight: bold;">
                                     <?= htmlspecialchars($review['username']); ?>
@@ -251,145 +238,183 @@ if (isset($_GET['id_buku'])) {
                                     <?php endfor; ?>
                                 </div>
                             </div>
+                            <div class="ms-auto">
+                                <p class="text-white" style="font-size: 0.8rem;">Komentarmu</p>
+                            </div>
                         </div>
                         <p class="card-text" style="font-style: italic;"><?= htmlspecialchars($review['ulasan']); ?></p>
                     </div>
                 </div>
-            <?php endwhile;
+            <?php endif;
+
+        $query = "SELECT username, ulasan, rating FROM Review WHERE id_buku = '$id_buku' AND username != '$username' AND ulasan IS NOT NULL";
+        $result = mysqli_query($conn, $query);
+
+        if (mysqli_num_rows($result) > 0):
+            while ($review = mysqli_fetch_assoc($result)): ?>
+                    <div class="card mt-3 shadow-sm border-0" style="border-radius: 10px;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="me-3">
+                                    <?php
+                                    $username = $review['username'];
+                                    $profile_picture = "../assets/profile_picture/$username.png";
+                                    if (file_exists($profile_picture)) {
+                                        echo "<img src='$profile_picture' alt='Profile Picture' class='rounded-circle' style='width: 2rem; height: 2rem;'>";
+                                    } else {
+                                        echo "<i class='fas fa-user-circle' style='font-size: 2rem;'></i>";
+                                    }
+                                    ?>
+                                </div>
+                                <div>
+                                    <h5 class="card-title mb-0" style="font-weight: bold;">
+                                        <?= htmlspecialchars($review['username']); ?>
+                                    </h5>
+                                    <div class="card-text">
+                                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                                            <i class="<?= $i <= $review['rating'] ? 'fas' : 'far'; ?> fa-star text-warning"></i>
+                                        <?php endfor; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="card-text" style="font-style: italic;"><?= htmlspecialchars($review['ulasan']); ?></p>
+                        </div>
+                    </div>
+                <?php endwhile;
         else:
             if (mysqli_num_rows(mysqli_query($conn, "SELECT * FROM Review WHERE id_buku = '$id_buku' AND username = '$username' AND ulasan IS NOT NULL")) > 0):
                 // tidak ada yang ditampilkan
             else: ?>
-                <p class="text-center" style="color: #777; font-size: 1.1rem;">Belum ada ulasan untuk buku ini.</p>
-            <?php endif;
+                    <p class="text-center" style="color: #777; font-size: 1.1rem;">Belum ada ulasan untuk buku ini.</p>
+                <?php endif;
         endif; ?>
-    </div>
-    <br><br>
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Buku</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form method="POST">
-                    <div class="modal-body">
-                        <input type="hidden" name="id_buku" value="<?= $data['id_buku'] ?>">
-
-                        <div class="mb-3">
-                            <label for="cover" class="form-label">Cover Buku</label>
-                            <input type="file" class="form-control" id="cover" name="cover" accept=".jpg, .jpeg, .png"
-                                onchange="previewImage()">
-                        </div>
-
-                        <img src="" id="preview"
-                            style="max-width:200px;max-height:200px; display:block; margin: 0 auto; margin-bottom: 1rem;">
-
-                        <div class="mb-3">
-                            <label for="judul" class="form-label">Judul Buku</label>
-                            <input type="text" class="form-control" id="judul" name="judul"
-                                value="<?= $data['judul'] ?>" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="deskripsi" class="form-label">Deskripsi</label>
-                            <textarea class="form-control form-control-lg" id="deskripsi" name="deskripsi"
-                                rows="4"><?= $data['deskripsi'] ?></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="pengarang" class="form-label">Penulis</label>
-                            <input type="text" class="form-control" id="pengarang" name="pengarang"
-                                value="<?= $data['pengarang'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="penerbit" class="form-label">Penerbit</label>
-                            <input type="text" class="form-control" id="penerbit" name="penerbit"
-                                value="<?= $data['penerbit'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="tahun_terbit" class="form-label">Tahun Terbit</label>
-                            <input type="number" class="form-control" id="tahun_terbit" name="tahun_terbit"
-                                value="<?= $data['tahun_terbit'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="halaman" class="form-label">Jumlah Halaman</label>
-                            <input type="number" class="form-control" id="halaman" name="halaman"
-                                value="<?= $data['halaman'] ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="kategori" class="form-label">Kategori</label>
-                            <select class="form-select" id="kategori" name="kategori" required>
-                                <option value="">Pilih Kategori</option>
-                                <?php
-                                $kategoriQuery = "SELECT DISTINCT nama_kategori FROM kategori";
-                                $kategoriResult = mysqli_query($conn, $kategoriQuery);
-                                while ($row = mysqli_fetch_assoc($kategoriResult)) {
-                                    $selected = $data['nama_kategori'] == $row['nama_kategori'] ? 'selected' : '';
-                                    echo "<option value='{$row['nama_kategori']}' $selected>{$row['nama_kategori']}</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary" name="editBuku">Edit Buku</button>
-                    </div>
-                </form>
-            </div>
         </div>
-    </div>
+        <br><br>
 
-    <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Delete Buku</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Kamu yakin ingin menghapus Buku <?= $data['judul'] ?>?
-                </div>
-                <div class="modal-footer">
+        <!-- Edit Modal -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Edit Buku</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
                     <form method="POST">
-                        <input type="hidden" name="id_buku" value="<?= $data['id_buku'] ?>">
-                        <input type="hidden" name="if_visible">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-danger" name="deleteBuku">Delete</button>
+                        <div class="modal-body">
+                            <input type="hidden" name="id_buku" value="<?= $data['id_buku'] ?>">
+
+                            <div class="mb-3">
+                                <label for="cover" class="form-label">Cover Buku</label>
+                                <input type="file" class="form-control" id="cover" name="cover"
+                                    accept=".jpg, .jpeg, .png" onchange="previewImage()">
+                            </div>
+
+                            <img src="" id="preview"
+                                style="max-width:200px;max-height:200px; display:block; margin: 0 auto; margin-bottom: 1rem;">
+
+                            <div class="mb-3">
+                                <label for="judul" class="form-label">Judul Buku</label>
+                                <input type="text" class="form-control" id="judul" name="judul"
+                                    value="<?= $data['judul'] ?>" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="deskripsi" class="form-label">Deskripsi</label>
+                                <textarea class="form-control form-control-lg" id="deskripsi" name="deskripsi"
+                                    rows="4"><?= $data['deskripsi'] ?></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="pengarang" class="form-label">Penulis</label>
+                                <input type="text" class="form-control" id="pengarang" name="pengarang"
+                                    value="<?= $data['pengarang'] ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="penerbit" class="form-label">Penerbit</label>
+                                <input type="text" class="form-control" id="penerbit" name="penerbit"
+                                    value="<?= $data['penerbit'] ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="tahun_terbit" class="form-label">Tahun Terbit</label>
+                                <input type="number" class="form-control" id="tahun_terbit" name="tahun_terbit"
+                                    value="<?= $data['tahun_terbit'] ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="halaman" class="form-label">Jumlah Halaman</label>
+                                <input type="number" class="form-control" id="halaman" name="halaman"
+                                    value="<?= $data['halaman'] ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="kategori" class="form-label">Kategori</label>
+                                <select class="form-select" id="kategori" name="kategori" required>
+                                    <option value="">Pilih Kategori</option>
+                                    <?php
+                                    $kategoriQuery = "SELECT DISTINCT nama_kategori FROM kategori";
+                                    $kategoriResult = mysqli_query($conn, $kategoriQuery);
+                                    while ($row = mysqli_fetch_assoc($kategoriResult)) {
+                                        $selected = $data['nama_kategori'] == $row['nama_kategori'] ? 'selected' : '';
+                                        echo "<option value='{$row['nama_kategori']}' $selected>{$row['nama_kategori']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary" name="editBuku">Edit Buku</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
+        <!-- Delete Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Delete Buku</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Kamu yakin ingin menghapus Buku <?= $data['judul'] ?>?
+                    </div>
+                    <div class="modal-footer">
+                        <form method="POST">
+                            <input type="hidden" name="id_buku" value="<?= $data['id_buku'] ?>">
+                            <input type="hidden" name="if_visible">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger" name="deleteBuku">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <!-- preview -->
-    <script>
-        function previewImage() {
-            const image = document.querySelector('#cover');
-            const preview = document.querySelector('#preview');
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
 
-            const file = image.files[0];
-            const reader = new FileReader();
+        <!-- preview -->
+        <script>
+            function previewImage() {
+                const image = document.querySelector('#cover');
+                const preview = document.querySelector('#preview');
 
-            reader.onloadend = function () {
-                preview.src = reader.result;
+                const file = image.files[0];
+                const reader = new FileReader();
+
+                reader.onloadend = function () {
+                    preview.src = reader.result;
+                }
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.src = "";
+                }
             }
-
-            if (file) {
-                reader.readAsDataURL(file);
-            } else {
-                preview.src = "";
-            }
-        }
-    </script>
+        </script>
 </body>
 
 </html>
