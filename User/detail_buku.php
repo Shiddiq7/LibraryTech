@@ -259,10 +259,10 @@ if (isset($_GET['id_buku'])) {
         <!-- Rating -->
         <?php
         if (isset($_POST['rating'])) {
-            $rating = $_POST['rating'];
-            $id_buku = $data['id_buku'];
-            $judul = $data['judul'];
-            $username = $_SESSION['username'];
+            $rating = mysqli_real_escape_string($conn, $_POST['rating']);
+            $id_buku = mysqli_real_escape_string($conn, $data['id_buku']);
+            $judul = mysqli_real_escape_string($conn, $data['judul']);
+            $username = mysqli_real_escape_string($conn, $_SESSION['username']);
 
             $query = "SELECT * FROM Review WHERE id_buku = '$id_buku' AND username = '$username'";
             $result = mysqli_query($conn, $query);
@@ -282,10 +282,10 @@ if (isset($_GET['id_buku'])) {
         <!-- Ulasan -->
         <?php if (isset($_POST['ulasan'])): ?>
             <?php
-            $id_buku = $data['id_buku'];
-            $judul = $data['judul'];
-            $username = $_SESSION['username'];
-            $komentar = $_POST['ulasan'];
+            $id_buku = mysqli_real_escape_string($conn, $data['id_buku']);
+            $judul = mysqli_real_escape_string($conn, $data['judul']);
+            $username = mysqli_real_escape_string($conn, $_SESSION['username']);
+            $komentar = mysqli_real_escape_string($conn, $_POST['ulasan']);
 
             $query = "SELECT * FROM review WHERE id_buku = '$id_buku' AND username = '$username'";
             $result = mysqli_query($conn, $query);

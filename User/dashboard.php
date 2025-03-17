@@ -403,12 +403,130 @@ require "../Auth/cek_log.php";
             </div>
         </div>
     </section>
+    <br><br><br><br><br><br><br>
+    <!-- Top 10 Books -->
+    <?php
+    $query = "SELECT buku.id_buku, buku.judul, buku.cover, AVG(review.rating) AS avg_rating FROM buku LEFT JOIN review ON buku.id_buku = review.id_buku GROUP BY buku.id_buku ORDER BY avg_rating DESC LIMIT 10";
+    $result = query($query);
+    ?>
+    <div style="margin-left: 40px; margin-top: 70px;">  
+        <h3 class="position-relative d-inline-block" 
+            style="font-family: 'Lato', sans-serif; 
+                   font-weight: 900;
+                   letter-spacing: 3px;
+                   color: #2c3e50;
+                   padding: 15px 30px;
+                   border-radius: 10px;
+                   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+                   box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <span class="position-relative" 
+                  style="background: linear-gradient(45deg, #4a90e2, #6f42c1);
+                         -webkit-background-clip: text;
+                         -webkit-text-fill-color: transparent;">
+                TOP 10 BOOKS
+            </span>
+           
+            <div class="position-absolute" 
+                 style="bottom: -5px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: 50px;
+                        height: 3px;
+                        background: linear-gradient(90deg, #4a90e2, #6f42c1);
+                        border-radius: 3px;">
+            </div>
+        </h3>
+    </div>
+    <div class="shadow-lg rounded-5 p-4 " 
+        style="background: linear-gradient(to right, #e9ecef, #dee2e6);
+               margin: 38px;">
+        <div class="card-body">
+            <!-- Custom scrollbar styling -->
+            <div class="d-flex overflow-auto custom-scrollbar" 
+                style="scroll-snap-type: x mandatory; 
+                       gap: 20px; 
+                       padding: 10px;
+                       scrollbar-width: thin;
+                       -ms-overflow-style: none;">
+                <?php foreach ($result as $book): ?>
+                    <?php
+                    $id_buku = $book['id_buku'];
+                    $judul = $book['judul'];
+                    $cover = $book['cover'];
+                    $avg_rating = $book['avg_rating'] ?? 0;
+                    ?>
+                    <div class="card border-0 rounded-4 book-card"
+                        style="min-width: 200px; 
+                               max-width: 250px; 
+                               scroll-snap-align: start; 
+                               cursor: pointer; 
+                               background: white;
+                               transition: all 0.3s ease;"
+                        onclick="window.location.href='detail_buku.php?id_buku=<?= $id_buku; ?>'">
 
-    <br><br><br><br><br><br>
+                        <img src="<?= $cover; ?>" 
+                             class="card-img-top rounded-4" 
+                             alt="Book Cover"
+                             style="object-fit: cover; 
+                                    height: 280px;
+                                    filter: brightness(0.95);">
+                        
+                        <div class="card-body text-center py-3">
+                            <h6 class="card-title text-truncate mb-2" 
+                                style="font-weight: 600;
+                                       color: #2d3436;">
+                                <?= htmlspecialchars($judul); ?>
+                            </h6>
+                            <div class="rating" style="font-size: 0.9rem;">
+                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                    <i class="<?= $i <= $avg_rating ? 'fas' : 'far'; ?> fa-star" 
+                                       style="color: #ffd700;"></i>
+                                <?php endfor; ?>
+                                <span class="ms-2" 
+                                      style="color: #636e72;
+                                             font-size: 0.8rem;">
+                                    (<?= number_format($avg_rating, 1) ?>)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    /* Custom scrollbar styling */
+    .custom-scrollbar::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e0;
+        border-radius: 10px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #a0aec0;
+    }
+
+    /* Card hover effect */
+    .book-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    </style>
+<!-- End Top 10 Books -->
+    <br>
     <hr style="border: 1px solid #666; margin: 40px 0; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
 
-    <section class="features">
-        <div class="container">
+    <section class="features" style="max-width: 100vw;">
+        <div class="container-fluid">
             <h2 class="text-center mt-3"
                 style="font-family: 'Lato', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #4a4a4a;">
                 DAFTAR BUKU</h2>
@@ -457,8 +575,9 @@ require "../Auth/cek_log.php";
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
 
+
             <!-- Book List Container -->
-            <div id="bookContainer" class="d-flex flex-wrap flex-column gap-4">
+            <div id="bookContainer" class="d-flex flex-wrap flex-column gap-4 mt-3">
                 <?php
                 $search = isset($_GET['search']) ? $_GET['search'] : '';
                 $category = isset($_GET['category']) ? $_GET['category'] : '';
@@ -484,11 +603,11 @@ require "../Auth/cek_log.php";
                             echo "<div class='category-group'><h2 class='text-center fw-bold mb-5' style='color: darkblue; font-size: 1.5rem; letter-spacing: 2px;'>{$currentCategory}</h2><div class='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap'>";
                         }
                         ?>
-                        <div class="col mb-4 book-item mt-4">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-4 book-item mt-4">
                             <div class="card h-100 shadow-lg rounded-4">
                                 <div class="card h-100 rounded-4">
                                     <img class="card-img-top book-cover rounded-3" src="<?= $bk['cover']; ?>" alt="Book Cover"
-                                        style="object-fit: cover; width: 100%; height: 500px;" loading="lazy">
+                                        style="object-fit: cover; width: 100%; height: 100%;" loading="lazy">
                                 </div>
                                 <?php
                                 $id_buku = $bk['id_buku'];

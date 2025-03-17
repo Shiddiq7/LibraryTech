@@ -142,14 +142,15 @@ foreach ($pinjam as $pj) {
 
                                 <!-- peminjaman  -->
                                 <?php
-                                $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
-                                $isActive = basename($_SERVER['PHP_SELF']) == 'pinjam.php';
+                                    $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
+                                    $isActive = basename($_SERVER['PHP_SELF']) == 'pinjam.php';
                                 ?>
-                                <a class="nav-link <?= $isActive ? 'active text-highlight' : ''; ?>" href="pinjam.php"
-                                    style="color: <?= $newDataCount > 0 ? 'orange' : ($isActive ? 'white' : ''); ?>">
-                                    Peminjaman
+                                <a class="nav-link d-flex align-items-center <?= $isActive ? 'active' : ''; ?>" href="#"
+                                    style="color: <?= $newDataCount > 0 ? '#ff9800' : ($isActive ? '#fff' : '#000'); ?>">
+                                    <span class="me-auto">Peminjaman</span>
+                                    <span class="badge bg-warning text-dark ms-2"><?= $newDataCount ?></span>
                                     <?php if ($newDataCount > 0): ?>
-                                        <span class="dot bg-warning"></span>
+                                        <i class="fas fa-exclamation-circle ms-2 text-warning"></i>
                                     <?php endif; ?>
                                 </a>
 
@@ -217,12 +218,12 @@ foreach ($pinjam as $pj) {
                                                 <h6 class="dropdown-header">Export By Status</h6>
                                             </li>
                                             <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="export_table/export_pinjam.php?status="><i class="fas fa-circle text-primary me-2"></i> All Status</a></li>
                                             <li><a class="dropdown-item" href="export_table/export_pinjam.php?status=Menunggu+Konfirmasi"><i class="fas fa-circle text-warning me-2"></i> Menunggu Konfirmasi</a></li>
                                             <li><a class="dropdown-item" href="export_table/export_pinjam.php?status=Dipinjam"><i class="fas fa-circle text-success me-2"></i> Dipinjam</a></li>
                                             <li><a class="dropdown-item" href="export_table/export_pinjam.php?status=Dikembalikan"><i class="fas fa-circle text-secondary me-2"></i> Dikembalikan</a></li>
                                         </ul>
                                     </div>
-                                    
                                     <!-- Filter Status -->
                                     <div class="input-group shadow rounded" style="width: 200px; margin-right: 10px;">
                                         <span class="input-group-text bg-light border-0" id="basic-addon1"><i

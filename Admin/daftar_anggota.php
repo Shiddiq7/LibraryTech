@@ -84,12 +84,15 @@ require "../Auth/cek_log.php";
                                 <!-- peminjaman  -->
                                 <?php
                                 $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
+                                $isActive = basename($_SERVER['PHP_SELF']) == 'pinjam.php';
                                 ?>
-                                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'peminjaman.php' ? 'active' : ''; ?>"
-                                    href="pinjam.php" style="color: <?= $newDataCount > 0 ? 'orange' : ''; ?>">
-                                    Peminjaman
+                                <a class="nav-link d-flex align-items-center <?= $isActive ? 'active' : ''; ?>"
+                                    href="pinjam.php"
+                                    style="color: <?= $newDataCount > 0 ? '#ff9800' : ($isActive ? '#fff' : '#000'); ?>">
+                                    <span class="me-auto">Peminjaman</span>
+                                    <span class="badge bg-warning text-dark ms-2"><?= $newDataCount ?></span>
                                     <?php if ($newDataCount > 0): ?>
-                                        <span class="dot bg-warning"></span>
+                                        <i class="fas fa-exclamation-circle ms-2 text-warning"></i>
                                     <?php endif; ?>
                                 </a>
                             </nav>
@@ -129,7 +132,11 @@ require "../Auth/cek_log.php";
                             </div>
                             <div class="d-flex justify-content-between">
                                 <!-- export -->
-                                <a href="export_table/export_anggota.php" class="btn btn-outline-primary btn-sm me-4 d-flex align-items-center" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 10px rgba(0, 0, 0, 0.15)';" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
+                                <a href="export_table/export_anggota.php"
+                                    class="btn btn-outline-primary btn-sm me-4 d-flex align-items-center"
+                                    style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s, box-shadow 0.2s;"
+                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 10px rgba(0, 0, 0, 0.15)';"
+                                    onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
                                     <i class="fas fa-file-export me-2"></i>
                                     <span>Export Table</span>
                                 </a>

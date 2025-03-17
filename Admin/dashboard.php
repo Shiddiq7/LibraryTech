@@ -58,7 +58,7 @@ require "../Auth/cek_log.php";
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading"></div>
                         <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>"
-                            href="dashboard.php">
+                            href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
@@ -89,13 +89,15 @@ require "../Auth/cek_log.php";
                                 $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
                                 $isActive = basename($_SERVER['PHP_SELF']) == 'pinjam.php';
                                 ?>
-                                <a class="nav-link <?= $isActive ? 'active text-highlight' : ''; ?>" href="pinjam.php"
-                                    style="color: <?= $newDataCount > 0 ? 'orange' : ($isActive ? 'white' : ''); ?>">
-                                    Peminjaman
+                                <a class="nav-link d-flex align-items-center <?= $isActive ? 'active' : ''; ?>" href="pinjam.php"
+                                    style="color: <?= $newDataCount > 0 ? '#ff9800' : ($isActive ? '#fff' : '#000'); ?>">
+                                    <span class="me-auto">Peminjaman</span>
+                                    <span class="badge bg-warning text-dark ms-2"><?= $newDataCount ?></span>
                                     <?php if ($newDataCount > 0): ?>
-                                        <span style="margin-left: 20px;" class="dot bg-warning"></span>
+                                        <i class="fas fa-exclamation-circle ms-2 text-warning"></i>
                                     <?php endif; ?>
                                 </a>
+                                   
 
 
                             </nav>

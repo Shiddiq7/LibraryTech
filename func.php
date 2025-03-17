@@ -100,7 +100,8 @@ if (isset($_POST['tambahAnggota'])) {
     $result = mysqli_query($conn, $query);
     $row = mysqli_fetch_assoc($result);
     $count = $row['count'] + 1; // Get the next user number
-    $id_user = $initials . str_pad($count, 4, '0', STR_PAD_LEFT); // Combine initials and padded number
+    $max_length = strlen((string)$count);
+    $id_user = $initials . str_pad($count, $max_length, '0', STR_PAD_LEFT); // Combine initials and padded number
 
 
     $query = "INSERT INTO user (id_user, Email, verify , username, password) VALUES ('$id_user',  '$email', '$verify' ,'$username', '$hashed_password')";
@@ -184,8 +185,8 @@ if (isset($_POST['tambahBuku'])) {
     // Generate id_buku
     $inisial_judul = strtoupper(substr($judul, 0, 2));
     $tahun_terbit = substr($tahun_terbit, 2);
-    $halaman = str_pad($halaman, 3, '0', STR_PAD_LEFT);
     $id_buku = "$inisial_judul-$tahun_terbit-$halaman";
+    // end of generate id_buku
 
     // cek apakah folder assets/Buku sudah ada atau belum
     // jika belum, maka buat folder baru dengan nama Buku
@@ -255,8 +256,8 @@ if (isset($_POST['tambahBuku'])) {
 // Edit Buku
 if (isset($_POST['editBuku'])) {
     $id_buku = $_POST['id_buku'];
-    $judul = $_POST['judul'];
-    $deskripsi = $_POST['deskripsi'];
+    $judul = mysqli_real_escape_string($conn, $_POST['judul']);
+    $deskripsi = mysqli_real_escape_string($conn, $_POST['deskripsi']);
     $pengarang = $_POST['pengarang'];
     $penerbit = $_POST['penerbit'];
     $tahun_terbit = $_POST['tahun_terbit'];
