@@ -207,3 +207,7 @@ tambahkan kondisi jika di klik maka input search akan sesuai judul buku ini
 fix the lastid , buat menjadi berurutan jika di database terdapat 1 data maka id akan di isi dengan 002 dan jika terdapat 5 data maka id akan diisi dengan 006 dan seterusnya seperti ini  $row = mysqli_fetch_assoc($result);
     $count = $row['count'] + 1; // Get the next user number
     $id_user = $initials . str_pad($count, 4, '0', STR_PAD_LEFT); 
+
+
+    wwkkwwk
+    
