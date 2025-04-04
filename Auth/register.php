@@ -1,17 +1,18 @@
 <?php
 require '../func.php';
 
-// Register User
 if (isset($_POST['register'])) {
-    // Ensure $id_user is properly set
     $email = $_POST['email'];
     $username = $_POST['username'];
     $password = $_POST['password'];
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // Check for duplicate email or username
-    $checkQuery = "SELECT * FROM user WHERE Email='$email' OR username='$username'";
-    $checkResult = mysqli_query($conn, $checkQuery);
+    // Use prepared statement for better security and performance
+    $checkQuery = "SELECT * FROM user WHERE Email=? OR username=?";
+    $stmt = mysqli_prepare($conn, $checkQuery);
+    mysqli_stmt_bind_param($stmt, "ss", $email, $username);
+    mysqli_stmt_execute($stmt);
+    $checkResult = mysqli_stmt_get_result($stmt);
 
     if (mysqli_num_rows($checkResult) > 0) {
         echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -19,53 +20,58 @@ if (isset($_POST['register'])) {
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>';
     } else {
-        // Generate id_user
-        $initials = strtoupper(substr($username, 0, 2)); // Get first two characters of username
-        $query = "SELECT COUNT(*) as count FROM user WHERE if_visible = TRUE";
-        $result = mysqli_query($conn, $query);
-        $row = mysqli_fetch_assoc($result);
-        $count = $row['count'] + 1; // Get the next user number
-        $id_user = $initials . str_pad($count, 4, '0', STR_PAD_LEFT); // Combine initials and padded number
+        // Generate id_user more efficiently
+        $initials = strtoupper(substr($username, 0, 2));
+        $stmt = mysqli_prepare($conn, "SELECT COUNT(*) FROM user WHERE if_visible = TRUE");
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $count);
+        mysqli_stmt_fetch($stmt);
+        mysqli_stmt_close($stmt);
 
-        // Generate OTP and store it in the session
+        $count++;
+        $id_user = $initials . str_pad($count, 4, '0', STR_PAD_LEFT);
+
+        // Generate OTP
         $otp = generateOTP();
         $_SESSION['otp'] = $otp;
         $_SESSION['email'] = $email;
 
-        $query = "INSERT INTO user (id_user, Email, username, password, verify) VALUES ('$id_user', '$email', '$username', '$hashed_password', 0)";
-        $result = mysqli_query($conn, $query);
+        // Use prepared statement for insert
+        $query = "INSERT INTO user (id_user, Email, username, password, verify) VALUES (?, ?, ?, ?, 0)";
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, "ssss", $id_user, $email, $username, $hashed_password);
+        $result = mysqli_stmt_execute($stmt);
 
         if ($result) {
             sendOTP($email, $otp, $username);
-            echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-success alert-dismissible fade show" role="alert">
-                    Registrasi berhasil! Silakan cek email Anda untuk kode OTP.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
             header("location: verify_otp.php");
+            exit();
         } else {
             echo "<script>alert('Registrasi gagal!')</script>";
         }
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
-    <title>Register - LibraTech </title>
-    <link href="../css/styles.css" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Register - LibraTech</title>
+    <link rel="icon" href="../assets/img/logo1.png" type="image/png">
+    <!-- Load only necessary CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background: url('../assets/img/Libr.jpeg') no-repeat center center fixed;
             background-size: cover;
+        }
+
+        .card {
+            border-radius: 1rem;
+            background-color: rgba(90, 90, 90, 0.3);
+            backdrop-filter: blur(25px);
         }
     </style>
 </head>
@@ -76,8 +82,7 @@ if (isset($_POST['register'])) {
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col col-xl-7">
-                    <div class="card"
-                        style="border-radius: 1rem; background-color: rgba(90, 90, 90, 0.3); backdrop-filter: blur(25px);">
+                    <div class="card">
                         <div class="row g-0">
                             <div class="col-md-12 col-lg-12 d-flex align-items-center">
                                 <div class="card-body p-4 p-lg-5 text-black">
@@ -143,19 +148,12 @@ if (isset($_POST['register'])) {
             </div>
         </div>
     </section>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../js/scripts.js"></script>
-
-    <!-- Toggle Password -->
+    <!-- Load only necessary scripts at the end of body -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function togglePassword() {
             var x = document.getElementById("inputPassword");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
+            x.type = x.type === "password" ? "text" : "password";
         }
     </script>
 </body>

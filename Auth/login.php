@@ -1,34 +1,29 @@
 <?php
 require '../func.php';
 
-
-// session
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $query = "SELECT * FROM user WHERE username='$username'";
-    $result = mysqli_query($conn, $query);
+    // Use prepared statements for security and better performance
+    $query = "SELECT * FROM user WHERE username=?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $username);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
-    $hitung = mysqli_num_rows($result);
-    if ($hitung > 0) {
-        $row = mysqli_fetch_assoc($result);
+    if ($row = mysqli_fetch_assoc($result)) {
         if ($row['verify'] == 1 && password_verify($password, $row['password'])) {
             $_SESSION['log'] = true;
             $_SESSION['username'] = $username;
             $_SESSION['role'] = $row['role'];
-
-            if ($row['role'] == 'Admin') {
-                header("location:../Admin/dashboard.php");
-            } else {
-                header("location:../User/dashboard.php");
-            }
-        } else {
-            echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Akun belum diverifikasi atau Username & Password Salah!
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
+            header("location:../" . ($row['role'] == 'Admin' ? 'Admin' : 'User') . "/dashboard.php");
+            exit();
         }
+        echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
+                Akun belum diverifikasi atau Username & Password Salah!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
     } else {
         echo '<div style="position: fixed; top: 0; right: 0; z-index: 9999;" class="alert alert-danger alert-dismissible fade show" role="alert">
                 Username atau Password Salah!
@@ -37,40 +32,33 @@ if (isset($_POST['login'])) {
     }
 }
 
-if (!isset($_SESSION['log'])) {
-
-} else {
-    if ($_SESSION['role'] == 'Admin') {
-        header('location: ../Admin/dashboard.php');
-    } else {
-        header('location: ../User/dashboard.php');
-    }
+if (isset($_SESSION['log'])) {
+    header('location:../' . ($_SESSION['role'] == 'Admin' ? 'Admin' : 'User') . '/dashboard.php');
+    exit();
 }
-
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
-    <title>Login - LibraTech </title>
-    <link href="../css/styles.css" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login - LibraTech</title>
+    <link rel="icon" href="../assets/img/logo1.png" type="image/png">
+    <!-- Load only necessary CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background: url('../assets/img/Libr.jpeg') no-repeat center center fixed;
             background-size: cover;
         }
-    </style>
 
+        .card {
+            border-radius: 1rem;
+            background-color: rgba(90, 90, 90, 0.3);
+            backdrop-filter: blur(25px);
+        }
+    </style>
 </head>
 
 <body>
@@ -132,17 +120,12 @@ if (!isset($_SESSION['log'])) {
             </div>
         </div>
     </section>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../js/scripts.js"></script>
+    <!-- Load only necessary scripts at the end of body -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function togglePassword() {
             var x = document.getElementById("inputPassword");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
+            x.type = x.type === "password" ? "text" : "password";
         }
     </script>
 </body>

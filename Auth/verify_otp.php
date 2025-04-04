@@ -2,14 +2,17 @@
 session_start();
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
-    $query = "SELECT verify FROM user WHERE username = '$username'";
-    $result = mysqli_query($conn, $query);
+    $query = "SELECT verify FROM user WHERE username = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $username);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     $row = mysqli_fetch_assoc($result);
     if ($row['verify'] != 1) {
         header('Location: register.php');
+        exit();
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,8 +22,7 @@ if (isset($_SESSION['username'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Email - LibraTech</title>
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-image: url("../assets/img/Libr.jpeg");
@@ -145,26 +147,26 @@ if (isset($_SESSION['username'])) {
         <p id="timer" class="timer"></p>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <!-- Load only necessary scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Timer functionality
-        var countDownDate = new Date().getTime() + 30000;
-        var x = setInterval(function () {
-            var now = new Date().getTime();
-            var distance = countDownDate - now;
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            document.getElementById("timer").innerHTML = seconds + "s ";
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("resend-btn").disabled = false;
-                document.getElementById("timer").innerHTML = "";
-            }
-        }, 1000);
+        // Combine all JavaScript into one block
+        document.addEventListener('DOMContentLoaded', function () {
+            // Timer functionality
+            var countDownDate = new Date().getTime() + 30000;
+            var x = setInterval(function () {
+                var now = new Date().getTime();
+                var distance = countDownDate - now;
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById("timer").innerHTML = seconds + "s ";
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("resend-btn").disabled = false;
+                    document.getElementById("timer").innerHTML = "";
+                }
+            }, 1000);
+        });
 
-        // OTP input functionality
         function moveToNext(element, event) {
             var inputs = document.querySelectorAll('.otp-input');
             var index = Array.prototype.indexOf.call(inputs, element);
