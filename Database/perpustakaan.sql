@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 13, 2025 at 08:19 AM
+-- Generation Time: Apr 04, 2025 at 03:56 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.12
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `buku` (
-  `id_buku` varchar(10) NOT NULL,
+  `id_buku` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `judul` varchar(50) NOT NULL,
   `deskripsi` longtext NOT NULL,
@@ -45,9 +45,12 @@ CREATE TABLE `buku` (
 --
 
 INSERT INTO `buku` (`id_buku`, `cover`, `judul`, `deskripsi`, `pengarang`, `penerbit`, `tahun_terbit`, `halaman`, `kategori`, `if_visible`) VALUES
+('AT-09-220', '../assets/Buku/Komik/AOT.jpeg', 'Attack On Titan', 'Attack on Titan (AOT) berlatar di dunia distopia di mana umat manusia hidup di dalam tembok raksasa untuk melindungi diri dari makhluk mengerikan pemakan manusia yang dikenal sebagai Titan. Cerita ini mengikuti Eren Yeager, seorang pemuda yang bertekad untuk menghancurkan Titan setelah menyaksikan kehancuran yang mereka sebabkan.\r\n\r\nBersama Mikasa Ackerman dan Armin Arlert, Eren bergabung dengan militer untuk melawan para Titan. Di tengah perjalanan mereka, berbagai rahasia mengejutkan mulai terungkap, termasuk asal-usul Titan, sejarah dunia mereka, dan kekuatan misterius yang dimiliki Eren. Perjalanan ini penuh dengan pertempuran epik dan dilema moral yang menyentuh tema kebebasan, pengorbanan, dan sifat dasar manusia.', 'Hajime Isayama', 'Kodansha', 2009, '220', 'Komik', 1),
 ('BU24', '../assets/Buku/Pendidikan/SNBT.jpeg', 'Buku Pintar SNBT', 'Seleksi Nasional Berdasarkan Tes (SNBT) merupakan seleksi masuk Perquruan Tinggi Negeri yang didasarkan pada hasil tes masuk calon mahasiswa baru.', 'Tim Edukasi Indonesia', 'Bintang Wahyu', 2024, '520', 'Pendidikan', 1),
+('KA-21-212', '../assets/Buku/Ilmiah/Morfologi Kajian Proses Pembentukan Kata.jpg', 'Kajian Proses Pembentukan Kata', 'Morfologi atau ilmu bentuk kata adalah cabang linguistik yang mengidentifikasi satuan-satuan pembentuk kata sebagai satuan gramatikal. Morfologi mempelajari seluk-beluk bentuk kata serta pengaruh perubahan-perubahan bentuk kata terhadap golongan dan arti kata. Dapat pula dikatakan bahwa morfologi mempelajari seluk-beluk bentuk kata serta fungsi perubahan-perubahan bentuk kata itu, baik fungsi gramatikal maupun fungsi semantik. Dalam ilmu morfologi, terdapat morfem yaitu bagian terkecil dari sebuah kata.\r\n\r\nPembagiannya bisa digambarkan sebagaimana berikut ini:\r\n1. Sebuah wacana dapat dipecah menjadi kalimat.\r\n2. Kalimat dapat dipecah menjadi bagian makna terkecil, yaitu kata.\r\n3. Kata dapat terdiri atas beberapa morfem, contohnya menanamkan = me-tanam-kan, bisa juga hanya terdiri atas satu morfem, misalnya rumah, kursi, selamat, eksekusi.\r\n\r\nBuku yang diberi judul Morfologi: Kajian Proses Pembentukan Kata dirancang khusus bagi peminat bahasa lndonesia, khususnya di bidang morfologi. Buku ini sangat tepat bagi peneliti, guru, dan mahasiswa, baik S-1 , S-2, maupun S-3. Buku ini terdiri atas sebelas bab, yang secara kronologis memuat perkembangan kajian morfologi, sejumlah konsep dasar morfologi, serta perkembangan teori morfologi. lsi buku tidak hanya teoretis, tetapi disertai kajian serta penerapan secara praktis. Oleh karena itu, setiap bab buku ini senantiasa disertai analisis data. Untuk memantapkan pemahaman pembaca, pada setiap akhir bab disajikan sejumlah pelatihan. Untuk mencocokkan pemahaman pembaca terhadap setiap materi yang disajikan, buku ini juga dilengkapi dengan kunci jawaban. Kunci jawaban sengaja dibuat tidak detail dan lengkaP, agar pembaca terangsang untuk membaca kembali teks asli.', 'Prof. Dr. Drs. I Wayan Simpen, M.Hum. ', 'Bumi Aksara', 2021, '212', 'Ilmiah', 1),
 ('KA21', '../assets/Buku/Non-Fiksi/Kala senja menyapa.jpeg', 'Kala Senja Menyapa', 'mengisahkan perjalanan emosional seorang gadis muda bernama Aira yang jatuh cinta pada sosok pria bernama Muhammad Rivaldo Al-Hussein. Rivaldo adalah pria tampan dan menawan, yang terkenal di sekolahnya karena senyuman manisnya dan ketampanannya yang tak terbantahkan.', 'Halimatus Sakdiyah, Aksara Bercerita, dan LKPP', 'CV Kanaka Media', 2021, '100', 'Non-Fiksi', 1),
 ('MO24', '../assets/Buku/Fantasi/MONS MALEFICIORUM.jpeg', 'Mons Maleficiorum', '\"Monstrum Maleficiorum\" menyelidiki dunia sihir dan okultisme, menjelaskan berbagai praktik sihir yang dianggap berbahaya dan terlarang. Buku ini menguraikan karakteristik dan perilaku penyihir, serta makhluk-makhluk jahat yang berhubungan dengan dunia gelap. Dalam konteks sejarah, buku ini sering digunakan sebagai panduan oleh para inkuisitor untuk mengidentifikasi dan menangkap penyihir.', 'Jonas', 'Shiddiq', 2024, '405', 'Fantasi', 1),
+('NA-99-210', '../assets/Buku/Komik/Naruto.jpeg', 'Naruto Shippuden', 'Cerita ini mengambil latar waktu dua setengah tahun setelah akhir seri pertama, dengan Naruto Uzumaki kembali ke Desa Konoha setelah menjalani pelatihan intensif bersama Jiraiya.\r\n\r\nNaruto: Shippuden berfokus pada usahanya untuk menyelamatkan sahabatnya, Sasuke Uchiha, yang bergabung dengan Orochimaru, serta menghadapi ancaman besar dari organisasi kriminal Akatsuki, yang berambisi menguasai dunia melalui kekuatan monster berekor (Bijuu). Serial ini mengeksplorasi tema persahabatan, pengorbanan, dan perjuangan untuk menjadi lebih kuat demi melindungi orang-orang tercinta.', 'Masashi Kishimoto', 'Shueisha', 1999, '210', 'Komik', 1),
 ('OM18', '../assets/Buku/Komik/ORV.jpeg', 'Omniscient Reader\'s Viewpoint', '\"Omniscient Reader\'s Viewpoint\" menceritakan Kim Dokja, seorang pekerja kantoran yang tiba-tiba menemukan dunianya berubah menjadi novel favoritnya \"Three Ways to Survive in a Ruined World\", dan ia, sebagai satu-satunya pembaca yang tahu jalan cerita, harus berusaha bertahan hidup', 'Sing Shong', 'Munpia', 2018, '551', 'Komik', 1),
 ('ON97', '../assets/Buku/Komik/OP.jpeg', 'One Piece', 'bercerita tentang petualangan Monkey D. Luffy, seorang remaja yang bercita-cita menjadi Raja Bajak Laut. Luffy berlayar dari desanya untuk menemukan harta karun legendaris, One Piece. ', 'Eiichiro Oda', 'Weekly Shonen Jump', 1997, '208', 'Komik', 1),
 ('PS20', '../assets/Buku/Pendidikan/POM.jpeg', 'Psychology Of Money', 'The Psychology of Money karya Morgan Housel adalah buku yang memadukan psikologi dan keuangan, menggali secara mendalam tentang cara pandang manusia terhadap uang. Tak hanya itu, buku ini juga membahas bagaimana pola pikir ini mempengaruhi keputusan keuangan yang dibuat', 'Morgan Housel ', 'Harriman House Limited', 2020, '262', 'Pendidikan', 1),
@@ -124,10 +127,8 @@ CREATE TABLE `pinjam` (
 --
 
 INSERT INTO `pinjam` (`id_pinjam`, `id_user`, `id_buku`, `username`, `Email`, `cover`, `judul`, `pengarang`, `penerbit`, `tanggal_pinjam`, `tanggal_kembali`, `status`) VALUES
-(80, 'LE0002', ' MO24 ', 'LebahGans', 'libratech21@gmail.com', '../assets/Buku/Fantasi/MONS MALEFICIORUM.jpeg', 'Mons Maleficiorum', 'Jonas', 'Shiddiq', '2025-02-27', '2025-02-27', 'Dikembalikan'),
-(81, 'SH0001', ' MO24 ', 'Shiddiq211', 'Shiddiqduasatu@gmail.com', '../assets/Buku/Fantasi/MONS MALEFICIORUM.jpeg', 'Mons Maleficiorum', 'Jonas', 'Shiddiq', '2025-03-11', '2025-03-13', 'Dipinjam'),
-(82, 'SH0001', ' KA21 ', 'Shiddiq211', 'Shiddiqduasatu@gmail.com', '../assets/Buku/Non-Fiksi/Kala senja menyapa.jpeg', 'Kala Senja Menyapa', 'Halimatus Sakdiyah, Aksara Bercerita, dan LKPP', 'CV Kanaka Media', '2025-03-13', '2025-03-11', 'Dikembalikan'),
-(83, 'SH0001', ' OM18 ', 'Shiddiq211', 'Shiddiqduasatu@gmail.com', '../assets/Buku/Komik/ORV.jpeg', 'Omniscient Reader\'s Viewpoint', 'Sing Shong', 'Munpia', '2025-03-13', '2025-03-20', 'Dipinjam');
+(1, 'LE0002', ' OM18 ', 'LebahGans', 'LebahGans@gmail.com', '../assets/Buku/Komik/ORV.jpeg', 'Omniscient Reader\'s Viewpoint', 'Sing Shong', 'Munpia', '2025-03-18', '2025-03-23', 'Menunggu Konfirmasi'),
+(2, 'LE0002', ' ON97 ', 'LebahGans', 'LebahGans@gmail.com', '../assets/Buku/Komik/OP.jpeg', 'One Piece', 'Eiichiro Oda', 'Weekly Shonen Jump', '2025-03-17', '2025-03-24', 'Dipinjam');
 
 -- --------------------------------------------------------
 
@@ -153,7 +154,9 @@ INSERT INTO `review` (`id`, `id_buku`, `judul`, `username`, `rating`, `ulasan`) 
 (18, 'SO18', 'Solo Leveling', 'Shiddiq211', 3, 'KEREEEEN'),
 (22, 'KA21', 'Kala Senja Menyapa', 'shiddiq211', 3, 'Romantis Banget'),
 (23, 'KA21', 'Kala Senja Menyapa', 'LebahGans', 1, 'APANSIH\r\n'),
-(24, 'MO24', 'Mons Maleficiorum', 'LebahGans', 3, 'Lumayan lah');
+(24, 'MO24', 'Mons Maleficiorum', 'LebahGans', 3, 'Lumayan lah'),
+(25, 'KA-21-212', 'Kajian Proses Pembentukan Kata', 'Shiddiq211', 0, NULL),
+(26, 'OM18', 'Omniscient Reader\'s Viewpoint', 'Shiddiq211', 5, NULL);
 
 -- --------------------------------------------------------
 
@@ -179,9 +182,9 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id_user`, `Email`, `username`, `password`, `nomorhp`, `role`, `verify`, `verify_nohp`, `if_visible`) VALUES
 ('0', 'admin@gmail.com', 'Admin', '$2y$10$Hv691UPJqS9vEL40f/v2iud7eK8gJENtWvzokm218o79pRhWuXLcS', '0', 'Admin', 1, 0, 0),
-('DE0002', 'desvirarahmani@gmail.com', 'Desvira211', '$2y$10$/WPoocjZUfGl0LKxdTUc5uwO8NpPWJmdN36MkEJw/OMD5OQVa5V06', '0', 'Anggota', 0, 0, 1),
-('LE0003', 'LebahGans@gmail.com', 'LebahGans', '$2y$10$Ob1yOHu4ChscwLml/Slicuqv5hRWEkXJOslbwL9cGO7SAU8oOLD9O', '0', 'Anggota', 0, 0, 1),
-('SH0001', 'Shiddiqduasatu@gmail.com', 'Shiddiq211', '$2y$10$qoQAG0t8WMJY0H3ehXq4IeElD6qSLvoYsDRYbOWHJaljSNcInRrAu', '0853-2060-2504', 'Anggota', 1, 0, 1);
+('LE0002', 'LebahGans@gmail.com', 'LebahGans', '$2y$10$njWnh/RgpLQyzZfYXYo.B.NussrRqp4eB49NvDIRviEr6v86nDO3i', '0', 'Anggota', 1, 0, 1),
+('SH0001', 'Shiddiqduasatu@gmail.com', 'Shiddiq211', '$2y$10$qoQAG0t8WMJY0H3ehXq4IeElD6qSLvoYsDRYbOWHJaljSNcInRrAu', '0853-2060-2504', 'Anggota', 1, 0, 1),
+('TE0003', 'Testing@gmail.com', 'testes33', '$2y$10$OfcfDcpbBNyndQFRPczrf.znRe6MtD8aP9GB7XPjzDCTCLVLDJkhy', '0', 'Anggota', 1, 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -247,13 +250,13 @@ ALTER TABLE `kembali`
 -- AUTO_INCREMENT for table `pinjam`
 --
 ALTER TABLE `pinjam`
-  MODIFY `id_pinjam` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id_pinjam` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `review`
 --
 ALTER TABLE `review`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -406,7 +406,7 @@ require "../Auth/cek_log.php";
     <br><br><br><br><br><br><br>
     <!-- Top 10 Books -->
     <?php
-    $query = "SELECT buku.id_buku, buku.judul, buku.cover, AVG(review.rating) AS avg_rating FROM buku LEFT JOIN review ON buku.id_buku = review.id_buku GROUP BY buku.id_buku ORDER BY avg_rating DESC LIMIT 10";
+    $query = "SELECT buku.id_buku, buku.judul, buku.cover, AVG(review.rating) AS avg_rating FROM buku LEFT JOIN review ON buku.id_buku = review.id_buku GROUP BY buku.id_buku ORDER BY avg_rating DESC LIMIT 20";
     $result = query($query);
     ?>
     <div style="margin-left: 40px; margin-top: 70px;">  
@@ -423,7 +423,7 @@ require "../Auth/cek_log.php";
                   style="background: linear-gradient(45deg, #4a90e2, #6f42c1);
                          -webkit-background-clip: text;
                          -webkit-text-fill-color: transparent;">
-                TOP 10 BOOKS
+                TOP 20 BOOKS
             </span>
            
             <div class="position-absolute" 
