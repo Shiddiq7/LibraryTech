@@ -104,8 +104,6 @@ require "../Auth/cek_log.php";
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3 d-flex align-items-center" href="#">
-            <img src="../assets/img/logo1.png" width="80" height="80" class="d-inline-block align-top" alt=""
-                loading="lazy">
             <span class="ms-2">LibraTech</span>
         </a>
         <!-- Sidebar Toggle-->
@@ -140,56 +138,36 @@ require "../Auth/cek_log.php";
                             Dashboard
                         </a>
 
-                        <div class="sb-sidenav-menu-heading">Management</div>
-                        <?php
-                        $newLibraryCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
-                        ?>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                            data-bs-target="#collapseLibrary" aria-expanded="false" aria-controls="collapseLibrary">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                            Library
-                            <?php if ($newLibraryCount > 0): ?>
-                                <span style="margin-left: 20px;" class="dot bg-warning"></span>
-                            <?php endif; ?>
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
 
-                        <div class="collapse" id="collapseLibrary" aria-labelledby="headingOne"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_buku.php' ? 'active' : ''; ?>"
-                                    href="daftar_buku.php">Daftar Buku</a>
-
-                                <!-- peminjaman  -->
+                        <div class="sb-sidenav-menu-heading">Daftar</div>
+                            <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_buku.php' ? 'active' : ''; ?>"
+                                href="daftar_buku.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
+                                Daftar Buku
+                            </a>
+                            <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pinjam.php' ? 'active' : ''; ?>"
+                                href="pinjam.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                                Peminjaman
                                 <?php
                                 $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
-                                $isActive = basename($_SERVER['PHP_SELF']) == 'pinjam.php';
-                                ?>
-                                <a class="nav-link d-flex align-items-center <?= $isActive ? 'active' : ''; ?>"
-                                    href="pinjam.php"
-                                    style="color: <?= $newDataCount > 0 ? '#ffffff' : ($isActive ? '#fff' : '#ffffff'); ?>">
-                                    <span class="me-auto">Peminjaman</span>
+                                if ($newDataCount > 0): ?>
                                     <span class="badge bg-warning text-dark ms-2"><?= $newDataCount ?></span>
-                                    <?php if ($newDataCount > 0): ?>
-                                        <i class="fas fa-exclamation-circle ms-2 text-warning"></i>
-                                    <?php endif; ?>
-                                </a>
+                                    <i class="fas fa-exclamation-circle ms-2 text-warning"></i>
+                                <?php endif; ?>
+                            </a>
 
+                            <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'kategori_buku.php' ? 'active' : ''; ?>"
+                                href="#">
+                                <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                                Kategori
+                            </a>
 
-                            </nav>
-                        </div>
-
-                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'kategori_buku.php' ? 'active' : ''; ?>"
-                            href="kategori_buku.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
-                            Kategori
-                        </a>
-
-                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_anggota.php' ? 'active' : ''; ?>"
-                            style="padding-left: 15px;" href="daftar_anggota.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                            Anggota
-                        </a>
+                            <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_anggota.php' ? 'active' : ''; ?>"
+                                style="padding-left: 15px;" href="daftar_anggota.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                Anggota
+                            </a>
 
 
                     </div>
@@ -310,8 +288,7 @@ require "../Auth/cek_log.php";
                                                                         data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <form action="<?= $_SERVER['PHP_SELF'] ?>"
-                                                                        method="post">
+                                                                    <form method="post">
                                                                         <input type="hidden" name="id_kat"
                                                                             value="<?= $id_kat ?>">
                                                                         <div class="mb-3">
@@ -326,8 +303,7 @@ require "../Auth/cek_log.php";
                                                                                 class="form-label">Deskripsi</label>
                                                                             <textarea class="form-control" id="deskripsi"
                                                                                 name="deskripsi" rows="4"
-                                                                                value="<?= $deskripsi ?>"
-                                                                                required> </textarea>
+                                                                                required><?= $deskripsi ?></textarea>
                                                                         </div>
                                                                         <button type="submit" class="btn btn-primary "
                                                                             name="editKategori">Update</button>
@@ -355,8 +331,7 @@ require "../Auth/cek_log.php";
                                                                     <p>Anda yakin ingin menghapus kategori
                                                                         <b><?= $nama_kategori ?></b>?
                                                                     </p>
-                                                                    <form action="<?= $_SERVER['PHP_SELF'] ?>"
-                                                                        method="post">
+                                                                    <form method="post">
                                                                         <input type="hidden" name="id_kat"
                                                                             value="<?= $id_kat ?>">
                                                                         <button type="submit" class="btn btn-danger"

@@ -108,7 +108,6 @@ require "../Auth/cek_log.php";
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3 d-flex align-items-center" href="#">
-            <img src="../assets/img/logo1.png" width="80" height="80" class="d-inline-block align-top" alt="">
             <span class="ms-2">LibraTech</span>
         </a>
         <!-- Sidebar Toggle-->
@@ -144,47 +143,23 @@ require "../Auth/cek_log.php";
                             Dashboard
                         </a>
 
-                        <div class="sb-sidenav-menu-heading">Management</div>
-                        <?php
-                        $newLibraryCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
-                        ?>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                            data-bs-target="#collapseLibrary" aria-expanded="false" aria-controls="collapseLibrary">
+                        <div class="sb-sidenav-menu-heading">Daftar</div>
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_buku.php' ? 'active' : ''; ?>"
+                            href="daftar_buku.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                            Library
-                            <?php if ($newLibraryCount > 0): ?>
-                                <span style="margin-left: 20px;" class="dot bg-warning"></span>
-                            <?php endif; ?>
-                            <div class="sb-sidenav-collapse-arrow" style="text-color: white;"><i
-                                    class="fas fa-angle-down"></i></div>
+                            Daftar Buku
                         </a>
-
-                        <div class="collapse" id="collapseLibrary" aria-labelledby="headingOne"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <!-- daftar buku -->
-                                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_buku.php' ? 'active' : ''; ?>"
-                                    href="daftar_buku.php">Daftar Buku</a>
-
-                                <!-- peminjaman  -->
-                                <?php
-                                $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
-                                $isActive = basename($_SERVER['PHP_SELF']) == 'pinjam.php';
-                                ?>
-                                <a class="nav-link d-flex align-items-center <?= $isActive ? 'active' : ''; ?>"
-                                    href="pinjam.php"
-                                    style="color: <?= $newDataCount > 0 ? '#ffffff' : ($isActive ? '#fff' : '#ffffff'); ?>">
-                                    <span class="me-auto">Peminjaman</span>
-                                    <span class="badge bg-warning text-dark ms-2"><?= $newDataCount ?></span>
-                                    <?php if ($newDataCount > 0): ?>
-                                        <i class="fas fa-exclamation-circle ms-2 text-warning"></i>
-                                    <?php endif; ?>
-                                </a>
-
-
-
-                            </nav>
-                        </div>
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pinjam.php' ? 'active' : ''; ?>"
+                            href="pinjam.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                            Peminjaman
+                            <?php
+                            $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
+                            if ($newDataCount > 0): ?>
+                                <span class="badge bg-warning text-dark ms-2"><?= $newDataCount ?></span>
+                                <i class="fas fa-exclamation-circle ms-2 text-warning"></i>
+                            <?php endif; ?>
+                        </a>
 
                         <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'kategori_buku.php' ? 'active' : ''; ?>"
                             href="kategori_buku.php">
@@ -434,7 +409,7 @@ require "../Auth/cek_log.php";
                             <tbody>
                                 <?php
                                 // Limit initial query results for faster page load
-                                $query = "SELECT * FROM buku WHERE if_visible = TRUE LIMIT 20";
+                                $query = "SELECT id_buku, judul, pengarang, penerbit, tahun_terbit, halaman FROM buku WHERE if_visible = TRUE ";
                                 $result = mysqli_query($conn, $query);
                                 while ($data = mysqli_fetch_assoc($result)) {
                                     $qrData = $data['id_buku'] . ', ' . $data['judul'] . ', ' . $data['pengarang'] . ', ' . $data['penerbit'] . ', ' . $data['tahun_terbit'] . ', ' . $data['halaman'];

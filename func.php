@@ -185,7 +185,8 @@ if (isset($_POST['tambahBuku'])) {
     // Generate id_buku
     $inisial_judul = strtoupper(substr($judul, 0, 2));
     $tahun_terbit = substr($tahun_terbit, 2);
-    $id_buku = "$inisial_judul-$tahun_terbit-$halaman";
+    $id_kategori = query("SELECT id_kat FROM kategori WHERE nama_kategori = '$kategori'")[0]['id_kat'];
+    $id_buku = "$inisial_judul-$id_kategori-$tahun_terbit-$halaman";
     // end of generate id_buku
 
     // cek apakah folder assets/Buku sudah ada atau belum
