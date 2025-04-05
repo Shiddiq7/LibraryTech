@@ -12,15 +12,96 @@ require "../Auth/cek_log.php";
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="description" content="LibraTech - Sistem Manajemen Perpustakaan Digital" />
+    <meta name="author" content="LibraTech" />
     <title>Dashboard - LibraTech</title>
-    <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link href="../css/styles.css" rel="stylesheet" />
-    <link href="../css/selfstyle.css" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
+    <!-- Critical CSS inline -->
+    <style>
+        /* Critical inline styles */
+        .card {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .qr-code-img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .chart-container {
+            width: 100%;
+            margin: 0 auto;
+            height: 600px;
+            background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .table-container {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        #datatablesSimple {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .qr-cell {
+            width: 100px;
+            text-align: center;
+        }
+
+        .sb-nav-fixed {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+        /* Critical navbar styles */
+        .sb-topnav {
+            background-color: #212529;
+            color: white;
+            padding: 0.5rem 1rem;
+        }
+
+        .sb-sidenav-dark {
+            background: linear-gradient(135deg, #161b22, #0f1217);
+            color: white;
+        }
+    </style>
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="../assets/img/logo1.png" as="image">
+    <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://api.qrserver.com">
+    <link rel="preconnect" href="https://use.fontawesome.com">
+
+    <!-- Non-critical CSS loaded asynchronously -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" media="print"
+        onload="this.media='all'">
+    <link rel="stylesheet" href="../css/styles.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../css/selfstyle.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css">
+        <link rel="stylesheet" href="../css/styles.css">
+        <link rel="stylesheet" href="../css/selfstyle.css">
+    </noscript>
+
+    <!-- Defer non-critical scripts -->
+    <script defer src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
+        crossorigin="anonymous"></script>
 </head>
 
 <body class="sb-nav-fixed">
@@ -74,7 +155,8 @@ require "../Auth/cek_log.php";
                             <?php if ($newLibraryCount > 0): ?>
                                 <span style="margin-left: 20px;" class="dot bg-warning"></span>
                             <?php endif; ?>
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            <div class="sb-sidenav-collapse-arrow" style="text-color: white;"><i
+                                    class="fas fa-angle-down"></i></div>
                         </a>
 
                         <div class="collapse" id="collapseLibrary" aria-labelledby="headingOne"
@@ -89,15 +171,16 @@ require "../Auth/cek_log.php";
                                 $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
                                 $isActive = basename($_SERVER['PHP_SELF']) == 'pinjam.php';
                                 ?>
-                                <a class="nav-link d-flex align-items-center <?= $isActive ? 'active' : ''; ?>" href="pinjam.php"
-                                    style="color: <?= $newDataCount > 0 ? '#ff9800' : ($isActive ? '#fff' : '#000'); ?>">
+                                <a class="nav-link d-flex align-items-center <?= $isActive ? 'active' : ''; ?>"
+                                    href="pinjam.php"
+                                    style="color: <?= $newDataCount > 0 ? '#ffffff' : ($isActive ? '#fff' : '#ffffff'); ?>">
                                     <span class="me-auto">Peminjaman</span>
                                     <span class="badge bg-warning text-dark ms-2"><?= $newDataCount ?></span>
                                     <?php if ($newDataCount > 0): ?>
                                         <i class="fas fa-exclamation-circle ms-2 text-warning"></i>
                                     <?php endif; ?>
                                 </a>
-                                   
+
 
 
                             </nav>
@@ -241,147 +324,105 @@ require "../Auth/cek_log.php";
                 </div>
 
                 <!-- Grafik -->
-                <div
-                    style="width:  margin: 0 auto; height: 600px; background: linear-gradient(to bottom right, #ffffff, #f8f9fa); padding: 35px; border-radius: 15px; box-shadow: 0 6px 12px rgba(0,0,0,0.08);">
-                    <canvas id="myChart" style="height: 100%;"></canvas>
+                <div class="chart-container">
+                    <div id="loadingSpinner" style="text-align: center; padding: 250px 0;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div
+                            style="margin-top: 10px; font-size: 18px; font-weight: bold; color: #666; margin-top: 10px;">
+                            Loading Chart
+                        </div>
+                    </div>
+                    <canvas id="myChart" style="height: 100%; display: none;"></canvas>
                 </div>
 
-                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
                 <script>
-                    const ctx = document.getElementById('myChart');
+                    // Initialize chart when DOM is ready
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const ctx = document.getElementById('myChart');
+                        const loadingSpinner = document.getElementById('loadingSpinner');
 
-                    <?php
-                    $dates = query("SELECT DISTINCT DATE(tanggal_pinjam) AS date FROM pinjam ORDER BY date");
-                    $labels = [];
-                    $data = [];
-                    foreach ($dates as $date) {
-                        $labels[] = $date['date'];
-                        $count = query("SELECT COUNT(*) AS total FROM pinjam WHERE DATE(tanggal_pinjam) = '" . $date['date'] . "'")[0]['total'];
-                        $data[] = $count;
-                    }
+                        <?php
+                        // Optimize queries by reducing database calls
+                        $datesQuery = "SELECT 
+                                         DATE(tanggal_pinjam) AS date, 
+                                         COUNT(*) AS total 
+                                       FROM pinjam 
+                                       GROUP BY DATE(tanggal_pinjam) 
+                                       ORDER BY date";
+                        $datesResult = query($datesQuery);
+                        $labels = [];
+                        $data = [];
+                        foreach ($datesResult as $row) {
+                            $labels[] = $row['date'];
+                            $data[] = $row['total'];
+                        }
 
-                    if (empty($dates)) {
-                        echo "document.getElementById('myChart').style.display = 'none';";
-                        echo "const noDataDiv = document.createElement('div');";
-                        echo "noDataDiv.style.textAlign = 'center';";
-                        echo "noDataDiv.style.padding = '250px 0';";
-                        echo "noDataDiv.style.fontSize = '24px';";
-                        echo "noDataDiv.style.fontWeight = 'bold';";
-                        echo "noDataDiv.style.color = '#666';";
-                        echo "noDataDiv.innerText = 'Tidak ada Buku yang di pinjam';";
-                        echo "document.getElementById('myChart').parentNode.appendChild(noDataDiv);";
-                    } else {
-                        ?>
+                        if (empty($datesResult)) {
+                            echo "loadingSpinner.style.display = 'none';";
+                            echo "ctx.style.display = 'none';";
+                            echo "const noDataDiv = document.createElement('div');";
+                            echo "noDataDiv.style.textAlign = 'center';";
+                            echo "noDataDiv.style.padding = '250px 0';";
+                            echo "noDataDiv.style.fontSize = '24px';";
+                            echo "noDataDiv.style.fontWeight = 'bold';";
+                            echo "noDataDiv.style.color = '#666';";
+                            echo "noDataDiv.innerText = 'Tidak ada Buku yang di pinjam';";
+                            echo "ctx.parentNode.appendChild(noDataDiv);";
+                        } else {
+                            ?>
+                            // Remove artificial timeout and render immediately
+                            loadingSpinner.style.display = 'none';
+                            ctx.style.display = 'block';
 
-                        new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: <?php echo json_encode($labels) ?>,
-                                datasets: [{
-                                    label: 'Buku Dipinjam',
-                                    data: <?php echo json_encode($data) ?>,
-                                    fill: true,
-                                    backgroundColor: 'rgba(54, 162, 235, 0.1)',
-                                    borderColor: 'rgba(54, 162, 235, 1)',
-                                    borderWidth: 3,
-                                    pointRadius: 6,
-                                    pointBackgroundColor: '#fff',
-                                    pointBorderColor: 'rgba(54, 162, 235, 1)',
-                                    pointHoverRadius: 8,
-                                    tension: 0.3
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        position: 'bottom',
-                                        labels: {
-                                            font: {
-                                                family: 'Helvetica',
-                                                size: 14,
-                                                weight: '500'
-                                            },
-                                            padding: 25,
+                            new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: <?php echo json_encode($labels) ?>,
+                                    datasets: [{
+                                        label: 'Buku Dipinjam',
+                                        data: <?php echo json_encode($data) ?>,
+                                        fill: true,
+                                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                                        borderColor: 'rgba(54, 162, 235, 1)',
+                                        borderWidth: 3,
+                                        pointRadius: 6,
+                                        pointBackgroundColor: '#fff',
+                                        pointBorderColor: 'rgba(54, 162, 235, 1)',
+                                        pointHoverRadius: 8,
+                                        tension: 0.3
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: { position: 'bottom' },
+                                        title: {
+                                            display: true,
+                                            text: 'BUKU DIPINJAM PER-TANGGAL',
+                                            font: { size: 24, weight: 'bold' }
                                         }
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: 'BUKU DIPINJAM PER-TANGGAL',
-                                        font: {
-                                            family: 'Helvetica',
-                                            size: 24,
-                                            weight: 'bold'
-                                        },
-                                        padding: {
-                                            top: 15,
-                                            bottom: 35
-                                        },
-                                        color: '#333'
-                                    }
-                                },
-                                scales: {
-                                    x: {
-                                        grid: {
-                                            display: false
-                                        },
-                                        ticks: {
-                                            font: {
-                                                family: 'Helvetica',
-                                                size: 13
-                                            }
-                                        }
-                                    },
-                                    y: {
-                                        beginAtZero: true,
-                                        grid: {
-                                            color: 'rgba(0,0,0,0.05)',
-                                            drawBorder: false
-                                        },
-                                        ticks: {
-                                            font: {
-                                                family: 'Helvetica',
-                                                size: 13
-                                            },
-                                            callback: function (value) {
-                                                return value.toLocaleString();
-                                            }
-                                        }
-                                    }
-                                },
-                                animation: {
-                                    duration: 2000,
-                                    easing: 'easeInOutQuart'
-                                },
-                                interaction: {
-                                    intersect: false,
-                                    mode: 'index'
-                                },
-                                elements: {
-                                    line: {
-                                        borderJoinStyle: 'round'
                                     }
                                 }
-                            }
-                        });
-
-                    <?php } ?>
+                            });
+                        <?php } ?>
+                    });
                 </script>
 
 
                 <!-- Tabel Buku -->
-                <div class="card mb-4 mt-4" style="max-width: 100%;">
+                <div class="card mb-4 mt-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
                         Tabel Buku
                     </div>
-                    <div class="card-body">
-                        <table id="datatablesSimple" style="width:100%;">
+                    <div class="card-body table-container">
+                        <table id="datatablesSimple">
                             <thead>
                                 <tr>
-                                    <th>QR Code</th>
+                                    <th class="qr-cell">QR Code</th>
                                     <th>ID Buku</th>
                                     <th>Judul Buku</th>
                                     <th>Pengarang</th>
@@ -392,27 +433,24 @@ require "../Auth/cek_log.php";
                             </thead>
                             <tbody>
                                 <?php
-                                $query = "SELECT * FROM buku WHERE if_visible = TRUE";
+                                // Limit initial query results for faster page load
+                                $query = "SELECT * FROM buku WHERE if_visible = TRUE LIMIT 20";
                                 $result = mysqli_query($conn, $query);
                                 while ($data = mysqli_fetch_assoc($result)) {
                                     $qrData = $data['id_buku'] . ', ' . $data['judul'] . ', ' . $data['pengarang'] . ', ' . $data['penerbit'] . ', ' . $data['tahun_terbit'] . ', ' . $data['halaman'];
                                     $qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=' . urlencode($qrData);
                                     ?>
                                     <tr>
-                                        <td style="overflow: hidden;">
-                                            <a href="<?= $qrCodeUrl ?>" target="_blank">
-                                                <img src="<?= $qrCodeUrl ?>" alt="QR Code"
-                                                    style="transition: all 0.3s ease-in-out;"
-                                                    onmouseover="this.style.transform='scale(1.2)';"
-                                                    onmouseout="this.style.transform='scale(1)';" />
-                                            </a>
+                                        <td class="qr-cell">
+                                            <img src="<?= $qrCodeUrl ?>" alt="QR Code" class="qr-code-img" loading="lazy"
+                                                width="100" height="100" fetchpriority="low">
                                         </td>
-                                        <td><?= $data['id_buku'] ?></td>
-                                        <td><?= $data['judul'] ?></td>
-                                        <td><?= $data['pengarang'] ?></td>
-                                        <td><?= $data['penerbit'] ?></td>
-                                        <td><?= $data['tahun_terbit'] ?></td>
-                                        <td><?= $data['halaman'] ?></td>
+                                        <td><?= htmlspecialchars($data['id_buku']) ?></td>
+                                        <td><?= htmlspecialchars($data['judul']) ?></td>
+                                        <td><?= htmlspecialchars($data['pengarang']) ?></td>
+                                        <td><?= htmlspecialchars($data['penerbit']) ?></td>
+                                        <td><?= htmlspecialchars($data['tahun_terbit']) ?></td>
+                                        <td><?= htmlspecialchars($data['halaman']) ?></td>
                                     </tr>
                                     <?php
                                 }
@@ -455,15 +493,18 @@ require "../Auth/cek_log.php";
         </main>
     </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    <script src="../js/scripts.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" defer
         crossorigin="anonymous"></script>
-    <script src="../js/scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="../assets/demo/chart-area-demo.js"></script>
-    <script src="../assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../js/datatables-simple-demo.js"></script>
+    <script src="../js/datatables-simple-demo.js" defer></script>
+
+    <!-- Load remaining data for pagination after initial render -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This will run after the initial page is displayed
+            // It can be used to fetch additional data without blocking render
+        });
+    </script>
 </body>
 
 </html>

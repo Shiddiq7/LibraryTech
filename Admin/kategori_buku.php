@@ -11,23 +11,101 @@ require "../Auth/cek_log.php";
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="description" content="LibraTech - Sistem Manajemen Perpustakaan Digital" />
+    <meta name="author" content="LibraTech" />
     <title>Daftar Kategori - LibraTech</title>
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="../assets/img/logo1.png" as="image">
+    <link rel="preload" href="../css/styles.css" as="style">
+    <link rel="preload" href="../css/selfstyle.css" as="style">
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://use.fontawesome.com">
+
+    <!-- Critical CSS -->
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
     <link href="../css/selfstyle.css" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
+    <!-- Defer non-critical scripts -->
+    <script defer src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
+    <style>
+        /* Critical inline styles */
+        .table-container {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .btn-export {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .modal-footer {
+            justify-content: flex-end;
+            padding: 1rem;
+            gap: 0.5rem;
+        }
+    </style>
 </head>
 
 <body class="sb-nav-fixed">
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3 d-flex align-items-center" href="#">
-            <img src="../assets/img/logo1.png" width="80" height="80" class="d-inline-block align-top" alt="">
+            <img src="../assets/img/logo1.png" width="80" height="80" class="d-inline-block align-top" alt=""
+                loading="lazy">
             <span class="ms-2">LibraTech</span>
         </a>
         <!-- Sidebar Toggle-->
@@ -89,7 +167,7 @@ require "../Auth/cek_log.php";
                                 ?>
                                 <a class="nav-link d-flex align-items-center <?= $isActive ? 'active' : ''; ?>"
                                     href="pinjam.php"
-                                    style="color: <?= $newDataCount > 0 ? '#ff9800' : ($isActive ? '#fff' : '#000'); ?>">
+                                    style="color: <?= $newDataCount > 0 ? '#ffffff' : ($isActive ? '#fff' : '#ffffff'); ?>">
                                     <span class="me-auto">Peminjaman</span>
                                     <span class="badge bg-warning text-dark ms-2"><?= $newDataCount ?></span>
                                     <?php if ($newDataCount > 0): ?>
@@ -124,7 +202,7 @@ require "../Auth/cek_log.php";
                     <h1 class="mt-4">Kategori Buku</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Kategori </li>
+                        <li class="breadcrumb-item active">Kategori</li>
                     </ol>
 
                     <div class="card mb-4">
@@ -133,140 +211,164 @@ require "../Auth/cek_log.php";
                                 <i class="fas fa-table me-1"></i>
                                 Kategori Buku
                             </div>
-                            <div class="d-flex justify-content-between">
-
-                                <!-- export -->
+                            <div class="d-flex gap-3">
                                 <a href="export_table/export_kategori.php"
-                                    class="btn btn-outline-primary btn-sm me-4 d-flex align-items-center"
-                                    style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s, box-shadow 0.2s;"
-                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 10px rgba(0, 0, 0, 0.15)';"
-                                    onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
-                                    <i class="fas fa-file-export me-2"></i>
-                                    <span>Export Table</span>
+                                    class="btn btn-outline-primary btn-sm btn-export">
+                                    <i class="fas fa-file-export me-2"></i>Export Table
                                 </a>
                                 <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#tambahKategori">Tambah Kategori</button>
+                                    data-bs-target="#tambahKategori">
+                                    Tambah Kategori
+                                </button>
 
+                                <!-- Modal Tambah Kategori -->
+                                <div class="modal fade" id="tambahKategori" tabindex="-1"
+                                    aria-labelledby="tambahKategoriLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="tambahKategoriLabel">Tambah Kategori</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="" method="POST">
+                                                    <div class="mb-3">
+                                                        <label for="nama_kategori" class="form-label">Nama
+                                                            Kategori</label>
+                                                        <input type="text" class="form-control" id="nama_kategori"
+                                                            name="nama_kategori" required maxlength="50">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="deskripsi" class="form-label">Deskripsi</label>
+                                                        <textarea class="form-control" id="deskripsi" name="deskripsi"
+                                                            rows="3" required></textarea>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-primary"
+                                                            name="tambahKategori">Simpan</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <table id="datatablesSimple">
+
+                        <div class="card-body table-container">
+                            <table id="datatablesSimple" class="table table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
                                         <th>Kategori Buku</th>
                                         <th>Deskripsi</th>
                                         <th>Actions</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = "SELECT * FROM kategori";
-                                    $no = 1;
+                                    $query = "SELECT id_kat, nama_kategori, Deskripsi FROM kategori ORDER BY nama_kategori";
                                     $result = mysqli_query($conn, $query);
-                                    while ($data = mysqli_fetch_array($result)) {
-                                        $id_kat = $data['id_kat'];
-                                        $nama_kategori = $data['nama_kategori'];
-                                        $deskripsi = $data['Deskripsi'];
+                                    $no = 1;
 
-
+                                    while ($data = mysqli_fetch_assoc($result)):
+                                        $id_kat = htmlspecialchars($data['id_kat']);
+                                        $nama_kategori = htmlspecialchars($data['nama_kategori']);
+                                        $deskripsi = htmlspecialchars($data['Deskripsi']);
                                         ?>
-
                                         <tr>
                                             <td><?= $no++ ?></td>
                                             <td><?= $nama_kategori ?></td>
                                             <td><?= $deskripsi ?></td>
                                             <td>
-                                                <button type="button" class="btn btn-outline-primary btn-sm"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#edit<?= $id_kat ?>">Edit</button>
-                                                <button type="button" class="btn btn-outline-danger btn-sm"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#delete<?= $id_kat ?>">Delete</button>
+                                                <div class="action-buttons">
+                                                    <button type="button" class="btn btn-outline-primary btn-sm"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#editKategoriModal<?= $id_kat ?>">
+                                                        Edit
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-danger btn-sm"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#deleteKategoriModal<?= $id_kat ?>">
+                                                        Delete
+                                                    </button>
+
+                                                    <!-- Modal Edit -->
+                                                    <div class="modal fade" id="editKategoriModal<?= $id_kat ?>"
+                                                        tabindex="-1" aria-labelledby="editKategoriModal<?= $id_kat ?>Label"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="editKategoriModal<?= $id_kat ?>Label">Edit
+                                                                        Kategori</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form action="<?= $_SERVER['PHP_SELF'] ?>"
+                                                                        method="post">
+                                                                        <input type="hidden" name="id_kat"
+                                                                            value="<?= $id_kat ?>">
+                                                                        <div class="mb-3">
+                                                                            <label for="nama_kategori"
+                                                                                class="form-label">Nama Kategori</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="nama_kategori" name="nama_kategori"
+                                                                                value="<?= $nama_kategori ?>" required>
+                                                                        </div>
+                                                                        <div class="mb-3">
+                                                                            <label for="deskripsi"
+                                                                                class="form-label">Deskripsi</label>
+                                                                            <textarea class="form-control" id="deskripsi"
+                                                                                name="deskripsi" rows="4"
+                                                                                value="<?= $deskripsi ?>"
+                                                                                required> </textarea>
+                                                                        </div>
+                                                                        <button type="submit" class="btn btn-primary "
+                                                                            name="editKategori">Update</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Modal Delete -->
+                                                    <div class="modal fade" id="deleteKategoriModal<?= $id_kat ?>"
+                                                        tabindex="-1"
+                                                        aria-labelledby="deleteKategoriModal<?= $id_kat ?>Label"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="deleteKategoriModal<?= $id_kat ?>Label">Delete
+                                                                        Kategori</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>Anda yakin ingin menghapus kategori
+                                                                        <b><?= $nama_kategori ?></b>?
+                                                                    </p>
+                                                                    <form action="<?= $_SERVER['PHP_SELF'] ?>"
+                                                                        method="post">
+                                                                        <input type="hidden" name="id_kat"
+                                                                            value="<?= $id_kat ?>">
+                                                                        <button type="submit" class="btn btn-danger"
+                                                                            name="deleteKategori">Delete</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                             </td>
-
-
-
-                                            <!-- Modal edit-->
-                                            <div class="modal fade" id="edit<?= $id_kat ?>" tabindex="-1"
-                                                aria-labelledby="edit<?= $id_kat ?>Label" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="edit<?= $id_kat ?>Label">Edit Data
-                                                            </h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-
-                                                        <div class="modal-body">
-                                                            <form method="post">
-                                                                <input type="hidden" name="id_kat" value="<?= $id_kat ?>">
-                                                                <div class="mb-3">
-                                                                    <label for="nama_kategori" class="form-label">Nama
-                                                                        Kategori</label>
-                                                                    <input type="text" class="form-control"
-                                                                        id="nama_kategori" name="nama_kategori"
-                                                                        value="<?= $nama_kategori ?>" maxlength="50">
-                                                                </div>
-
-                                                                <div class="mb-3">
-                                                                    <label for="deskripsi"
-                                                                        class="form-label">Deskripsi</label>
-                                                                    <textarea class="form-control" id="deskripsi"
-                                                                        name="deskripsi"
-                                                                        rows="3"><?= $deskripsi ?></textarea>
-                                                                </div>
-                                                                <br>
-                                                                <div class="d-flex justify-content-end">
-                                                                    <button type="submit" name="editKategori"
-                                                                        class="btn btn-outline-primary px-4">Edit</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <!-- Modal delete-->
-                                            <div class="modal fade" id="delete<?= $id_kat ?>" tabindex="-1"
-                                                aria-labelledby="delete<?= $id_kat ?>Label" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content ">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="delete<?= $id_kat ?>Label">Delete
-                                                                Data</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <p>Kamu yakin ingin menghapus Kategori <?= $nama_kategori ?>
-                                                                <?= "[", $id_kat, "]" ?> ?
-                                                            </p>
-                                                            <br>
-                                                            <form method="post">
-                                                                <input type="hidden" name="id_kat" value="<?= $id_kat ?>">
-                                                                <input type="hidden" name="if_visible">
-                                                                <div class="d-flex justify-content-end">
-                                                                    <button type="submit" name="deleteKategori"
-                                                                        class="btn btn-outline-danger px-4 me-2">Iya</button>
-                                                                    <button type="button"
-                                                                        class="btn btn-outline-secondary px-4"
-                                                                        data-bs-dismiss="modal">Tidak</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                         </tr>
-
-                                        <?php
-                                    }
-                                    ?>
+                                    <?php endwhile; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -276,50 +378,69 @@ require "../Auth/cek_log.php";
         </div>
     </div>
 
-    <!-- Modal Tambah Kategori-->
-    <div class="modal fade" id="tambahKategori" tabindex="-1" aria-labelledby="tambahKategoriLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tambahKategoriLabel">Tambah Kategori</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="post">
-                        <input type="hidden" name="id_kat">
-                        <div class="mb-3">
-                            <label for="nama_kategori" class="form-label">Nama Kategori</label>
-                            <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" required
-                                maxlength="50">
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="deskripsi" class="form-label">Deskripsi</label>
-                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" required></textarea>
-                        </div>
-                        <br>
-                        <button type="submit" name="tambahKategori"
-                            class="btn btn-outline-primary w-100 rounded-pill">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../js/scripts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../js/datatables-simple-demo.js"></script>
+
+    <!-- Load non-critical scripts at the end -->
+    <script async defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script async defer src="../js/scripts.js"></script>
+    <script async defer
+        src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"></script>
+
     <script>
-        function togglePassword() {
-            var x = document.getElementById("inputPassword");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize DataTable
+            if (document.getElementById('datatablesSimple')) {
+                new simpleDatatables.DataTable('#datatablesSimple', {
+                    searchable: true,
+                    sortable: true,
+                    perPage: 10
+                });
+            }
+        });
+
+        // Show/Hide loading overlay
+        function toggleLoading(show) {
+            document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
+        }
+
+        // Handle form submission
+        async function handleSubmit(event) {
+            event.preventDefault();
+            toggleLoading(true);
+
+            try {
+                const formData = new FormData(event.target);
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan. Silakan coba lagi.');
+            } finally {
+                toggleLoading(false);
             }
         }
+
+        // Edit kategori
+        function editKategori(id, nama, deskripsi) {
+            document.getElementById('modalTitle').textContent = 'Edit Kategori';
+            document.getElementById('id_kat').value = id;
+            document.getElementById('nama_kategori').value = nama;
+            document.getElementById('deskripsi').value = deskripsi;
+            document.getElementById('action').value = 'edit';
+            document.getElementById('submitBtn').textContent = 'Update';
+
+            new bootstrap.Modal(document.getElementById('kategoriModal')).show();
+        }
+
+
     </script>
 </body>
 

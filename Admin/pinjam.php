@@ -69,18 +69,140 @@ foreach ($pinjam as $pj) {
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="description" content="LibraTech - Sistem Manajemen Perpustakaan Digital" />
+    <meta name="author" content="LibraTech" />
     <title>Daftar Buku - LibraTech</title>
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="../assets/img/logo1.png" as="image">
+    <link rel="preload" href="../css/styles.css" as="style">
+    <link rel="preload" href="../css/selfstyle.css" as="style">
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://use.fontawesome.com">
+
+    <!-- Critical CSS -->
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
     <link href="../css/selfstyle.css" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
+    <!-- Defer non-critical scripts -->
+    <script defer src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <style>
+        /* Card loading styles */
+        .card {
+            position: relative;
+            transition: transform 0.3s ease-in-out;
+            background: #fff;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            border-radius: 0.25rem;
+        }
+
+        .card-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: cardSpin 1s linear infinite;
+        }
+
+        .card.loading .card-loading {
+            display: flex;
+        }
+
+        @keyframes cardSpin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+
+        .card-img-container {
+            position: relative;
+            padding-top: 140%;
+            /* Aspect ratio 1.4:1 */
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+
+        .card-img-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-img-top.loaded {
+            opacity: 1;
+        }
+
+        .card-img-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #adb5bd;
+            font-size: 2rem;
+        }
+
+        .card-body {
+            background: #fff;
+            padding: 1.25rem;
+        }
+
+        .badge {
+            font-size: 0.8rem;
+            padding: 0.35em 0.65em;
+        }
+
+        @media (max-width: 768px) {
+            .book-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+    </style>
 </head>
 
 <body class="sb-nav-fixed">
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3 d-flex align-items-center" href="#">
@@ -142,11 +264,11 @@ foreach ($pinjam as $pj) {
 
                                 <!-- peminjaman  -->
                                 <?php
-                                    $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
-                                    $isActive = basename($_SERVER['PHP_SELF']) == 'pinjam.php';
+                                $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
+                                $isActive = basename($_SERVER['PHP_SELF']) == 'pinjam.php';
                                 ?>
                                 <a class="nav-link d-flex align-items-center <?= $isActive ? 'active' : ''; ?>" href="#"
-                                    style="color: <?= $newDataCount > 0 ? '#ff9800' : ($isActive ? '#fff' : '#000'); ?>">
+                                    style="color: <?= $newDataCount > 0 ? '#ffffff' : ($isActive ? '#fff' : '#ffffff'); ?>">
                                     <span class="me-auto">Peminjaman</span>
                                     <span class="badge bg-warning text-dark ms-2"><?= $newDataCount ?></span>
                                     <?php if ($newDataCount > 0): ?>
@@ -195,100 +317,144 @@ foreach ($pinjam as $pj) {
                         </div>
                         <div class="card-body">
 
-                            <form method="get" class="mb-4 d-flex justify-content-end">
-                                <!-- Search -->
-                                <div class="input-group shadow" style="width: 400px; position: absolute; left: 3px; margin-left: 15px;">
-                                    <input class="form-control" type="text" name="search" id="searchInput"
-                                        value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
-                                        placeholder="Search for..." aria-label="Search for..."
-                                        aria-describedby="btnNavbarSearch" onkeyup="filterData()" />
-                                </div>
-                                
-
-                                <!-- Status -->
-                                <div class="d-flex justify-content-end">
-                                    
-                                      <!-- export -->
-                                    <div class="dropdown">
-                                        <button class="btn btn-outline-primary btn-sm dropdown-toggle me-4" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fas fa-file-export me-2"></i> Export Table
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                                            <li>
-                                                <h6 class="dropdown-header">Export By Status</h6>
-                                            </li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" href="export_table/export_pinjam.php?status="><i class="fas fa-circle text-primary me-2"></i> All Status</a></li>
-                                            <li><a class="dropdown-item" href="export_table/export_pinjam.php?status=Menunggu+Konfirmasi"><i class="fas fa-circle text-warning me-2"></i> Menunggu Konfirmasi</a></li>
-                                            <li><a class="dropdown-item" href="export_table/export_pinjam.php?status=Dipinjam"><i class="fas fa-circle text-success me-2"></i> Dipinjam</a></li>
-                                            <li><a class="dropdown-item" href="export_table/export_pinjam.php?status=Dikembalikan"><i class="fas fa-circle text-secondary me-2"></i> Dikembalikan</a></li>
-                                        </ul>
+                            <form method="get" class="mb-4">
+                                <div class="row g-3">
+                                    <!-- Search -->
+                                    <div class="col-12 col-md-4">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-0">
+                                                <i class="fas fa-search text-primary"></i>
+                                            </span>
+                                            <input type="text" class="form-control border-0 shadow-sm" name="search"
+                                                id="searchInput"
+                                                value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
+                                                placeholder="Search for..." aria-label="Search"
+                                                onkeyup="debounce(filterData, 300)()" />
+                                        </div>
                                     </div>
-                                    <!-- Filter Status -->
-                                    <div class="input-group shadow rounded" style="width: 200px; margin-right: 10px;">
-                                        <span class="input-group-text bg-light border-0" id="basic-addon1"><i
-                                                class="fas fa-filter text-primary"></i></span>
-                                        <select class="form-select border-0" name="status" id="statusFilter"
-                                            onchange="filterData()">
-                                            <option value="">All Status</option>
-                                            <option value="Menunggu Konfirmasi" <?= isset($_GET['status']) && $_GET['status'] == 'Menunggu Konfirmasi' ? 'selected' : ''; ?>>Menunggu
-                                                Konfirmasi</option>
-                                            <option value="Dipinjam" <?= isset($_GET['status']) && $_GET['status'] == 'Dipinjam' ? 'selected' : ''; ?>>Dipinjam</option>
-                                            <option value="Dikembalikan" <?= isset($_GET['status']) && $_GET['status'] == 'Dikembalikan' ? 'selected' : ''; ?>>Dikembalikan</option>
-                                        </select>
-                                    </div>  
 
-                            
-                                    <!-- Filter month -->
-                                    <div class="input-group shadow rounded" style="width: 220px; overflow: hidden;">
-                                        <span class="input-group-text bg-light border-0" id="basic-addon1"><i
-                                                class="fas fa-calendar text-primary"></i></span>
-                                        <select class="form-select border-0" name="month" id="monthFilter"
-                                            onchange="filterData()">
-                                            <option value="" class="text-muted">All Months</option>
-                                            <?php for ($m = 1; $m <= 12; $m++): ?>
-                                                <option value="<?= $m ?>" <?= isset($_GET['month']) && $_GET['month'] == $m ? 'selected' : ''; ?>>
-                                                    <?= date('F', mktime(0, 0, 0, $m, 1)) ?>
+                                    <!-- Export -->
+                                    <div class="col-12 col-md-3">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-primary dropdown-toggle w-100" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-file-export me-2"></i> Export Table
+                                            </button>
+                                            <ul class="dropdown-menu w-100">
+                                                <li>
+                                                    <h6 class="dropdown-header">Export By Status</h6>
+                                                </li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+                                                <li><a class="dropdown-item"
+                                                        href="export_table/export_pinjam.php?status=">
+                                                        <i class="fas fa-circle text-primary me-2"></i> All Status</a>
+                                                </li>
+                                                <li><a class="dropdown-item"
+                                                        href="export_table/export_pinjam.php?status=Menunggu+Konfirmasi">
+                                                        <i class="fas fa-circle text-warning me-2"></i> Menunggu
+                                                        Konfirmasi</a></li>
+                                                <li><a class="dropdown-item"
+                                                        href="export_table/export_pinjam.php?status=Dipinjam">
+                                                        <i class="fas fa-circle text-success me-2"></i> Dipinjam</a>
+                                                </li>
+                                                <li><a class="dropdown-item"
+                                                        href="export_table/export_pinjam.php?status=Dikembalikan">
+                                                        <i class="fas fa-circle text-secondary me-2"></i>
+                                                        Dikembalikan</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <!-- Status Filter -->
+                                    <div class="col-12 col-md-2">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-0">
+                                                <i class="fas fa-filter text-primary"></i>
+                                            </span>
+                                            <select class="form-select border-0 shadow-sm" name="status"
+                                                id="statusFilter" onchange="filterData()">
+                                                <option value="">All Status</option>
+                                                <option value="Menunggu Konfirmasi" <?= isset($_GET['status']) && $_GET['status'] == 'Menunggu Konfirmasi' ? 'selected' : ''; ?>>
+                                                    Menunggu Konfirmasi
                                                 </option>
-                                            <?php endfor; ?>
-                                        </select>
+                                                <option value="Dipinjam" <?= isset($_GET['status']) && $_GET['status'] == 'Dipinjam' ? 'selected' : ''; ?>>
+                                                    Dipinjam
+                                                </option>
+                                                <option value="Dikembalikan" <?= isset($_GET['status']) && $_GET['status'] == 'Dikembalikan' ? 'selected' : ''; ?>>
+                                                    Dikembalikan
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Month Filter -->
+                                    <div class="col-12 col-md-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-0">
+                                                <i class="fas fa-calendar text-primary"></i>
+                                            </span>
+                                            <select class="form-select border-0 shadow-sm" name="month" id="monthFilter"
+                                                onchange="filterData()">
+                                                <option value="">All Months</option>
+                                                <?php for ($m = 1; $m <= 12; $m++): ?>
+                                                    <option value="<?= $m ?>" <?= isset($_GET['month']) && $_GET['month'] == $m ? 'selected' : ''; ?>>
+                                                        <?= date('F', mktime(0, 0, 0, $m, 1)) ?>
+                                                    </option>
+                                                <?php endfor; ?>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
 
-                            <style>
-                                .card {
-                                    transition: all 0.3s;
-                                }
-
-                              
-                            </style>
-
-                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
+                            <div id="bookGrid" class="book-grid">
                                 <?php
                                 $statusFilter = isset($_GET['status']) ? $_GET['status'] : '';
                                 $search = isset($_GET['search']) ? $_GET['search'] : '';
                                 $monthFilter = isset($_GET['month']) ? $_GET['month'] : '';
-                                $query = "SELECT * FROM pinjam";
+
+                                $conditions = [];
+                                $params = [];
 
                                 if ($search) {
-                                    $query .= " WHERE (id_buku LIKE '%$search%' OR judul LIKE '%$search%' 
-                                                OR pengarang LIKE '%$search%' OR penerbit LIKE '%$search%' 
-                                                OR username LIKE '%$search%')";
+                                    $conditions[] = "(id_buku LIKE ? OR judul LIKE ? OR pengarang LIKE ? OR penerbit LIKE ? OR username LIKE ?)";
+                                    $searchParam = "%$search%";
+                                    $params = array_merge($params, [$searchParam, $searchParam, $searchParam, $searchParam, $searchParam]);
                                 }
 
                                 if ($statusFilter) {
-                                    $query .= $search ? " AND status = '$statusFilter'" : " WHERE status = '$statusFilter'";
+                                    $conditions[] = "status = ?";
+                                    $params[] = $statusFilter;
                                 }
 
                                 if ($monthFilter) {
-                                    $query .= ($search || $statusFilter) ? " AND MONTH(tanggal_pinjam) = '$monthFilter'" : " WHERE MONTH(tanggal_pinjam) = '$monthFilter'";
+                                    $conditions[] = "MONTH(tanggal_pinjam) = ?";
+                                    $params[] = $monthFilter;
                                 }
 
+                                $query = "SELECT * FROM pinjam";
+                                if (!empty($conditions)) {
+                                    $query .= " WHERE " . implode(" AND ", $conditions);
+                                }
                                 $query .= " ORDER BY FIELD(status, 'Menunggu Konfirmasi') DESC, FIELD(status, 'Dikembalikan') ASC";
-                                $pinjam = query($query);
 
-                                if (count($pinjam) > 0) {
+                                $stmt = mysqli_prepare($conn, $query);
+                                if (!empty($params)) {
+                                    $types = str_repeat('s', count($params));
+                                    mysqli_stmt_bind_param($stmt, $types, ...$params);
+                                }
+
+                                mysqli_stmt_execute($stmt);
+                                $result = mysqli_stmt_get_result($stmt);
+                                $pinjam = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+                                if (empty($pinjam)): ?>
+                                    <div class="col-12 text-center p-4">
+                                        <h5>Buku Pinjam Kosong</h5>
+                                    </div>
+                                <?php else:
                                     foreach ($pinjam as $pj):
                                         // jika tanggal_kembali sudah lewat 3 hari maka status akan berubah otomatis menjadi Dikembalikan
                                         if (strtotime($pj['tanggal_kembali']) < time() - 3 * 24 * 60 * 60 && $pj['status'] != 'Dikembalikan') {
@@ -337,101 +503,77 @@ foreach ($pinjam as $pj) {
                                             echo '<meta http-equiv="refresh" content="0;url=pinjam.php" />';
                                         }
                                         ?>
-                                        <div class="col mb-2">
-                                            <div class="card h-100 shadow-lg">
-                                                <div class="card h-100">
-                                                    <img class="card-img-top" src="<?= $pj['cover']; ?>" alt="Book Cover"
-                                                        style="object-fit: cover; width: 100%; height: 100%;">
-                                                </div>
-                                                <div class="card-body">
-                                                    <h5 class="card-title"><?= $pj['judul']; ?> [<?= $pj['id_buku']; ?>]</h5>
-                                                    <p class="card-text"><?= $pj['pengarang']; ?></p>
-                                                    <p class="card-text"><span class="badge bg-secondary">Penerbit:</span>
-                                                        <?= $pj['penerbit']; ?></p>
+                                        <div class="card h-100 shadow-md border-0 rounded-lg" data-id="<?= $pj['id_pinjam'] ?>">
+                                            <!-- Card loading overlay -->
+                                            <div class="card-loading">
+                                                <div class="card-spinner"></div>
+                                            </div>
 
-                                                    <p class="card-text"><span class="badge bg-secondary">Username:</span>
-                                                        <?= $pj['username']; ?> [<?= $pj['id_user']; ?>]</p>
-                                                    <p class="card-text"><span class="badge bg-secondary">Tanggal Pinjam:</span>
-                                                        <?= $pj['tanggal_pinjam']; ?></p>
-                                                    <p class="card-text"><span class="badge bg-secondary">Tanggal
-                                                            Kembali:</span>
-                                                        <?= $pj['tanggal_kembali']; ?></p>
-                                                    <p class="card-text">
+                                            <div class="card-img-container position-relative">
+                                                <i class="fas fa-book card-img-placeholder text-muted"></i>
+                                                <img class="card-img-top rounded-top"
+                                                    src="<?= htmlspecialchars($pj['cover']); ?>"
+                                                    alt="<?= htmlspecialchars($pj['judul']); ?>" loading="lazy"
+                                                    style="width: 100%; height: 100%; object-fit: cover;"
+                                                    onerror="this.style.display='none'; this.parentElement.querySelector('.card-img-placeholder').style.display='block';"
+                                                    onload="this.classList.add('loaded'); this.parentElement.querySelector('.card-img-placeholder').style.display='none';">
+                                                <?php if ($pj['status'] == 'Dipinjam' && strtotime($pj['tanggal_kembali']) < time()): ?>
+                                                    <span
+                                                        class="badge bg-danger position-absolute top-0 end-0 m-2 fs-4" style="opacity: 0.9;">Terlambat</span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="card-body bg-light rounded-bottom">
+                                                <h5 class="card-title text-primary fw-bold">
+                                                    <?= htmlspecialchars($pj['judul']); ?>
+                                                    <span class="text-muted">[<?= htmlspecialchars($pj['id_buku']); ?>]</span>
+                                                </h5>
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item d-flex justify-content-start align-items-center">
+                                                        <i class="fas fa-user me-2"></i>
                                                         <span
-                                                            class="badge <?= $pj['status'] == 'Menunggu Konfirmasi' ? 'bg-warning' : ($pj['status'] == 'Dipinjam' ? 'bg-success' : ($pj['status'] == 'Dikembalikan' ? 'bg-secondary' : '')); ?>">Status:</span>
-
+                                                            class="text-secondary"><?= htmlspecialchars($pj['pengarang']); ?></span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-start align-items-center">
+                                                        <i class="fas fa-building me-2"></i>
+                                                        <span class="text-secondary">Penerbit:
+                                                            <?= htmlspecialchars($pj['penerbit']); ?></span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-start align-items-center">
+                                                        <i class="fas fa-user-circle me-2"></i>
+                                                        <span class="text-secondary">Username:
+                                                            <?= htmlspecialchars($pj['username']); ?>
+                                                            [<?= htmlspecialchars($pj['id_user']); ?>]</span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-start align-items-center">
+                                                        <i class="fas fa-calendar-alt me-2"></i>
+                                                        <span class="text-secondary">Tanggal Pinjam:
+                                                            <?= $pj['tanggal_pinjam']; ?></span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-start align-items-center">
+                                                        <i class="fas fa-calendar-check me-2"></i>
+                                                        <span class="text-secondary">Tanggal Kembali:
+                                                            <?= $pj['tanggal_kembali']; ?></span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-start align-items-center">
                                                         <span
-                                                            style="color: <?= $pj['status'] == 'Menunggu Konfirmasi' ? 'orange' : ($pj['status'] == 'Dipinjam' ? 'green' : ($pj['status'] == 'Dikembalikan' ? '' : '')) ?>">
+                                                            class="badge <?= $pj['status'] == 'Menunggu Konfirmasi' ? 'bg-warning text-dark' :
+                                                                ($pj['status'] == 'Dipinjam' ? 'bg-success' : 'bg-secondary'); ?>">
                                                             <?= $pj['status']; ?>
                                                         </span>
-                                                    </p>
-                                                    <?php if ($pj['status'] == 'Dipinjam' && strtotime($pj['tanggal_kembali']) < time()): ?>
-                                                        <p class="card-text text-danger">
-                                                            <span class="badge bg-danger">Terlambat</span>
-                                                            Terlambat dikembalikan
-                                                        </p>
-                                                    <?php endif; ?>
-                                                    <hr class="my-2"><br>
-
-                                                    <div class="d-flex justify-content-end">
-                                                        <button class="btn btn-outline-primary" data-bs-toggle="modal"
-                                                            data-bs-target="#confirmModal<?= $pj['id_pinjam'] ?>"
-                                                            <?= $pj['status'] == 'Dipinjam' || $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>>Confirm</button>
-                                                    </div>
-
-                                                    
-                                                    <!-- Modal Pinjam -->
-                                                    <div class="modal fade" id="confirmModal<?= $pj['id_pinjam'] ?>"
-                                                        tabindex="-1" aria-labelledby="confirmModalLabel<?= $pj['id_pinjam'] ?>"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="confirmModalLabel<?= $pj['id_pinjam'] ?>">Konfirmasi
-                                                                        Peminjaman</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    Kamu yakin ingin mengonfirmasi peminjaman buku ini?
-                                                                    <ul>
-                                                                        <li>Judul: <?= $pj['judul'] ?> [<?= $pj['id_buku'] ?>]
-                                                                        </li>
-                                                                        <li>User: <?= $pj['username'] ?> [<?= $pj['id_user'] ?>]
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <form method="POST">
-                                                                        <input type="hidden" name="id_pinjam"
-                                                                            value="<?= $pj['id_pinjam'] ?>">
-                                                                        <button type="button" class="btn btn-outline-danger"
-                                                                            data-bs-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-outline-primary"
-                                                                            name="confirmPinjam">Confirm</button>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
+                                                    </li>
+                                                </ul>
+                                                <hr class="my-2">
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <button class="btn btn-primary btn-sm px-4 rounded-pill"
+                                                        onclick="showConfirmModal('<?= $pj['id_pinjam'] ?>', '<?= htmlspecialchars($pj['judul']) ?>', '<?= htmlspecialchars($pj['id_buku']) ?>', '<?= htmlspecialchars($pj['username']) ?>', '<?= htmlspecialchars($pj['id_user']) ?>')"
+                                                        <?= $pj['status'] == 'Dipinjam' || $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>>
+                                                        Confirm
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                     <?php endforeach; ?>
-                                <?php } else {
-                                    ?>
-                                    <div class=" col-12">
-                                        <div class="card h-100 shadow-md">
-                                            <div class="card-body d-flex justify-content-center">
-                                                <h5 class="card-title">Buku Pinjam Kosong</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <?php
-                                }
-                                ?>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -440,33 +582,161 @@ foreach ($pinjam as $pj) {
         </div>
     </div>
 
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Konfirmasi Peminjaman</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Kamu yakin ingin mengonfirmasi peminjaman buku ini?</p>
+                    <ul id="confirmDetails"></ul>
+                </div>
+                <div class="modal-footer">
+                    <form method="POST" id="confirmForm">
+                        <input type="hidden" name="id_pinjam" id="confirmIdPinjam">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-outline-primary" name="confirmPinjam">Confirm</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../js/scripts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../js/datatables-simple-demo.js"></script>
+    <!-- Load scripts at the end -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="../js/scripts.js" defer></script>
 
-    <!--  search Buku -->
     <script>
-        function filterData() {
-            const searchQuery = document.getElementById('searchInput').value;
-            const statusFilter = document.getElementById('statusFilter').value;
-            const monthFilter = document.getElementById('monthFilter').value;
-            fetch(`?search=${encodeURIComponent(searchQuery)}&status=${encodeURIComponent(statusFilter)}&month=${encodeURIComponent(monthFilter)}`)
-                .then(response => response.text())
-                .then(data => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(data, 'text/html');
-                    const newContent = doc.querySelector('.row');
-                    document.querySelector('.row').innerHTML = newContent.innerHTML;
-                });
+        // Debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
         }
+
+        // Show loading state for specific card
+        function toggleCardLoading(cardElement, show) {
+            if (show) {
+                cardElement.classList.add('loading');
+            } else {
+                cardElement.classList.remove('loading');
+            }
+        }
+
+        // Handle image loading
+        function handleImageLoad(img) {
+            img.classList.add('loaded');
+            const placeholder = img.parentElement.querySelector('.card-img-placeholder');
+            if (placeholder) {
+                placeholder.style.display = 'none';
+            }
+        }
+
+        // Handle image error
+        function handleImageError(img) {
+            img.style.display = 'none';
+            const placeholder = img.parentElement.querySelector('.card-img-placeholder');
+            if (placeholder) {
+                placeholder.style.display = 'block';
+            }
+        }
+
+        // Filter data with card-specific loading
+        async function filterData() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => toggleCardLoading(card, true));
+
+            try {
+                const searchQuery = document.getElementById('searchInput').value;
+                const statusFilter = document.getElementById('statusFilter').value;
+                const monthFilter = document.getElementById('monthFilter').value;
+
+                const response = await fetch(
+                    `?search=${encodeURIComponent(searchQuery)}&status=${encodeURIComponent(statusFilter)}&month=${encodeURIComponent(monthFilter)}`
+                );
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const text = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, 'text/html');
+                const newContent = doc.querySelector('#bookGrid');
+
+                if (newContent) {
+                    document.getElementById('bookGrid').innerHTML = newContent.innerHTML;
+                    initializeImages();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat memfilter data. Silakan coba lagi.');
+            } finally {
+                const updatedCards = document.querySelectorAll('.card');
+                updatedCards.forEach(card => toggleCardLoading(card, false));
+            }
+        }
+
+        // Initialize images
+        function initializeImages() {
+            document.querySelectorAll('.card-img-top').forEach(img => {
+                // Remove existing event listeners
+                img.removeEventListener('load', () => handleImageLoad(img));
+                img.removeEventListener('error', () => handleImageError(img));
+
+                // Add new event listeners
+                img.addEventListener('load', () => handleImageLoad(img));
+                img.addEventListener('error', () => handleImageError(img));
+
+                // Reset image state
+                img.classList.remove('loaded');
+                img.style.display = 'block';
+
+                // Show placeholder initially
+                const placeholder = img.parentElement.querySelector('.card-img-placeholder');
+                if (placeholder) {
+                    placeholder.style.display = 'block';
+                }
+
+                // Force reload image if cached
+                if (img.complete) {
+                    if (img.naturalHeight === 0) {
+                        handleImageError(img);
+                    } else {
+                        handleImageLoad(img);
+                    }
+                }
+            });
+        }
+
+        // Show confirmation modal
+        function showConfirmModal(id, judul, idBuku, username, idUser) {
+            document.getElementById('confirmIdPinjam').value = id;
+            document.getElementById('confirmDetails').innerHTML = `
+            <li>Judul: ${judul} [${idBuku}]</li>
+            <li>User: ${username} [${idUser}]</li>
+        `;
+            new bootstrap.Modal(document.getElementById('confirmModal')).show();
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeImages();
+
+            // Add debounce to search input
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', debounce(filterData, 300));
+            }
+        });
     </script>
-
-
-
 </body>
 
 </html>

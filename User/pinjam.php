@@ -12,18 +12,67 @@ require "../Auth/cek_log.php";
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="description" content="LibraTech - Sistem Peminjaman Buku Digital" />
+    <meta name="author" content="LibraTech" />
     <title>LibraTech - <?php echo $_SESSION['username'] ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+    <!-- Preload penting resources -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" as="style" />
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" as="style" />
+    <link rel="preload" href="../css/styles.css" as="style" />
+    <link rel="preload" href="../css/selfstyle.css" as="style" />
+
+    <!-- Load CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../css/selfstyle.css">
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <!-- Load jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Load Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        // Fungsi untuk menginisialisasi dropdown
+        function initializeDropdowns() {
+            var dropdowns = document.querySelectorAll('.dropdown-toggle');
+            dropdowns.forEach(function (dropdown) {
+                new bootstrap.Dropdown(dropdown);
+            });
+        }
+
+        // Jalankan saat DOM loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeDropdowns();
+        });
+
+        // Jalankan saat window loaded (setelah semua resource dimuat)
+        window.addEventListener('load', function () {
+            initializeDropdowns();
+        });
+
+        // Jalankan setiap 1 detik untuk memastikan dropdown tetap berfungsi
+        setInterval(function () {
+            initializeDropdowns();
+        }, 1000);
+    </script>
+
+    <!-- Defer non-critical JavaScript -->
+    <script defer src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="../js/scripts.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <script defer src="../assets/demo/chart-area-demo.js"></script>
+    <script defer src="../assets/demo/chart-bar-demo.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"></script>
+    <script defer src="../js/datatables-simple-demo.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -183,12 +232,11 @@ require "../Auth/cek_log.php";
                         <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pinjam.php' ? 'active' : ''; ?>"
                             href="pinjam.php"><b>Peminjaman</b></a>
                     </li>
-
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            data-bs-auto-close="true" aria-expanded="false">
                             <?php if (file_exists('../assets/profile_picture/' . $_SESSION['username'] . '.png')): ?>
                                 <img src="../assets/profile_picture/<?php echo $_SESSION['username'] . '.png?v=' . time(); ?>"
                                     onerror="this.src='../assets/img/default_profile_picture.png';"
@@ -198,7 +246,7 @@ require "../Auth/cek_log.php";
                                 <i class="fas fa-user" style="font-size: 1.5rem;"></i>
                             <?php endif; ?>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end" data-bs-popper="none">
                             <li>
                                 <?php if (file_exists('../assets/profile_picture/' . $_SESSION['username'] . '.png')): ?>
                                     <img src="../assets/profile_picture/<?php echo $_SESSION['username'] . '.png?v=' . time(); ?>"
@@ -210,21 +258,7 @@ require "../Auth/cek_log.php";
                                         style="font-size: 8rem; color: #b0b0b0; margin: 0 auto; display: block; text-align: center;"></i>
                                 <?php endif; ?>
                             </li>
-                            <li> <?php
-                            $profile_picture_path = "../assets/profile_picture/" . $_SESSION['username'] . '.png';
-                            $dominant_color = '#333'; // Default color
-                            // Get dominant color from profile picture
-                            if (file_exists($profile_picture_path)) {
-                                $image = imagecreatefrompng($profile_picture_path);
-                                $thumb = imagecreatetruecolor(1, 1);
-                                imagecopyresampled($thumb, $image, 0, 0, 0, 0, 1, 1, imagesx($image), imagesy($image));
-                                $main_color = imagecolorat($thumb, 0, 0);
-                                $rgb = imagecolorsforindex($thumb, $main_color);
-                                $dominant_color = sprintf("#%02x%02x%02x", $rgb['red'], $rgb['green'], $rgb['blue']);
-                                imagedestroy($image);
-                                imagedestroy($thumb);
-                            }
-                            ?>
+                            <li>
                                 <a class="dropdown-item mt-3" href="#" style="color: <?php echo $dominant_color; ?>;">
                                     <b><?php echo $_SESSION['username'] ?></b>
                                 </a>
@@ -236,7 +270,9 @@ require "../Auth/cek_log.php";
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
-                            <li><a class="dropdown-item text-danger" href="../Auth/logout.php"><b>Logout</b></a></li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="../Auth/logout.php"><b>Logout</b></a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -326,8 +362,9 @@ require "../Auth/cek_log.php";
                         <div class="col mb-2">
                             <div class="card h-100 shadow-lg" id="cardpinjam">
                                 <div class="card h-100">
-                                    <img class="card-img-top" src="<?= $pj['cover']; ?>" alt="Book Cover"
-                                        style="object-fit: cover; width: 100%; height: 500px;">
+                                    <img class="card-img-top book-cover" src="<?= $pj['cover']; ?>"
+                                        alt="<?= htmlspecialchars($pj['judul']); ?> Cover" width="300" height="500"
+                                        loading="lazy" onerror="this.src='../assets/img/default_book_cover.png';">
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title"><?= $pj['judul']; ?> [<?= $pj['id_buku']; ?>]</h5>
@@ -339,19 +376,17 @@ require "../Auth/cek_log.php";
                                         <?= $pj['username']; ?> [<?= $pj['id_user']; ?>]</p>
                                     <p class="card-text text-start"><span class="badge bg-secondary">Tanggal Pinjam:</span>
                                         <?= $pj['tanggal_pinjam']; ?></p>
-                                    <p class="card-text text-start"><span class="badge bg-secondary">Tanggal
-                                            Kembali:</span>
+                                    <p class="card-text text-start"><span class="badge bg-secondary">Tanggal Kembali:</span>
                                         <?= $pj['tanggal_kembali']; ?></p>
                                     <p class="card-text text-start">
                                         <span
-                                            class="badge <?= $pj['status'] == 'Menunggu Konfirmasi' ? 'bg-warning' : ($pj['status'] == 'Dipinjam' ? 'bg-success' : ($pj['status'] == 'Dikembalikan' ? 'bg-secondary' : '')); ?>">Status:
+                                            class="badge <?= $pj['status'] == 'Menunggu Konfirmasi' ? 'bg-warning' : ($pj['status'] == 'Dipinjam' ? 'bg-success' : ($pj['status'] == 'Dikembalikan' ? 'bg-secondary' : '')); ?>">
+                                            Status:
                                         </span>
-
                                         <span
-                                            style="color: <?= $pj['status'] == 'Menunggu Konfirmasi' ? 'orange' : ($pj['status'] == 'Dipinjam' ? 'green' : ($pj['status'] == 'Dikembalikan' ? '' : '')) ?>">
+                                            class="status-text <?= $pj['status'] == 'Menunggu Konfirmasi' ? 'text-warning' : ($pj['status'] == 'Dipinjam' ? 'text-success' : ''); ?>">
                                             <?= $pj['status']; ?>
                                         </span>
-
                                     </p>
                                     <?php if ($pj['status'] == 'Dipinjam' && strtotime($pj['tanggal_kembali']) < time()): ?>
                                         <p class="card-text text-start text-danger">

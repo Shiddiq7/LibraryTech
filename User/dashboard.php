@@ -10,18 +10,68 @@ require "../Auth/cek_log.php";
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="description" content="LibraTech - Sistem Perpustakaan Digital Modern" />
+    <meta name="author" content="LibraTech" />
     <title>LibraTech - <?php echo $_SESSION['username'] ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+    <!-- Preload penting resources -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" as="style" />
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" as="style" />
+    <link rel="preload" href="../css/styles.css" as="style" />
+    <link rel="preload" href="../css/selfstyle.css" as="style" />
+
+    <!-- Load CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="../css/selfstyle.css">
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <!-- Defer non-critical JavaScript -->
+    <script defer src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="../js/scripts.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <script defer src="../assets/demo/chart-area-demo.js"></script>
+    <script defer src="../assets/demo/chart-bar-demo.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"></script>
+    <script defer src="../js/datatables-simple-demo.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+
+    <!-- Load jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Load Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        // Fungsi untuk menginisialisasi dropdown
+        function initializeDropdowns() {
+            var dropdowns = document.querySelectorAll('.dropdown-toggle');
+            dropdowns.forEach(function (dropdown) {
+                new bootstrap.Dropdown(dropdown);
+            });
+        }
+
+        // Jalankan saat DOM loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeDropdowns();
+        });
+
+        // Jalankan saat window loaded
+        window.addEventListener('load', function () {
+            initializeDropdowns();
+        });
+
+        // Jalankan setiap 1 detik untuk memastikan dropdown tetap berfungsi
+        setInterval(function () {
+            initializeDropdowns();
+        }, 1000);
+    </script>
+
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -278,12 +328,11 @@ require "../Auth/cek_log.php";
                         <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pinjam.php' ? 'active' : ''; ?>"
                             href="pinjam.php"><b>Peminjaman</b></a>
                     </li>
-
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            data-bs-auto-close="true" aria-expanded="false">
                             <?php if (file_exists('../assets/profile_picture/' . $_SESSION['username'] . '.png')): ?>
                                 <img src="../assets/profile_picture/<?php echo $_SESSION['username'] . '.png?v=' . time(); ?>"
                                     onerror="this.src='../assets/img/default_profile_picture.png';"
@@ -293,7 +342,7 @@ require "../Auth/cek_log.php";
                                 <i class="fas fa-user" style="font-size: 1.5rem;"></i>
                             <?php endif; ?>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end" data-bs-popper="none">
                             <li>
                                 <?php if (file_exists('../assets/profile_picture/' . $_SESSION['username'] . '.png')): ?>
                                     <img src="../assets/profile_picture/<?php echo $_SESSION['username'] . '.png?v=' . time(); ?>"
@@ -305,31 +354,21 @@ require "../Auth/cek_log.php";
                                         style="font-size: 8rem; color: #b0b0b0; margin: 0 auto; display: block; text-align: center;"></i>
                                 <?php endif; ?>
                             </li>
-                            <li> <?php
-                            $profile_picture_path = "../assets/profile_picture/" . $_SESSION['username'] . '.png';
-                            $dominant_color = '#333'; // Default color
-                            // Get dominant color from profile picture
-                            if (file_exists($profile_picture_path)) {
-                                $image = imagecreatefrompng($profile_picture_path);
-                                $thumb = imagecreatetruecolor(1, 1);
-                                imagecopyresampled($thumb, $image, 0, 0, 0, 0, 1, 1, imagesx($image), imagesy($image));
-                                $main_color = imagecolorat($thumb, 0, 0);
-                                $rgb = imagecolorsforindex($thumb, $main_color);
-                                $dominant_color = sprintf("#%02x%02x%02x", $rgb['red'], $rgb['green'], $rgb['blue']);
-                                imagedestroy($image);
-                                imagedestroy($thumb);
-                            }
-                            ?>
+                            <li>
                                 <a class="dropdown-item mt-3" href="#" style="color: <?php echo $dominant_color; ?>;">
                                     <b><?php echo $_SESSION['username'] ?></b>
                                 </a>
                             </li>
-                            <li><a class="dropdown-item <?php echo basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'bg-secondary bg-opacity-25 text-dark' : ''; ?>"
-                                    href="profile.php">Profile</a></li>
+                            <li>
+                                <a class="dropdown-item <?php echo basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'bg-secondary bg-opacity-25 text-dark' : ''; ?>"
+                                    href="profile.php">Profile</a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
-                            <li><a class="dropdown-item text-danger" href="../Auth/logout.php"><b>Logout</b></a></li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="../Auth/logout.php"><b>Logout</b></a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -351,12 +390,14 @@ require "../Auth/cek_log.php";
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="../assets/img/Libr.jpeg" class="d-block w-100 rounded-5" alt="..."
-                            style="height: 600px; object-fit: cover; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+                        <img src="../assets/img/Libr.jpeg" class="d-block w-100 rounded-5" alt="Library Background"
+                            style="height: 600px; object-fit: cover; box-shadow: 0 0 10px rgba(0,0,0,0.5);" width="1920"
+                            height="600" loading="eager">
                         <div
                             class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100">
                             <img src="../assets/img/logo1.png" class="img-fluid"
-                                style="height: 160px; position: absolute; top: 60px;" alt="LibraryTech Logo">
+                                style="height: 160px; position: absolute; top: 60px;" alt="LibraryTech Logo" width="160"
+                                height="160" loading="eager">
                             <h1 style="color: #fff; text-align: center; animation: fadeIn 2s;">Welcome to LibraTech</h1>
                             <p class="d-none d-md-block"
                                 style="color: lightgray; position: absolute; bottom: 30px; animation: slideUp 3.8s;">
@@ -409,9 +450,8 @@ require "../Auth/cek_log.php";
     $query = "SELECT buku.id_buku, buku.judul, buku.cover, AVG(review.rating) AS avg_rating FROM buku LEFT JOIN review ON buku.id_buku = review.id_buku GROUP BY buku.id_buku ORDER BY avg_rating DESC LIMIT 20";
     $result = query($query);
     ?>
-    <div style="margin-left: 40px; margin-top: 70px;">  
-        <h3 class="position-relative d-inline-block" 
-            style="font-family: 'Lato', sans-serif; 
+    <div style="margin-left: 40px; margin-top: 70px;">
+        <h3 class="position-relative d-inline-block" style="font-family: 'Lato', sans-serif; 
                    font-weight: 900;
                    letter-spacing: 3px;
                    color: #2c3e50;
@@ -419,15 +459,13 @@ require "../Auth/cek_log.php";
                    border-radius: 10px;
                    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-            <span class="position-relative" 
-                  style="background: linear-gradient(45deg, #4a90e2, #6f42c1);
+            <span class="position-relative" style="background: linear-gradient(45deg, #4a90e2, #6f42c1);
                          -webkit-background-clip: text;
                          -webkit-text-fill-color: transparent;">
                 TOP 20 BOOKS
             </span>
-           
-            <div class="position-absolute" 
-                 style="bottom: -5px;
+
+            <div class="position-absolute" style="bottom: -5px;
                         left: 50%;
                         transform: translateX(-50%);
                         width: 50px;
@@ -437,13 +475,11 @@ require "../Auth/cek_log.php";
             </div>
         </h3>
     </div>
-    <div class="shadow-lg rounded-5 p-4 " 
-        style="background: linear-gradient(to right, #e9ecef, #dee2e6);
+    <div class="shadow-lg rounded-5 p-4 " style="background: linear-gradient(to right, #e9ecef, #dee2e6);
                margin: 38px;">
         <div class="card-body">
             <!-- Custom scrollbar styling -->
-            <div class="d-flex overflow-auto custom-scrollbar" 
-                style="scroll-snap-type: x mandatory; 
+            <div class="d-flex overflow-auto custom-scrollbar" style="scroll-snap-type: x mandatory; 
                        gap: 20px; 
                        padding: 10px;
                        scrollbar-width: thin;
@@ -455,8 +491,7 @@ require "../Auth/cek_log.php";
                     $cover = $book['cover'];
                     $avg_rating = $book['avg_rating'] ?? 0;
                     ?>
-                    <div class="card border-0 rounded-4 book-card"
-                        style="min-width: 200px; 
+                    <div class="card border-0 rounded-4 book-card" style="min-width: 200px; 
                                max-width: 250px; 
                                scroll-snap-align: start; 
                                cursor: pointer; 
@@ -464,26 +499,20 @@ require "../Auth/cek_log.php";
                                transition: all 0.3s ease;"
                         onclick="window.location.href='detail_buku.php?id_buku=<?= $id_buku; ?>'">
 
-                        <img src="<?= $cover; ?>" 
-                             class="card-img-top rounded-4" 
-                             alt="Book Cover"
-                             style="object-fit: cover; 
+                        <img src="<?= $cover; ?>" class="card-img-top rounded-4" alt="Book Cover" style="object-fit: cover; 
                                     height: 280px;
                                     filter: brightness(0.95);">
-                        
+
                         <div class="card-body text-center py-3">
-                            <h6 class="card-title text-truncate mb-2" 
-                                style="font-weight: 600;
+                            <h6 class="card-title text-truncate mb-2" style="font-weight: 600;
                                        color: #2d3436;">
                                 <?= htmlspecialchars($judul); ?>
                             </h6>
                             <div class="rating" style="font-size: 0.9rem;">
                                 <?php for ($i = 1; $i <= 5; $i++): ?>
-                                    <i class="<?= $i <= $avg_rating ? 'fas' : 'far'; ?> fa-star" 
-                                       style="color: #ffd700;"></i>
+                                    <i class="<?= $i <= $avg_rating ? 'fas' : 'far'; ?> fa-star" style="color: #ffd700;"></i>
                                 <?php endfor; ?>
-                                <span class="ms-2" 
-                                      style="color: #636e72;
+                                <span class="ms-2" style="color: #636e72;
                                              font-size: 0.8rem;">
                                     (<?= number_format($avg_rating, 1) ?>)
                                 </span>
@@ -496,32 +525,32 @@ require "../Auth/cek_log.php";
     </div>
 
     <style>
-    /* Custom scrollbar styling */
-    .custom-scrollbar::-webkit-scrollbar {
-        height: 6px;
-    }
+        /* Custom scrollbar styling */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+        }
 
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 10px;
-    }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
 
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #cbd5e0;
-        border-radius: 10px;
-    }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 10px;
+        }
 
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #a0aec0;
-    }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
 
-    /* Card hover effect */
-    .book-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
+        /* Card hover effect */
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
     </style>
-<!-- End Top 10 Books -->
+    <!-- End Top 10 Books -->
     <br>
     <hr style="border: 1px solid #666; margin: 40px 0; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
 
@@ -597,7 +626,7 @@ require "../Auth/cek_log.php";
                     foreach ($buku as $bk):
                         if ($currentCategory != $bk['kategori']) {
                             if ($currentCategory != '') {
-                                echo '</div><hr style="border: 2px solid #666;" class="my-5"><br>'; // Close previous category div and add spacing
+                                echo '</div><hr style="border: 2px solid #666;" class="my-5"><br>';
                             }
                             $currentCategory = $bk['kategori'];
                             echo "<div class='category-group'><h2 class='text-center fw-bold mb-5' style='color: darkblue; font-size: 1.5rem; letter-spacing: 2px;'>{$currentCategory}</h2><div class='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap'>";
@@ -606,8 +635,10 @@ require "../Auth/cek_log.php";
                         <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-4 book-item mt-4">
                             <div class="card h-100 shadow-lg rounded-4">
                                 <div class="card h-100 rounded-4">
-                                    <img class="card-img-top book-cover rounded-3" src="<?= $bk['cover']; ?>" alt="Book Cover"
-                                        style="object-fit: cover; width: 100%; height: 100%;" loading="lazy">
+                                    <img class="card-img-top book-cover rounded-3" src="<?= $bk['cover']; ?>"
+                                        alt="<?= htmlspecialchars($bk['judul']); ?> Cover"
+                                        style="object-fit: cover; width: 100%; height: 100%;" width="200" height="300"
+                                        loading="lazy" onerror="this.src='../assets/img/default_book_cover.png';">
                                 </div>
                                 <?php
                                 $id_buku = $bk['id_buku'];

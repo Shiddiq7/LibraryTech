@@ -11,22 +11,107 @@ require "../Auth/cek_log.php";
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="description" content="LibraTech - Sistem Manajemen Perpustakaan Digital" />
+    <meta name="author" content="LibraTech" />
     <title>Daftar Anggota - LibraTech</title>
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="../assets/img/logo1.png" as="image">
+    <link rel="preload" href="../css/styles.css" as="style">
+    <link rel="preload" href="../css/selfstyle.css" as="style">
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://use.fontawesome.com">
+    <link rel="preconnect" href="https://code.jquery.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+    <!-- Critical CSS -->
     <link rel="icon" href="../assets/img/logo1.png" type="image/png" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../css/styles.css" rel="stylesheet" />
     <link href="../css/selfstyle.css" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
+    <!-- Defer non-critical scripts -->
+    <script defer src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <style>
+        /* Critical inline styles */
+        .table-container {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .btn-export {
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .badge {
+            margin-left: 10px;
+        }
+
+        .modal-footer {
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 
 <body class="sb-nav-fixed">
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3 d-flex align-items-center" href="#">
-            <img src="../assets/img/logo1.png" width="80" height="80" class="d-inline-block align-top" alt="">
+            <img src="../assets/img/logo1.png" width="80" height="80" class="d-inline-block align-top" alt=""
+                loading="lazy">
             <span class="ms-2">LibraTech</span>
         </a>
         <!-- Sidebar Toggle-->
@@ -88,7 +173,7 @@ require "../Auth/cek_log.php";
                                 ?>
                                 <a class="nav-link d-flex align-items-center <?= $isActive ? 'active' : ''; ?>"
                                     href="pinjam.php"
-                                    style="color: <?= $newDataCount > 0 ? '#ff9800' : ($isActive ? '#fff' : '#000'); ?>">
+                                    style="color: <?= $newDataCount > 0 ? '#ffffff' : ($isActive ? '#fff' : '#ffffff'); ?>">
                                     <span class="me-auto">Peminjaman</span>
                                     <span class="badge bg-warning text-dark ms-2"><?= $newDataCount ?></span>
                                     <?php if ($newDataCount > 0): ?>
@@ -130,22 +215,19 @@ require "../Auth/cek_log.php";
                                 <i class="fas fa-table me-1"></i>
                                 Member
                             </div>
-                            <div class="d-flex justify-content-between">
-                                <!-- export -->
+                            <div class="d-flex gap-3">
                                 <a href="export_table/export_anggota.php"
-                                    class="btn btn-outline-primary btn-sm me-4 d-flex align-items-center"
-                                    style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s, box-shadow 0.2s;"
-                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 10px rgba(0, 0, 0, 0.15)';"
-                                    onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
-                                    <i class="fas fa-file-export me-2"></i>
-                                    <span>Export Table</span>
+                                    class="btn btn-outline-primary btn-sm btn-export">
+                                    <i class="fas fa-file-export me-2"></i>Export Table
                                 </a>
                                 <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#tambahAnggota">Tambah Anggota</button>
+                                    data-bs-target="#tambahAnggota">
+                                    Tambah Anggota
+                                </button>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <table id="datatablesSimple">
+                        <div class="card-body table-container">
+                            <table id="datatablesSimple" class="table table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
@@ -154,158 +236,143 @@ require "../Auth/cek_log.php";
                                         <th>Username</th>
                                         <th>Nomor HP</th>
                                         <th>Role</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = "SELECT * FROM user where if_visible = TRUE";
-                                    $no = 1;
+                                    $query = "SELECT * FROM user WHERE if_visible = TRUE ORDER BY id_user";
                                     $result = mysqli_query($conn, $query);
-                                    while ($data = mysqli_fetch_array($result)) {
-                                        $id_user = $data['id_user'];
-                                        $email = $data['Email'];
-                                        $username = $data['username'];
-                                        $nomorhp = $data['nomorhp'];
-                                        $role = $data['role'];
+                                    $no = 1;
 
-
+                                    while ($data = mysqli_fetch_assoc($result)):
+                                        $id_user = htmlspecialchars($data['id_user']);
+                                        $email = htmlspecialchars($data['Email']);
+                                        $username = htmlspecialchars($data['username']);
+                                        $nomorhp = htmlspecialchars($data['nomorhp']);
+                                        $role = htmlspecialchars($data['role']);
                                         ?>
-
                                         <tr>
                                             <td><?= $no++ ?></td>
                                             <td><?= $id_user ?></td>
                                             <td>
                                                 <?= $email ?>
                                                 <?php if ($data['verify'] == 1): ?>
-                                                    <span style="margin-left: 10px;" class="badge bg-success">Verified</span>
+                                                    <span class="badge bg-success">Verified</span>
                                                 <?php else: ?>
                                                     <span class="badge bg-warning text-dark">Not Verified</span>
-                                                    <div style="float: right;" class="btn-group" role="group"
-                                                        aria-label="Basic example">
-                                                        <button type="button" class="btn btn-sm btn-outline-success me-2"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#verifyEmail<?= $id_user ?>">Verify</button>
+                                                    <div class="action-buttons">
+                                                        <button type="button" class="btn btn-sm btn-outline-success"
+                                                            data-bs-toggle="modal" data-bs-target="#verifyModal<?= $id_user ?>">
+                                                            Verify
+                                                        </button>
                                                         <button type="button" class="btn btn-sm btn-outline-danger"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#deleteEmail<?= $id_user ?>">Delete</button>
-                                                    </div>
+                                                            data-bs-toggle="modal" data-bs-target="#deleteModal<?= $id_user ?>">
+                                                            Delete
+                                                        </button>
 
-                                                    <!-- Modal Verify Email -->
-                                                    <div class="modal fade" id="verifyEmail<?= $id_user ?>" tabindex="-1"
-                                                        aria-labelledby="verifyEmailLabel" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="verifyEmailLabel">Kamu yakin
-                                                                        ingin verifikasi email ini? </h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <form method="post"
-                                                                        style="display: flex; justify-content: center; width: 100%;">
-                                                                        <input type="hidden" name="id_user"
-                                                                            value="<?= $id_user ?>">
-                                                                        <input type="hidden" name="email" value="<?= $email ?>">
-                                                                        <button type="submit"
-                                                                            class="btn btn-outline-success w-100"
-                                                                            name="verifyEmail">Verify</button>
-                                                                    </form>
+                                                        <!-- Modal Verify -->
+                                                        <div class="modal fade" id="verifyModal<?= $id_user ?>" tabindex="-1"
+                                                            aria-labelledby="verifyModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="verifyModalLabel">Verify
+                                                                            User</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        Kamu yakin ingin memverifikasi user <?= $username ?>?
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <form method="post">
+                                                                            <input type="hidden" name="id_user"
+                                                                                value="<?= $id_user ?>">
+                                                                            <button type="button" class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-primary"
+                                                                                name="verify">Verify</button>
+                                                                        </form>
+                                                                        <?php
+                                                                        if (isset($_POST['verify'])) {
+                                                                            $id_user = $_POST['id_user'];
+                                                                            $query = "UPDATE user SET verify = 1 WHERE id_user = '$id_user'";
+                                                                            $result = mysqli_query($conn, $query);
+                                                                            if ($result) {
+                                                                                echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
+                                                                                echo '<script>
+                                                                                        swal({
+                                                                                            title: "Berhasil!",
+                                                                                            text: "User berhasil diverifikasi!",
+                                                                                            icon: "success",
+                                                                                            button: "Oke",
+                                                                                        }).then(function() {
+                                                                                            window.location = "daftar_anggota.php";
+                                                                                        });
+                                                                                      </script>';
+                                                                            }
+                                                                        }
+                                                                        ?>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <!-- Modal Delete Email -->
-                                                    <div class="modal fade" id="deleteEmail<?= $id_user ?>" tabindex="-1"
-                                                        aria-labelledby="deleteEmailLabel" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="deleteEmailLabel">Delete Email
-                                                                    </h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div style="display: flex; justify-content: center;">
-                                                                        <form method="post" style="width: 100%;">
+                                                        <!-- Modal Delete -->
+                                                        <div class="modal fade" id="deleteModal<?= $id_user ?>" tabindex="-1"
+                                                            aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="deleteModalLabel">Delete
+                                                                            User</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        Kamu yakin ingin menghapus user <?= $username ?>?
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <form method="post">
                                                                             <input type="hidden" name="id_user"
                                                                                 value="<?= $id_user ?>">
-                                                                            <input type="hidden" name="email"
-                                                                                value="<?= $email ?>">
-                                                                            <button type="submit"
-                                                                                class="btn btn-outline-danger w-100"
-                                                                                name="deleteEmail">Delete</button>
+                                                                            <button type="button" class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-danger"
+                                                                                name="delete">Delete</button>
                                                                         </form>
+                                                                        <?php
+                                                                        if (isset($_POST['delete'])) {
+                                                                            $id_user = $_POST['id_user'];
+                                                                            $query = "DELETE FROM user WHERE id_user = '$id_user'";
+                                                                            $result = mysqli_query($conn, $query);
+                                                                            if ($result) {
+                                                                                echo '<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>';
+                                                                                echo '<script>
+                                                                                        swal({
+                                                                                            title: "Berhasil!",
+                                                                                            text: "User berhasil dihapus!",
+                                                                                            icon: "success",
+                                                                                            button: "Oke",
+                                                                                        }).then(function() {
+                                                                                            window.location = "daftar_anggota.php";
+                                                                                        });
+                                                                                      </script>';
+                                                                            }
+                                                                        }
+                                                                        ?>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <?php
-                                                    if (isset($_POST['verifyEmail'])) {
-                                                        $id_user = $_POST['id_user'];
-                                                        $email = $_POST['email'];
-
-                                                        $query = "UPDATE user SET verify=1 WHERE id_user='$id_user' AND Email='$email'";
-                                                        mysqli_query($conn, $query);
-
-                                                        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
-                                                        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-                                                        echo "<script>
-                                                            $(document).ready(function() {
-                                                                Swal.fire({
-                                                                    icon: 'success',
-                                                                    title: 'Email berhasil di verifikasi!',
-                                                                    showConfirmButton: false,
-                                                                    timer: 1500
-                                                                }).then(function() {
-                                                                    window.location.href = 'daftar_anggota.php';
-                                                                });
-                                                            });
-                                                        </script>";
-                                                    }
-
-                                                    if (isset($_POST['deleteEmail'])) {
-                                                        $id_user = $_POST['id_user'];
-                                                        $email = $_POST['email'];
-
-                                                        $query = "UPDATE user SET if_visible=FALSE WHERE id_user='$id_user' AND Email='$email'";
-                                                        mysqli_query($conn, $query);
-
-                                                        echo "<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>";
-                                                        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-                                                        echo "<script>
-                                                            $(document).ready(function() {
-                                                                Swal.fire({
-                                                                    icon: 'success',
-                                                                    title: 'Email berhasil di hapus!',
-                                                                    showConfirmButton: false,
-                                                                    timer: 1500
-                                                                }).then(function() {
-                                                                    window.location.href = 'daftar_anggota.php';
-                                                                });
-                                                            });
-                                                        </script>";
-                                                    }
-                                                    ?>
-
                                                 <?php endif; ?>
                                             </td>
                                             <td><?= $username ?></td>
                                             <td><?= ($nomorhp == 0) ? "<i>No Data</i>" : $nomorhp ?></td>
                                             <td><?= $role ?></td>
-
-
-
                                         </tr>
-
-                                        <?php
-                                    }
-                                    ?>
+                                    <?php endwhile; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -369,21 +436,48 @@ require "../Auth/cek_log.php";
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../js/scripts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../js/datatables-simple-demo.js"></script>
+
+    <!-- Load non-critical scripts at the end -->
+    <script async defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script async defer src="../js/scripts.js"></script>
+    <script async defer
+        src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"></script>
+    <script async defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script async defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-        function togglePassword() {
-            var x = document.getElementById("inputPassword");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize DataTable
+            if (document.getElementById('datatablesSimple')) {
+                new simpleDatatables.DataTable('#datatablesSimple', {
+                    searchable: true,
+                    sortable: true,
+                    perPage: 10
+                });
             }
+
+            // Password toggle functionality
+            const togglePassword = document.getElementById('viewPassword');
+            const passwordInput = document.getElementById('inputPassword');
+
+            if (togglePassword && passwordInput) {
+                togglePassword.addEventListener('click', function () {
+                    passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+                });
+            }
+        });
+
+        // Show loading overlay
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
         }
+
+        // Hide loading overlay
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+
+
     </script>
 </body>
 
