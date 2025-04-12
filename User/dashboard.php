@@ -47,6 +47,7 @@ require "../Auth/cek_log.php";
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 
+    <!-- Initialize dropdowns -->
     <script>
         // Fungsi untuk menginisialisasi dropdown
         function initializeDropdowns() {
@@ -556,25 +557,27 @@ require "../Auth/cek_log.php";
 
     <section class="features" style="max-width: 100vw;">
         <div class="container-fluid">
-            <h2 class="text-center mt-3"
-                style="font-family: 'Lato', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #4a4a4a;">
-                DAFTAR BUKU</h2>
-            <br><br>
+            <h2 class="text-center mt-3" style="font-family: 'Lato', sans-serif; font-weight: bold; letter-spacing: 1px; color: #4a90e2;">
+                EXPLORE OUR BOOKS
+            </h2>
+            <br><br><br><br>
 
             <!-- Search, Filter and View Toggle -->
-            <form method="GET" class="mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center">
-                <div class="input-group shadow mb-3 mb-md-0" style="max-width: 100%; width: 400px;">
-                    <span class="input-group-text bg-white" id="basic-addon1"><i class="fas fa-search"></i></span>
-                    <input class="form-control" type="text" name="search" id="searchInput"
+            <form method="GET"
+                class="mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <div class="input-group shadow-sm" style="max-width: 100%; width: 400px;">
+                    <span class="input-group-text bg-white border-0" id="basic-addon1">
+                        <i class="fas fa-search text-primary"></i>
+                    </span>
+                    <input class="form-control border-0" type="text" name="search" id="searchInput"
                         value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
-                        placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch"
+                        placeholder="Cari buku..." aria-label="Search for..." aria-describedby="btnNavbarSearch"
                         onkeyup="filterData()" />
                 </div>
 
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-3">
                     <!-- View Toggle Button -->
-                    <div class="btn-group shadow" role="group" aria-label="View Toggle"
-                        style="margin-right: 10px; gap: 5px;">
+                    <div class="btn-group shadow-sm" role="group" aria-label="View Toggle" style="gap: 5px;">
                         <button type="button" class="btn btn-outline-primary active" id="cardView" title="Card View">
                             <i class="fas fa-th-large"></i>
                         </button>
@@ -584,14 +587,15 @@ require "../Auth/cek_log.php";
                     </div>
 
                     <!-- Category Filter -->
-                    <div class="input-group shadow" style="max-width: 100%; width: 200px;">
-                        <span class="input-group-text bg-primary text-white" id="basic-addon2"><i
-                                class="fas fa-filter"></i></span>
-                        <select class="form-select bg-white" name="category" id="categoryFilter"
+                    <div class="input-group shadow-sm" style="max-width: 100%; width: 200px;">
+                        <span class="input-group-text bg-primary text-white border-0">
+                            <i class="fas fa-filter"></i>
+                        </span>
+                        <select class="form-select border-0" name="category" id="categoryFilter"
                             onchange="filterData()">
-                            <option value="" style="color: blue;">All Categories</option>
+                            <option value="">Semua Kategori</option>
                             <?php
-                            $categories = query("SELECT * FROM kategori");
+                            $categories = query("SELECT id_kat, nama_kategori FROM kategori");
                             foreach ($categories as $category) {
                                 $selected = isset($_GET['category']) && $_GET['category'] == $category['nama_kategori'] ? 'selected' : '';
                                 echo "<option value=\"{$category['nama_kategori']}\" $selected>{$category['nama_kategori']}</option>";
@@ -604,9 +608,8 @@ require "../Auth/cek_log.php";
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
 
-
             <!-- Book List Container -->
-            <div id="bookContainer" class="d-flex flex-wrap flex-column gap-4 mt-3">
+            <div id="bookContainer" class="d-flex flex-wrap flex-column gap-4 mt-4">
                 <?php
                 $search = isset($_GET['search']) ? $_GET['search'] : '';
                 $category = isset($_GET['category']) ? $_GET['category'] : '';
@@ -626,67 +629,80 @@ require "../Auth/cek_log.php";
                     foreach ($buku as $bk):
                         if ($currentCategory != $bk['kategori']) {
                             if ($currentCategory != '') {
-                                echo '</div><hr style="border: 2px solid #666;" class="my-5"><br>';
+                                echo '</div><hr style="border: 2px solid #e2e8f0;" class="my-5"><br>';
                             }
                             $currentCategory = $bk['kategori'];
-                            echo "<div class='category-group'><h2 class='text-center fw-bold mb-5' style='color: darkblue; font-size: 1.5rem; letter-spacing: 2px;'>{$currentCategory}</h2><div class='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap'>";
+                            echo "<div class='category-group'><h2 class='text-center fw-bold mb-5' style='background: linear-gradient(45deg, #1a202c, #010035); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: 2px;'>{$currentCategory}</h2><div class='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap'>";
                         }
                         ?>
                         <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-4 book-item mt-4">
-                            <div class="card h-100 shadow-lg rounded-4">
-                                <div class="card h-100 rounded-4">
-                                    <img class="card-img-top book-cover rounded-3" src="<?= $bk['cover']; ?>"
+                            <div class="card h-100 shadow-lg rounded-4 border-0 transition-all hover:transform hover:scale-105"
+                                style="transition: all 0.3s ease;">
+                                <div class="position-relative" style="height: auto;">
+                                    <img class="card-img-top book-cover rounded-top-4" src="<?= $bk['cover']; ?>"
                                         alt="<?= htmlspecialchars($bk['judul']); ?> Cover"
-                                        style="object-fit: cover; width: 100%; height: 100%;" width="200" height="300"
-                                        loading="lazy" onerror="this.src='../assets/img/default_book_cover.png';">
-                                </div>
-                                <?php
-                                $id_buku = $bk['id_buku'];
-                                $avgRatingQuery = "SELECT AVG(rating) as avg_rating FROM review WHERE id_buku = '$id_buku'";
-                                $avgRatingResult = query($avgRatingQuery);
-                                $avgRating = $avgRatingResult[0]['avg_rating'] ?? 0;
-                                ?>
+                                        style="width: 100%; height: auto; max-height: none;" loading="lazy"
+                                        onerror="this.src='../assets/img/default_book_cover.png';">
 
-                                <div class="card-footer text-center rating-container">
                                     <?php
-                                    for ($i = 1; $i <= 5; $i++) {
-                                        if ($i <= $avgRating) {
-                                            echo '<span class="text-warning"><i class="fas fa-star"></i></span>';
-                                        } else {
-                                            echo '<span class="text-muted"><i class="far fa-star"></i></span>';
-                                        }
-                                    }
+                                    $id_buku = $bk['id_buku'];
+                                    $avgRatingQuery = "SELECT AVG(rating) as avg_rating FROM review WHERE id_buku = '$id_buku'";
+                                    $avgRatingResult = query($avgRatingQuery);
+                                    $avgRating = $avgRatingResult[0]['avg_rating'] ?? 0;
                                     ?>
-                                    <small class="text-muted">
-                                        (<?= is_numeric($avgRating) ? number_format($avgRating, 1) : $avgRating; ?>)</small>
+                                    <div class="position-absolute top-0 end-0 m-2 p-2 bg-white bg-opacity-75 rounded-pill">
+                                        <div class="d-flex align-items-center gap-1">
+                                            <i class="fas fa-star text-warning"></i>
+                                            <span class="fw-bold"><?= number_format($avgRating, 1) ?></span>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="card-body">
-                                    <h5 class="card-title"><?= $bk['judul']; ?></h5>
-                                    <p class="card-text text-small"><?= $bk['pengarang']; ?></p>
-                                    <p class="card-text text-start"><span class="badge bg-secondary">Penerbit:</span>
-                                        <?= $bk['penerbit']; ?></p>
-                                    <p class="card-text text-start"><span class="badge bg-secondary">Tahun Terbit:</span>
-                                        <?= $bk['tahun_terbit']; ?></p>
-                                    <p class="card-text text-start"><span class="badge bg-secondary">Jumlah Halaman:</span>
-                                        <?= $bk['halaman']; ?></p>
-                                    <p class="card-text text-start"><span class="badge bg-secondary">Kategori:</span>
-                                        <?= $bk['kategori']; ?></p>
-                                    <br>
-                                    <div class="d-flex justify-content-end">
-                                        <a href="detail_buku.php?id_buku=<?= $bk['id_buku']; ?>" class="btn btn-outline-primary"
-                                            style="width: 100%;">Lihat Detail</a>
+                                    <h5 class="card-title text-truncate fw-bold mb-2"><?= $bk['judul']; ?></h5>
+                                    <p class="card-text text-muted mb-2"><?= $bk['pengarang']; ?></p>
+                                    <div class="d-flex flex-column gap-2">
+                                        <!-- Deskripsi buku untuk tampilan list -->
+                                        <div class="book-description mt-3 d-none">
+                                            <h6 class="fw-bold">Deskripsi:</h6>
+                                            <p class="text-muted small">
+                                                <?php
+                                                $deskripsi = isset($bk['deskripsi']) ? $bk['deskripsi'] : 'Tidak ada deskripsi tersedia.';
+                                                echo strlen($deskripsi) > 250 ? substr($deskripsi, 0, 250) . '...' : $deskripsi;
+                                                ?>
+                                            </p>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-primary rounded-pill">Penerbit</span>
+                                            <small class="text-muted"><?= $bk['penerbit']; ?></small>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-primary rounded-pill">Tahun</span>
+                                            <small class="text-muted"><?= $bk['tahun_terbit']; ?></small>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-primary rounded-pill">Halaman</span>
+                                            <small class="text-muted"><?= $bk['halaman']; ?></small>
+                                        </div>
                                     </div>
+
+                                </div>
+
+                                <div class="card-footer bg-transparent border-0 p-3">
+                                    <a href="detail_buku.php?id_buku=<?= $bk['id_buku']; ?>"
+                                        class="btn btn-outline-primary w-100 rounded-pill">
+                                        <i class="fas fa-info-circle me-2"></i>Detail
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     <?php endforeach;
-                    echo '</div>'; // Close last category div
+                    echo '</div>';
                 } else {
                     ?>
                     <div class="col-12">
-                        <div class="alert alert-info">
-                            Tidak ada Buku tersebut.
+                        <div class="alert alert-info rounded-4 shadow-sm border-0">
+                            <i class="fas fa-info-circle me-2"></i>Tidak ada buku yang ditemukan.
                         </div>
                     </div>
                     <?php
@@ -695,17 +711,26 @@ require "../Auth/cek_log.php";
             </div>
 
             <script>
-                // View Toggle functionality
                 document.getElementById('cardView').addEventListener('click', function () {
                     document.getElementById('bookContainer').classList.remove('list-view');
                     document.getElementById('cardView').classList.add('active');
                     document.getElementById('listView').classList.remove('active');
+
+                    // Sembunyikan deskripsi buku saat dalam mode card
+                    document.querySelectorAll('.book-description').forEach(function (desc) {
+                        desc.classList.add('d-none');
+                    });
                 });
 
                 document.getElementById('listView').addEventListener('click', function () {
                     document.getElementById('bookContainer').classList.add('list-view');
                     document.getElementById('listView').classList.add('active');
                     document.getElementById('cardView').classList.remove('active');
+
+                    // Tampilkan deskripsi buku saat dalam mode list
+                    document.querySelectorAll('.book-description').forEach(function (desc) {
+                        desc.classList.remove('d-none');
+                    });
                 });
             </script>
     </section>

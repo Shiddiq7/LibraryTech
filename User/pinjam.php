@@ -283,227 +283,261 @@ require "../Auth/cek_log.php";
     <br><br><br><br>
     <section class="features">
         <div class="container">
-            <h1 class="display-4 fw-bold text-center">Daftar Peminjaman</h1>
-            <hr class="my-4" />
-
-            <br><br>
+            <h1 class="display-4 fw-bold text-center mb-4" style="background: linear-gradient(to right, #6a11cb, #2575fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Daftar Peminjaman</h1>
+            <div class="text-center mb-5">
+                <div class="divider-custom">
+                    <div class="divider-custom-line" style="background: linear-gradient(to right, #6a11cb, #2575fc); height: 3px; width: 80px; margin: 0 auto;"></div>
+                </div>
+            </div>
 
             <!-- Search and Filter -->
-            <form method="get" class="mb-4 d-flex flex-column flex-md-row justify-content-between">
-                <div class="input-group shadow-md mb-3 mb-md-0" style="width: 100%; max-width: 400px;">
-                    <input class="form-control" type="text" name="search" id="searchInput"
-                        value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
-                        placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch"
-                        onkeyup="filterData()" />
-                </div>
-                <div class="input-group shadow-md ms-md-2" style="width: 100%; max-width: 200px;">
-                    <span class="input-group-text" id="basic-addon2"><i class="fas fa-filter"></i></span>
-                    <select class="form-select" name="status" id="statusFilter" onchange="filterData()">
-                        <option value="">All Status</option>
-                        <option value="Menunggu Konfirmasi" <?= isset($_GET['status']) && $_GET['status'] == 'Menunggu Konfirmasi' ? 'selected' : ''; ?>>Menunggu Konfirmasi</option>
-                        <option value="Dipinjam" <?= isset($_GET['status']) && $_GET['status'] == 'Dipinjam' ? 'selected' : ''; ?>>Dipinjam</option>
-                        <option value="Dikembalikan" <?= isset($_GET['status']) && $_GET['status'] == 'Dikembalikan' ? 'selected' : ''; ?>>Dikembalikan</option>
-                    </select>
-                </div>
-            </form>
+            <div class="search-filter-container mb-5 ">
+                <form method="get" class="d-flex flex-column flex-md-row justify-content-between gap-3">
+                    <div class="input-group shadow-lg rounded-pill overflow-hidden" style="width: 100%; max-width: 400px;">
+                        <span class="input-group-text border-0 bg-white ps-3"><i class="fas fa-search text-primary"></i></span>
+                        <input class="form-control border-0 py-2" type="text" name="search" id="searchInput"
+                            value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
+                            placeholder="Cari judul, pengarang, atau penerbit..." aria-label="Search" 
+                            onkeyup="filterData()" />
+                    </div>
+                    <div class="input-group shadow-lg rounded-pill overflow-hidden" style="width: 100%; max-width: 250px;">
+                        <span class="input-group-text border-0 bg-white ps-3"><i class="fas fa-filter text-primary"></i></span>
+                        <select class="form-select border-0 py-2" name="status" id="statusFilter" onchange="filterData()">
+                            <option value="">Semua Status</option>
+                            <option value="Menunggu Konfirmasi" <?= isset($_GET['status']) && $_GET['status'] == 'Menunggu Konfirmasi' ? 'selected' : ''; ?>>Menunggu Konfirmasi</option>
+                            <option value="Dipinjam" <?= isset($_GET['status']) && $_GET['status'] == 'Dipinjam' ? 'selected' : ''; ?>>Dipinjam</option>
+                            <option value="Dikembalikan" <?= isset($_GET['status']) && $_GET['status'] == 'Dikembalikan' ? 'selected' : ''; ?>>Dikembalikan</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
 
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const cards = document.querySelectorAll('.card');
-                    cards.forEach(card => {
-                        const img = card.querySelector('img');
-                        if (img) {
-                            const colorThief = new ColorThief();
-                            if (img.complete) {
-                                imgLoaded(card, colorThief.getColor(img));
-                            } else {
-                                img.addEventListener('load', function () {
-                                    imgLoaded(card, colorThief.getColor(img));
-                                });
-                            }
-                        }
-                    });
-
-                    function imgLoaded(card, color) {
-                        const rgbColor = `rgb(${color[0] + 50}, ${color[1] + 50}, ${color[2] + 50})`;
-                        card.addEventListener('mouseover', function () {
-                            card.style.boxShadow = `0 0 50px ${rgbColor}`;
-                        });
-                        card.addEventListener('mouseout', function () {
-                            card.style.boxShadow = '';
-                        });
-                    }
-                });
-            </script>
+           
             <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
 
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                 <?php
-                $statusFilter = isset($_GET['status']) ? $_GET['status'] : '';
-                $search = isset($_GET['search']) ? $_GET['search'] : '';
-                $query = "SELECT * FROM pinjam WHERE username = '$_SESSION[username]'";
+                $statusFilter = isset($_GET['status']) ? mysqli_real_escape_string($conn, $_GET['status']) : '';
+                $search = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
+                
+                // Buat query dasar dengan JOIN untuk mengambil hanya data yang diperlukan
+                $query = "SELECT p.id_pinjam, p.id_buku, p.judul, p.pengarang, p.penerbit, 
+                          p.cover, p.status, p.tanggal_pinjam, p.tanggal_kembali 
+                          FROM pinjam p 
+                          WHERE p.username = '$_SESSION[username]'";
 
+                // Tambahkan filter pencarian jika ada
                 if ($search) {
-                    $query .= " AND (id_buku LIKE '%$search%' OR judul LIKE '%$search%' 
-                                OR pengarang LIKE '%$search%' OR penerbit LIKE '%$search%' 
-                                OR username LIKE '%$search%')";
+                    $query .= " AND (p.id_buku LIKE '%$search%' OR p.judul LIKE '%$search%' 
+                                OR p.pengarang LIKE '%$search%' OR p.penerbit LIKE '%$search%')";
                 }
 
+                // Tambahkan filter status jika ada
                 if ($statusFilter) {
-                    $query .= " AND status = '$statusFilter'";
+                    $query .= " AND p.status = '$statusFilter'";
                 }
 
-                $query .= " ORDER BY FIELD(status, 'Dipinjam') DESC, FIELD(status, 'Dikembalikan') ASC";
-                $pinjam = query($query);
+                // Urutkan berdasarkan status dan tanggal
+                $query .= " ORDER BY 
+                           CASE 
+                               WHEN p.status = 'Dipinjam' THEN 1
+                               WHEN p.status = 'Menunggu Konfirmasi' THEN 2
+                               WHEN p.status = 'Dikembalikan' THEN 3
+                           END,
+                           p.tanggal_pinjam DESC
+                           LIMIT 50"; // Batasi hasil untuk performa lebih baik
+                
+                $result = mysqli_query($conn, $query);
+                $pinjam = [];
+                
+                if ($result) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $pinjam[] = $row;
+                    }
+                }
 
                 if (count($pinjam) > 0) {
                     foreach ($pinjam as $pj):
+                        // Determine status class and icon
+                        $statusClass = '';
+                        $statusIcon = '';
+                        $statusBg = '';
+                        
+                        if ($pj['status'] == 'Menunggu Konfirmasi') {
+                            $statusClass = 'fw-bold text-warning fs-6';
+                            $statusIcon = 'fa-clock';
+                            $statusBg = 'bg-warning bg-opacity-10';
+                        } elseif ($pj['status'] == 'Dipinjam') {
+                            $statusClass = 'fw-bold text-success fs-6';
+                            $statusIcon = 'fa-book-open';
+                            $statusBg = 'bg-success bg-opacity-10';
+                        } elseif ($pj['status'] == 'Dikembalikan') {
+                            $statusClass = 'fw-bold text-info fs-6';
+                            $statusIcon = 'fa-check-circle';
+                            $statusBg = 'bg-secondary bg-opacity-10';
+                        }
                         ?>
-                        <div class="col mb-2">
-                            <div class="card h-100 shadow-lg" id="cardpinjam">
-                                <div class="card h-100">
+                        <div class="col mb-4">
+                            <div class="card h-100 shadow-lg rounded-4 book-card" style="overflow: hidden; transition: all 0.3s ease;">
+                                <div class="position-relative">
                                     <img class="card-img-top book-cover" src="<?= $pj['cover']; ?>"
-                                        alt="<?= htmlspecialchars($pj['judul']); ?> Cover" width="300" height="500"
+                                        alt="<?= htmlspecialchars($pj['judul']); ?> Cover" 
+                                        style="height: 450px; object-fit: cover; transition: transform 0.5s ease;"
                                         loading="lazy" onerror="this.src='../assets/img/default_book_cover.png';">
+                                    <div class="position-absolute top-0 end-0 m-2">
+                                        <span class="badge rounded-pill <?= $statusBg ?> <?= $statusClass ?> px-3 py-2">
+                                            <i class="fas <?= $statusIcon ?> me-1"></i> <?= $pj['status']; ?>
+                                        </span>
+                                    </div>
+                                    <?php if ($pj['status'] == 'Dipinjam' && strtotime($pj['tanggal_kembali']) < time()): ?>
+                                        <div class="position-absolute top-0 start-0 m-2">
+                                            <span class="badge rounded-pill bg-danger px-3 py-2">
+                                                <i class="fas fa-exclamation-triangle me-1"></i> Terlambat
+                                            </span>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title"><?= $pj['judul']; ?> [<?= $pj['id_buku']; ?>]</h5>
-                                    <p class="card-text"><?= $pj['pengarang']; ?></p>
-                                    <p class="card-text text-start"><span class="badge bg-secondary">Penerbit:</span>
-                                        <?= $pj['penerbit']; ?></p>
-
-                                    <p class="card-text text-start"><span class="badge bg-secondary">Username:</span>
-                                        <?= $pj['username']; ?> [<?= $pj['id_user']; ?>]</p>
-                                    <p class="card-text text-start"><span class="badge bg-secondary">Tanggal Pinjam:</span>
-                                        <?= $pj['tanggal_pinjam']; ?></p>
-                                    <p class="card-text text-start"><span class="badge bg-secondary">Tanggal Kembali:</span>
-                                        <?= $pj['tanggal_kembali']; ?></p>
-                                    <p class="card-text text-start">
-                                        <span
-                                            class="badge <?= $pj['status'] == 'Menunggu Konfirmasi' ? 'bg-warning' : ($pj['status'] == 'Dipinjam' ? 'bg-success' : ($pj['status'] == 'Dikembalikan' ? 'bg-secondary' : '')); ?>">
-                                            Status:
-                                        </span>
-                                        <span
-                                            class="status-text <?= $pj['status'] == 'Menunggu Konfirmasi' ? 'text-warning' : ($pj['status'] == 'Dipinjam' ? 'text-success' : ''); ?>">
-                                            <?= $pj['status']; ?>
-                                        </span>
-                                    </p>
-                                    <?php if ($pj['status'] == 'Dipinjam' && strtotime($pj['tanggal_kembali']) < time()): ?>
-                                        <p class="card-text text-start text-danger">
-                                            <span class="badge bg-danger">Terlambat</span>
-                                            Terlambat dikembalikan
-                                        </p>
-                                    <?php endif; ?>
-
-                                    <hr class="my-2"><br>
-
-                                    <div class="d-flex justify-content-between">
-                                        <!-- Button Kembali -->
+                                    <h5 class="card-title fw-bold text-truncate"><?= $pj['judul']; ?></h5>
+                                    <p class="card-text text-muted mb-1"><i class="fas fa-user-edit me-2"></i><?= $pj['pengarang']; ?></p>
+                                    <p class="card-text text-muted mb-1"><i class="fas fa-building me-2"></i><?= $pj['penerbit']; ?></p>
+                                    
+                                    <div class="mt-3 pt-2 border-top">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="text-muted small"><i class="fas fa-calendar-alt me-1"></i> Pinjam:</span>
+                                            <span class="badge bg-light text-dark"><?= date('d M Y', strtotime($pj['tanggal_pinjam'])); ?></span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-muted small"><i class="fas fa-calendar-check me-1"></i> Kembali:</span>
+                                            <span class="badge bg-light text-dark"><?= date('d M Y', strtotime($pj['tanggal_kembali'])); ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 bg-white">
+                                    <div class="d-flex justify-content-between gap-2">
                                         <?php
                                         $currentDate = date('Y-m-d');
                                         $isLate = $currentDate > $pj['tanggal_kembali'];
                                         ?>
-                                        <button class="btn <?= $isLate ? 'btn-danger' : 'btn-outline-secondary'; ?>"
+                                        <button class="btn <?= $isLate ? 'btn-danger' : 'btn-primary'; ?> rounded-pill flex-grow-1"
                                             data-bs-toggle="modal" data-bs-target="#kembaliModal<?= $pj['id_pinjam'] ?>"
-                                            <?= $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>>Kembalikan Buku
+                                            <?= $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>>
+                                            <i class="fas fa-undo-alt me-1"></i> Kembalikan
                                         </button>
 
+                                        <button class="btn btn-primary rounded-pill flex-grow-1" 
+                                            <?= $pj['status'] == 'Menunggu Konfirmasi' || $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>>
+                                            <i class="fas <?= $pj['status'] == 'Dikembalikan' ? 'fa-check' : 'fa-book-reader'; ?> me-1"></i>
+                                            <?= $pj['status'] == 'Dikembalikan' ? 'Dikembalikan' : 'Baca Buku' ?>
+                                        </button>
+                                    </div>
+                                </div>
 
-
-                                        <!-- Modal Kembali -->
-                                        <div class="modal fade" id="kembaliModal<?= $pj['id_pinjam'] ?>" tabindex="-1"
-                                            aria-labelledby="kembaliModalLabel<?= $pj['id_pinjam'] ?>" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header"
-                                                        style="background: linear-gradient(to right, #6a11cb, #2575fc); color: white;">
-                                                        <h5 class="modal-title" id="kembaliModalLabel<?= $pj['id_pinjam'] ?>">
-                                                            <i class="fas fa-book me-2"></i> Konfirmasi Pengembalian
-                                                        </h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
+                                <!-- Modal Kembali -->
+                                <div class="modal fade" id="kembaliModal<?= $pj['id_pinjam'] ?>" tabindex="-1"
+                                    aria-labelledby="kembaliModalLabel<?= $pj['id_pinjam'] ?>" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content border-0 shadow-lg rounded-4">
+                                            <div class="modal-header border-0"
+                                                style="background: linear-gradient(to right, #6a11cb, #2575fc); color: white;">
+                                                <h5 class="modal-title" id="kembaliModalLabel<?= $pj['id_pinjam'] ?>">
+                                                    <i class="fas fa-book me-2"></i> Konfirmasi Pengembalian
+                                                </h5>
+                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body p-4">
+                                                <div class="row g-4">
+                                                    <div class="col-md-4">
+                                                        <img src="<?= $pj['cover'] ?>" alt="Cover Buku"
+                                                            class="img-fluid rounded-4 shadow-sm" style="width: 100%; height: 300px; object-fit: cover;">
                                                     </div>
-                                                    <div class="modal-body">
-                                                        <div class="row g-3">
-                                                            <div class="col-4">
-                                                                <img src="<?= $pj['cover'] ?>" alt="Cover Buku"
-                                                                    class="img-thumbnail rounded-3">
-                                                            </div>
-                                                            <div class="col-8" style="text-align: left;">
-                                                                <h4 class="mb-3 ms-3"
-                                                                    style="font-weight: bold; color: #007bff;">
-                                                                    Detail Buku
-                                                                </h4>
-                                                                <ul class="list-group list-group-flush mb-4">
-                                                                    <li class="list-group-item">
-                                                                        <strong>Judul:</strong> <?= $pj['judul'] ?>
-                                                                    </li>
-                                                                    <li class="list-group-item">
-                                                                        <strong>Pengarang:</strong> <?= $pj['pengarang'] ?>
-                                                                    </li>
-                                                                    <li class="list-group-item">
-                                                                        <strong>Penerbit:</strong> <?= $pj['penerbit'] ?>
-                                                                    </li>
-                                                                    <li class="list-group-item">
-                                                                        <strong>Tanggal Pinjam:</strong>
-                                                                        <?= $pj['tanggal_pinjam'] ?>
-                                                                    </li>
-                                                                    <li class="list-group-item">
-                                                                        <strong>Tanggal Kembali:</strong>
-                                                                        <?= $pj['tanggal_kembali'] ?>
-                                                                    </li>
-                                                                </ul>
-                                                                <?php
-                                                                $tanggal_kembali = date_create($pj['tanggal_kembali']);
-                                                                $now = date_create();
-                                                                $diff = date_diff($tanggal_kembali, $now);
-                                                                $daysLeft = $diff->format('%a');
-                                                                ?>
-                                                                <div class="alert alert-info" role="alert">
-                                                                    <i class="fas fa-info-circle"></i> Apakah Anda yakin ingin
-                                                                    mengembalikan buku ini?
-                                                                    <br> Waktu pinjam masih tersisa
-                                                                    <strong><?= $daysLeft ?></strong> hari lagi.
-                                                                </div>
-                                                            </div>
+                                                    <div class="col-md-8">
+                                                        <h4 class="mb-3 fw-bold text-primary">
+                                                            Detail Buku
+                                                        </h4>
+                                                        <div class="card border-0 shadow-sm rounded-4 mb-4">
+                                                            <ul class="list-group list-group-flush rounded-4">
+                                                                <li class="list-group-item border-0 d-flex">
+                                                                    <span class="text-muted me-2 w-25"><i class="fas fa-book me-2"></i>Judul:</span>
+                                                                    <span class="fw-medium"><?= $pj['judul'] ?></span>
+                                                                </li>
+                                                                <li class="list-group-item border-0 d-flex">
+                                                                    <span class="text-muted me-2 w-25"><i class="fas fa-user-edit me-2"></i>Pengarang:</span>
+                                                                    <span class="fw-medium"><?= $pj['pengarang'] ?></span>
+                                                                </li>
+                                                                <li class="list-group-item border-0 d-flex">
+                                                                    <span class="text-muted me-2 w-25"><i class="fas fa-building me-2"></i>Penerbit:</span>
+                                                                    <span class="fw-medium"><?= $pj['penerbit'] ?></span>
+                                                                </li>
+                                                                <li class="list-group-item border-0 d-flex">
+                                                                    <span class="text-muted me-2 w-25"><i class="fas fa-calendar-alt me-2"></i>Pinjam:</span>
+                                                                    <span class="fw-medium"><?= date('d M Y', strtotime($pj['tanggal_pinjam'])) ?></span>
+                                                                </li>
+                                                                <li class="list-group-item border-0 d-flex">
+                                                                    <span class="text-muted me-2 w-25"><i class="fas fa-calendar-check me-2"></i>Kembali:</span>
+                                                                    <span class="fw-medium"><?= date('d M Y', strtotime($pj['tanggal_kembali'])) ?></span>
+                                                                </li>
+                                                            </ul>
                                                         </div>
-
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-outline-secondary"
-                                                            data-bs-dismiss="modal">Batal</button>
-                                                        <form method="POST">
-                                                            <input type="hidden" name="id_pinjam"
-                                                                value="<?= $pj['id_pinjam'] ?>">
-                                                            <button type="submit" class="btn btn-outline-primary"
-                                                                <?= $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>
-                                                                name="kembali">Kembalikan</button>
-                                                        </form>
+                                                        <?php
+                                                        $tanggal_kembali = date_create($pj['tanggal_kembali']);
+                                                        $now = date_create();
+                                                        $diff = date_diff($tanggal_kembali, $now);
+                                                        $daysLeft = $diff->format('%a');
+                                                        ?>
+                                                        <div class="alert alert-info rounded-4 border-0 shadow-sm" role="alert">
+                                                            <i class="fas fa-info-circle me-2"></i> Apakah Anda yakin ingin
+                                                            mengembalikan buku ini?
+                                                            <br> Waktu pinjam masih tersisa
+                                                            <strong><?= $daysLeft ?></strong> hari lagi.
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="modal-footer border-0">
+                                                <button type="button" class="btn btn-outline-secondary rounded-pill px-4"
+                                                    data-bs-dismiss="modal">Batal</button>
+                                                <form method="POST">
+                                                    <input type="hidden" name="id_pinjam"
+                                                        value="<?= $pj['id_pinjam'] ?>">
+                                                    <button type="submit" class="btn btn-primary rounded-pill px-4"
+                                                        <?= $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>
+                                                        name="kembali">Kembalikan Sekarang</button>
+                                                </form>
+                                            </div>
                                         </div>
-
-                                        <button class="btn btn-outline-primary" <?= $pj['status'] == 'Menunggu Konfirmasi' || $pj['status'] == 'Dikembalikan' ? 'disabled' : ''; ?>>
-                                            <?= $pj['status'] == 'Dikembalikan' ? 'Dikembalikan' : 'Baca Buku' ?>
-                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
-                <?php } else {
-                    ?>
-                    <div class=" col-12">
-                        <div class="card h-100 shadow-md">
-                            <div class="card-body d-flex justify-content-center">
-                                <h5 class="card-title">Buku Pinjam Kosong</h5>
+                <?php } else { ?>
+                    <div class="col-12">
+                        <div class="card border-0 shadow-lg rounded-4 py-5">
+                            <div class="card-body text-center">
+                                <i class="fas fa-times-circle text-muted" style="font-size: 100px; margin-bottom: 20px;"></i>
+                                <?php
+                                $filterStatus = isset($_GET['status']) ? $_GET['status'] : 'Semua';
+                                $statusText = 'Belum Ada Buku yang Dipinjam';
+                                switch ($filterStatus) {
+                                    case 'Dipinjam':
+                                        $statusText = 'Belum Ada Buku yang Sedang Dipinjam';
+                                        break;
+                                    case 'Dikembalikan':
+                                        $statusText = 'Belum Ada Buku yang Sudah Dikembalikan';
+                                        break;
+                                }
+                                ?>
+                                <h4 class="text-muted"><?= $statusText ?></h4>
+                                <p class="text-muted mt-4">Silakan kunjungi halaman dashboard untuk meminjam buku</p>
+                                <a href="dashboard.php" class="btn btn-primary rounded-pill px-4 mt-3">
+                                    <i class="fas fa-search me-2"></i> Cari Buku
+                                </a>
                             </div>
                         </div>
                     </div>
-                    <?php
-                }
-                ?>
+                <?php } ?>
             </div>
         </div>
     </section>
