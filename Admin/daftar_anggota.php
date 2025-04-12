@@ -173,7 +173,13 @@ require "../Auth/cek_log.php";
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Anggota
                         </a>
-
+                        
+                        <div class="sb-sidenav-menu-heading">Tools</div>
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'recovery.php' ? 'active' : ''; ?>"
+                            href="recovery.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-recycle"></i></div>
+                            Recovery
+                        </a>
 
                     </div>
                 </div>

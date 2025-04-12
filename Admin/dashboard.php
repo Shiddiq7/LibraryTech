@@ -174,6 +174,13 @@ require "../Auth/cek_log.php";
                             Anggota
                         </a>
 
+                        <div class="sb-sidenav-menu-heading">Tools</div>
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'recovery.php' ? 'active' : ''; ?>"
+                            href="recovery.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-recycle"></i></div>
+                            Recovery
+                        </a>
+
                     </div>
                 </div>
             </nav>
@@ -198,7 +205,7 @@ require "../Auth/cek_log.php";
                                                 Daftar Buku</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800 mt-2">
                                                 <?php
-                                                $buku = query("SELECT COUNT(*) AS total FROM buku WHERE if_visible = TRUE")[0]['total'];
+                                                $buku = query("SELECT COUNT(id_buku) AS total FROM buku WHERE if_visible = TRUE")[0]['total'];
                                                 echo "<small>Total Buku = " . $buku . "</small>";
                                                 ?>
                                                 <a href="daftar_buku.php" class="text-decoration-none text-primary">
@@ -225,7 +232,7 @@ require "../Auth/cek_log.php";
                                                 Peminjaman Buku</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800 mt-2">
                                                 <?php
-                                                $peminjaman = query("SELECT COUNT(*) AS total FROM pinjam where status = 'Dipinjam'")[0]['total'];
+                                                $peminjaman = query("SELECT COUNT(id_pinjam) AS total FROM pinjam where status = 'Dipinjam'")[0]['total'];
                                                 echo "<small>Total Peminjaman = " . $peminjaman . "</small>";
                                                 ?>
 
@@ -252,7 +259,7 @@ require "../Auth/cek_log.php";
                                                 Pengembalian Buku</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800 mt-2">
                                                 <?php
-                                                $dikembalikan = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Dikembalikan'")[0]['total'];
+                                                $dikembalikan = query("SELECT COUNT(id_pinjam) AS total FROM pinjam WHERE status = 'Dikembalikan'")[0]['total'];
                                                 echo "<small>Total Dikembalikan = " . $dikembalikan . "</small>";
                                                 ?>
 
@@ -279,7 +286,7 @@ require "../Auth/cek_log.php";
                                                 Daftar Anggota</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800 mt-2">
                                                 <?php
-                                                $anggota = query("SELECT COUNT(*) AS total FROM user where role = 'Anggota'")[0]['total'];
+                                                $anggota = query("SELECT COUNT(id_user) AS total FROM user where role = 'Anggota'")[0]['total'];
                                                 echo "<small>Total Anggota = " . $anggota . "</small>";
                                                 ?>
                                                 <a href="daftar_anggota.php" class="text-decoration-none text-primary">

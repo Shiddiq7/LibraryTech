@@ -140,34 +140,41 @@ require "../Auth/cek_log.php";
 
 
                         <div class="sb-sidenav-menu-heading">Daftar</div>
-                            <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_buku.php' ? 'active' : ''; ?>"
-                                href="daftar_buku.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                                Daftar Buku
-                            </a>
-                            <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pinjam.php' ? 'active' : ''; ?>"
-                                href="pinjam.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
-                                Peminjaman
-                                <?php
-                                $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
-                                if ($newDataCount > 0): ?>
-                                    <span class="badge bg-warning text-dark ms-2"><?= $newDataCount ?></span>
-                                    <i class="fas fa-exclamation-circle ms-2 text-warning"></i>
-                                <?php endif; ?>
-                            </a>
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_buku.php' ? 'active' : ''; ?>"
+                            href="daftar_buku.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
+                            Daftar Buku
+                        </a>
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'pinjam.php' ? 'active' : ''; ?>"
+                            href="pinjam.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                            Peminjaman
+                            <?php
+                            $newDataCount = query("SELECT COUNT(*) AS total FROM pinjam WHERE status = 'Menunggu Konfirmasi'")[0]['total'];
+                            if ($newDataCount > 0): ?>
+                                <span class="badge bg-warning text-dark ms-2"><?= $newDataCount ?></span>
+                                <i class="fas fa-exclamation-circle ms-2 text-warning"></i>
+                            <?php endif; ?>
+                        </a>
 
-                            <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'kategori_buku.php' ? 'active' : ''; ?>"
-                                href="#">
-                                <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
-                                Kategori
-                            </a>
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'kategori_buku.php' ? 'active' : ''; ?>"
+                            href="#">
+                            <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                            Kategori
+                        </a>
 
-                            <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_anggota.php' ? 'active' : ''; ?>"
-                                style="padding-left: 15px;" href="daftar_anggota.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                Anggota
-                            </a>
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'daftar_anggota.php' ? 'active' : ''; ?>"
+                            style="padding-left: 15px;" href="daftar_anggota.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                            Anggota
+                        </a>
+
+                        <div class="sb-sidenav-menu-heading">Tools</div>
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'recovery.php' ? 'active' : ''; ?>"
+                            href="recovery.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-recycle"></i></div>
+                            Recovery
+                        </a>
 
 
                     </div>
