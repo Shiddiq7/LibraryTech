@@ -446,19 +446,35 @@ require "../Auth/cek_log.php";
     <?php
     if (isset($_POST['delete'])) {
         $id_buku = $_POST['id_buku'];
-        $query = "DELETE FROM buku WHERE id_buku = '$id_buku'";
-        if (mysqli_query($conn, $query)) {
-            echo "<script src='https://unpkg.com/sweetalert/dist/sweetalert.min.js'></script>";
-            echo "<script>
-                    swal({
-                        title: 'Book deleted successfully',
-                        icon: 'success',
-                        buttons: false,
-                        timer: 1500
-                    }).then(function() {
-                        window.location.href='recovery.php';
-                    });
-                  </script>";
+
+        // Get the cover image path
+        $query = "SELECT cover FROM buku WHERE id_buku = '$id_buku'";
+        $result = mysqli_query($conn, $query);
+        $book = mysqli_fetch_assoc($result);
+
+        if ($book) {
+            $coverPath = $book['cover'];
+
+            // Delete the book record
+            $deleteQuery = "DELETE FROM buku WHERE id_buku = '$id_buku'";
+            if (mysqli_query($conn, $deleteQuery)) {
+                // Delete the cover image file if it exists
+                if (file_exists($coverPath)) {
+                    unlink($coverPath);
+                }
+
+                echo "<script src='https://unpkg.com/sweetalert/dist/sweetalert.min.js'></script>";
+                echo "<script>
+                        swal({
+                            title: 'Book deleted successfully',
+                            icon: 'success',
+                            buttons: false,
+                            timer: 1500
+                        }).then(function() {
+                            window.location.href='recovery.php';
+                        });
+                      </script>";
+            }
         }
     }
     ?>
