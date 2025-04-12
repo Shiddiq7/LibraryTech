@@ -518,7 +518,7 @@ foreach ($pinjam as $pj) {
                                                     </li>
                                                     <li class="list-group-item d-flex justify-content-start align-items-center">
                                                         <i class="fas fa-user-circle me-2"></i>
-                                                        <span class="text-secondary">Username:
+                                                        <span class="fw-bold text-secondary">Peminjam:
                                                             <?= htmlspecialchars($pj['username']); ?>
                                                             [<?= htmlspecialchars($pj['id_user']); ?>]</span>
                                                     </li>

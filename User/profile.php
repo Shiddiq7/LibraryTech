@@ -482,13 +482,13 @@ require '../Auth/cek_log.php'; // Include middleware for role checks
             </tr>
 
                 <?php
-                $query = "SELECT COUNT(*) AS total_pinjam FROM pinjam WHERE status IN ('Dipinjam', 'Dikembalikan') AND username = '$_SESSION[username]'";
+                $query = "SELECT COUNT(*) AS total_pinjam FROM pinjam WHERE status IN ('Dipinjam') AND username = '$_SESSION[username]'";
                 $result = mysqli_query($conn, $query);
                 $data = mysqli_fetch_assoc($result);
                 $total_pinjam = $data['total_pinjam'];
                 ?>
             <tr>
-                <th style="font-weight: 400;">Total Buku DiPinjam</th>
+                <th style="font-weight: 400;">Total Buku Dipinjam</th>
                 <td><?= $total_pinjam ?></td>
             </tr>
           
