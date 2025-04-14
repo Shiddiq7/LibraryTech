@@ -274,7 +274,8 @@ require "../Auth/cek_log.php";
                                     <div class="empty-state">
                                         <i class="fas fa-books"></i>
                                         <h4>Tidak ada buku yang dihapus</h4>
-                                        <p class="text-muted">Jika buku dihapus, maka akan muncul di sini untuk dipulihkan</p>
+                                        <p class="text-muted">Jika buku dihapus, maka akan muncul di sini untuk dipulihkan
+                                        </p>
                                     </div>
                                 <?php endif;
 
@@ -314,7 +315,7 @@ require "../Auth/cek_log.php";
                                                 <button type="button" class="btn btn-restore" data-bs-toggle="modal"
                                                     data-bs-target="#restoreModal<?= $book['id_buku'] ?>">
                                                     <i class="fas fa-trash-restore me-2"></i>Restore
-                                                </button>   
+                                                </button>
                                             </div>
 
                                             <!-- Delete Modal -->
@@ -348,10 +349,11 @@ require "../Auth/cek_log.php";
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
-                                                            <form  method="POST">
+                                                            <form method="POST">
                                                                 <input type="hidden" name="id_buku"
                                                                     value="<?= $book['id_buku'] ?>">
-                                                                <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+                                                                <button type="submit" class="btn btn-danger"
+                                                                    name="delete">Delete</button>
                                                             </form>
                                                         </div>
                                                     </div>
@@ -424,6 +426,7 @@ require "../Auth/cek_log.php";
         });
     </script>
 
+    <!-- Restore Function -->
     <?php
     if (isset($_POST['restore'])) {
         $id_buku = $_POST['id_buku'];
@@ -443,6 +446,8 @@ require "../Auth/cek_log.php";
         }
     }
     ?>
+
+    <!-- Delete Function -->
     <?php
     if (isset($_POST['delete'])) {
         $id_buku = $_POST['id_buku'];
