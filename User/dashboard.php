@@ -626,6 +626,7 @@ require "../Auth/cek_log.php";
                 $buku = query($query);
                 $currentCategory = '';
                 if (count($buku) > 0) {
+                    // Display books in categories
                     foreach ($buku as $bk):
                         if ($currentCategory != $bk['kategori']) {
                             if ($currentCategory != '') {
@@ -635,6 +636,7 @@ require "../Auth/cek_log.php";
                             echo "<div class='category-group'><h2 class='text-center fw-bold mb-5' style='background: linear-gradient(45deg, #1a202c, #010035); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.5rem; letter-spacing: 2px;'>{$currentCategory}</h2><div class='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 d-flex flex-wrap'>";
                         }
                         ?>
+                        <!-- Book Card -->
                         <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-4 book-item mt-4">
                             <div class="card h-100 shadow-lg rounded-4 border-0 transition-all hover:transform hover:scale-105"
                                 style="transition: all 0.3s ease;">

@@ -333,7 +333,7 @@ require "../Auth/cek_log.php";
                                                                 aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p>Are you sure you want to delete:</p>
+                                                            <p>Anda yakin ingin hapus buku ini ? :</p>
                                                             <div class="d-flex align-items-center gap-3 mb-3">
                                                                 <img src="<?= $book['cover'] ?>" alt="<?= $book['judul'] ?>"
                                                                     width="100"
@@ -343,8 +343,8 @@ require "../Auth/cek_log.php";
                                                                     <small><?= $book['pengarang'] ?></small>
                                                                 </div>
                                                             </div>
-                                                            <p class="text-muted">This action is permanent and cannot be
-                                                                undone</p>
+                                                            <p class="text-muted">Tindakan ini permanen dan tidak dapat
+                                                                dibatalkan</p>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
@@ -367,7 +367,7 @@ require "../Auth/cek_log.php";
                                             aria-labelledby="restoreModal<?= $book['id_buku'] ?>Label" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
-                                                    <div class="modal-header bg-success text-white">
+                                                    <div class="modal-header bg-success text-white ">
                                                         <h5 class="modal-title"
                                                             id="restoreModal<?= $book['id_buku'] ?>Label">
                                                             Restore Book
@@ -376,17 +376,19 @@ require "../Auth/cek_log.php";
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p>Are you sure you want to restore:</p>
+                                                        <p>Anda yakin akan Recover buku ini? :</p>
                                                         <div class="d-flex align-items-center gap-3 mb-3">
                                                             <img src="<?= $book['cover'] ?>" alt="<?= $book['judul'] ?>"
                                                                 style="width:150px;height:200px;object-fit:cover;border-radius:8px;">
                                                             <div>
-                                                                <strong><?= $book['judul'] ?></strong><br>
-                                                                <small
-                                                                    class="text-muted"><?= $book['pengarang'] ?></small><br>
-                                                                <small
-                                                                    class="text-muted"><?= $book['tahun_terbit'] ?></small><br>
-                                                                <small class="text-muted"><?= $book['penerbit'] ?></small>
+                                                                <strong style="position: relative; top: -30px;"><?= $book['judul'] ?></strong><br>
+                                                                <div style="position: relative; top: -5px;">
+                                                                    <i class="fas fa-user-edit me-2"></i><small
+                                                                        class="text-muted"><?= $book['pengarang'] ?></small><br>
+                                                                    <i class="fas fa-calendar me-2"></i><small
+                                                                        class="text-muted"><?= $book['tahun_terbit'] ?></small><br>
+                                                                    <i class="fas fa-building me-2"></i><small class="text-muted"><?= $book['penerbit'] ?></small>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

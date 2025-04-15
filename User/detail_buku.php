@@ -87,9 +87,8 @@ if (isset($_GET['id_buku'])) {
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg shadow-sm bg-white">
-        <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="#">
+    <nav class="navbar fixed-top navbar-expand-lg shadow-sm bg-white">
+            <a class="navbar-brand d-flex align-items-center" href="dashboard.php">
                 <span class="ms-2 fw-bold" style="color:rgb(1, 17, 255);">LibraTech</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -184,7 +183,7 @@ if (isset($_GET['id_buku'])) {
             </tr>
             <tr>
                 <th style="font-weight: 400;">Judul Buku</th>
-                <td><?= $data['judul'] ?></td>
+                <td style="font-weight: 700;"><?= $data['judul'] ?></td>
             </tr>
 
             <tr>
