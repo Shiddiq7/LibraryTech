@@ -376,7 +376,7 @@ require "../Auth/cek_log.php";
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p>Anda yakin akan Recover buku ini? :</p>
+                                                        <p>Anda yakin akan Recover buku ini :</p>
                                                         <div class="d-flex align-items-center gap-3 mb-3">
                                                             <img src="<?= $book['cover'] ?>" alt="<?= $book['judul'] ?>"
                                                                 style="width:150px;height:200px;object-fit:cover;border-radius:8px;">
